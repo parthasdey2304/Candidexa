@@ -16,6 +16,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { SecurityConsole } from "@/components/SecurityConsole";
 
 export default function RootLayout({
   children,
@@ -29,6 +30,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
+        <SecurityConsole />
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

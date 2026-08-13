@@ -58,7 +58,7 @@ export default function SignIn() {
               </label>
             </div>
 
-            <Button type="submit" className="w-full mt-6">
+            <Button type="submit" className="w-full mt-6 py-5">
               Log in
             </Button>
           </form>

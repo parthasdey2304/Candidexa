@@ -53,7 +53,7 @@ export default function SignUp() {
               </label>
             </div>
 
-            <Button type="submit" className="w-full mt-6">
+            <Button type="submit" className="w-full mt-6 py-5">
               Create account
             </Button>
           </form>

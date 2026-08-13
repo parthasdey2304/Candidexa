@@ -130,6 +130,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  html, body {
+    @apply overflow-x-hidden max-w-full;
+  }
   html {
     @apply font-sans;
   }

@@ -1,248 +1,130 @@
-import { Container } from "@/components/shared/Container";
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { CheckCircle2, Shield, Zap, Target, Search, MapPin, Code, Megaphone, PenTool, BarChart, Building2, Briefcase } from "lucide-react";
-import { MarketingLayout } from "@/components/layout/MarketingLayout";
-
-const trendingCategories = [
-  { name: "Software Engineering", icon: Code, count: "12,400+ jobs" },
-  { name: "Marketing & PR", icon: Megaphone, count: "8,200+ jobs" },
-  { name: "Design & UX", icon: PenTool, count: "5,100+ jobs" },
-  { name: "Data & Analytics", icon: BarChart, count: "9,300+ jobs" },
-];
-
-const topCompanies = [
-  { name: "TechFlow", role: "Software Engineer", location: "San Francisco, CA", match: "98%" },
-  { name: "BlueCloud", role: "Product Manager", location: "Remote", match: "92%" },
-  { name: "FinEdge", role: "UX Designer", location: "New York, NY", match: "89%" },
-  { name: "GlobalRetail", role: "Data Scientist", location: "London, UK", match: "85%" },
-];
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Brain, Zap, Globe, Shield, Sparkles } from "lucide-react";
+import { ThreeHero } from "@/components/ui/three-hero";
+import { Card3D } from "@/components/ui/3d-card";
+import { GsapReveal } from "@/components/animations/gsap-reveal";
 
 export default function Home() {
   return (
-    <MarketingLayout>
+    <div className="flex flex-col min-h-screen bg-[#0b1326] text-[#dae2fd] overflow-hidden selection:bg-[#6366f1] selection:text-white">
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-24 sm:py-32 bg-muted/30">
-        <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-          <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"></div>
-        </div>
+      <section className="relative h-screen flex items-center justify-center pt-16">
+        <ThreeHero />
         
-        <Container className="text-center">
-          <Badge variant="outline" className="mb-6 px-10 py-6 text-sm bg-background border-primary/20 text-primary">
-            Trusted by 50,000+ candidates globally
-          </Badge>
-          <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl md:text-7xl text-foreground max-w-4xl mx-auto">
-            Find your next career <span className="text-primary">milestone.</span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-            The intelligent career workspace. Search top jobs, analyze your fit, and generate AI-tailored applications instantly.
-          </p>
-          
-          {/* Search Bar */}
-          <div className="mt-10 max-w-3xl mx-auto bg-card rounded-2xl shadow-xl border p-2 flex flex-col sm:flex-row gap-2">
-            <div className="relative flex-1 flex items-center">
-              <Search className="absolute left-4 w-5 h-5 text-muted-foreground" />
-              <Input 
-                placeholder="Job title, keywords, or company" 
-                className="pl-12 border-0 focus-visible:ring-0 shadow-none h-12 text-base"
-              />
+        <div className="container px-4 md:px-6 relative z-10 text-center">
+          <GsapReveal direction="up" delay={0.2}>
+            <div className="inline-flex items-center rounded-full border border-[#6366f1]/30 bg-[#171f33]/80 backdrop-blur-sm px-3 py-1 text-sm font-medium text-[#c0c1ff] mb-8">
+              <Sparkles className="h-4 w-4 mr-2" />
+              Candidexa 2.0 is here
             </div>
-            <div className="hidden sm:block w-px bg-border my-2"></div>
-            <div className="relative flex-1 flex items-center border-t sm:border-0 pt-2 sm:pt-0">
-              <MapPin className="absolute left-4 w-5 h-5 text-muted-foreground" />
-              <Input 
-                placeholder="City, state, or 'Remote'" 
-                className="pl-12 border-0 focus-visible:ring-0 shadow-none h-12 text-base"
-              />
-            </div>
-            <Button size="lg" className="h-12 px-8 w-full sm:w-auto">
-              Find Jobs
-            </Button>
-          </div>
+          </GsapReveal>
           
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
-            <span>Popular:</span>
-            <Link href="#" className="hover:text-primary transition-colors">Frontend Developer</Link>
-            <Link href="#" className="hover:text-primary transition-colors">Product Designer</Link>
-            <Link href="#" className="hover:text-primary transition-colors">Data Analyst</Link>
-          </div>
-        </Container>
-      </section>
-
-      {/* Trending Categories */}
-      <section className="py-20 border-b">
-        <Container>
-          <h2 className="text-2xl font-bold mb-8">Trending Categories</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {trendingCategories.map((category) => (
-              <Link key={category.name} href="#">
-                <Card className="hover:border-primary/50 transition-colors group cursor-pointer">
-                  <CardContent className="p-6 flex items-center gap-4">
-                    <div className="p-3 bg-primary/10 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                      <category.icon className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground">{category.name}</h3>
-                      <p className="text-sm text-muted-foreground">{category.count}</p>
-                    </div>
-                  </CardContent>
-                </Card>
+          <GsapReveal direction="up" delay={0.4}>
+            <h1 className="text-5xl font-extrabold tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl bg-clip-text text-transparent bg-gradient-to-r from-white to-[#c0c1ff] mb-6">
+              The Future is Spatial.
+            </h1>
+          </GsapReveal>
+          
+          <GsapReveal direction="up" delay={0.6}>
+            <p className="mx-auto max-w-[700px] text-[#908fa0] md:text-xl lg:text-2xl font-light mb-10">
+              Redefining the boundaries between digital and physical through immersive AI technology and intelligent career matching.
+            </p>
+          </GsapReveal>
+          
+          <GsapReveal direction="up" delay={0.8}>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/sign-up">
+                <Button size="lg" className="h-14 px-8 rounded-full bg-[#6366f1] hover:bg-[#494bd6] text-white text-lg shadow-[0_0_20px_rgba(99,102,241,0.4)] transition-all hover:shadow-[0_0_30px_rgba(99,102,241,0.6)]">
+                  Explore the Vision
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
               </Link>
-            ))}
-          </div>
-        </Container>
+              <Link href="/jobs">
+                <Button size="lg" variant="outline" className="h-14 px-8 rounded-full border-white/20 hover:bg-white/10 text-white text-lg backdrop-blur-md">
+                  View Opportunities
+                </Button>
+              </Link>
+            </div>
+          </GsapReveal>
+        </div>
       </section>
 
-      {/* Recommended Jobs Feed */}
-      <section className="py-20 bg-muted/30">
-        <Container>
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold">Recommended for you</h2>
-            <Link href="/jobs" className="text-primary hover:underline text-sm font-medium">View all jobs →</Link>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-6">
-            {topCompanies.map((job) => (
-              <Card key={job.name} className="hover:shadow-md transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex gap-4">
-                      <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center">
-                        <Building2 className="w-6 h-6 text-muted-foreground" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-lg text-foreground">{job.role}</h3>
-                        <p className="text-sm text-muted-foreground">{job.name} • {job.location}</p>
-                      </div>
-                    </div>
-                    <Badge variant="secondary" className="bg-green-500/10 text-green-600 hover:bg-green-500/20">
-                      {job.match} Match
-                    </Badge>
-                  </div>
-                  <div className="flex gap-2 mt-4 pt-4 border-t">
-                    <Badge variant="outline">Full-time</Badge>
-                    <Badge variant="outline">Remote</Badge>
-                    <Badge variant="outline">Senior</Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* Candidate Workspace Showcase */}
-      <section className="py-24 border-y">
-        <Container>
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <Badge className="bg-primary/10 text-primary hover:bg-primary/20 mb-4 border-0">The Candidexa Workspace</Badge>
-              <h2 className="text-3xl font-bold mb-6 text-foreground">Stop guessing. Start matching.</h2>
-              <p className="text-lg text-muted-foreground mb-8">
-                Don't just send the same resume to every employer. Candidexa analyzes your profile against the job description and instantly highlights skill gaps.
-              </p>
+      {/* Vision Section */}
+      <section className="py-24 lg:py-32 relative z-10">
+        <div className="container px-4 md:px-6">
+          <GsapReveal direction="up">
+            <div className="rounded-3xl border border-white/10 bg-[#131b2e]/50 backdrop-blur-xl p-8 md:p-12 lg:p-16 overflow-hidden relative">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-[#6366f1]/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
               
-              <ul className="space-y-6">
-                <li className="flex gap-4">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <Zap className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground">Instant Match Analysis</h4>
-                    <p className="text-muted-foreground text-sm mt-1">See exactly how well you fit a role before you apply.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <Target className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground">AI Resume Tailoring</h4>
-                    <p className="text-muted-foreground text-sm mt-1">Truthfully adapt your resume to highlight the exact skills the employer is looking for.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <Briefcase className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground">Track Everything</h4>
-                    <p className="text-muted-foreground text-sm mt-1">Manage all your tailored applications and cover letters in one organized dashboard.</p>
-                  </div>
-                </li>
-              </ul>
-              
-              <div className="mt-10">
-                <Link href="/sign-up">
-                  <Button size="lg" className="h-12 px-8">Upload Your Resume</Button>
+              <div className="relative z-10 max-w-3xl">
+                <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">Precision in Dimension</h2>
+                <p className="text-[#c7c4d7] text-lg md:text-xl mb-8 leading-relaxed">
+                  Candidexa utilizes spatial intelligence and neural matching to seamlessly integrate your professional profile with the world's most elite opportunities. 
+                  Experience a frictionless, immersive environment designed for absolute focus.
+                </p>
+                <Link href="/about" className="inline-flex items-center text-[#c0c1ff] font-medium hover:text-white transition-colors">
+                  Learn about our technology <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </div>
             </div>
-            
-            {/* Workspace Mockup */}
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent blur-3xl -z-10 rounded-full"></div>
-              <div className="bg-card rounded-2xl shadow-2xl border overflow-hidden">
-                <div className="p-4 border-b flex gap-2 items-center bg-muted/50">
-                  <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                  </div>
-                  <div className="text-xs text-muted-foreground font-medium ml-4">Match Analysis</div>
-                </div>
-                <div className="p-8">
-                  <div className="flex justify-between items-center mb-6">
-                    <div>
-                      <h3 className="font-bold text-lg">Senior Frontend Engineer</h3>
-                      <p className="text-sm text-muted-foreground">TechFlow Inc.</p>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-3xl font-extrabold text-green-500">92%</span>
-                      <p className="text-xs text-muted-foreground">Match Score</p>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center bg-green-500/10 text-green-700 dark:text-green-400 p-3 rounded-lg border border-green-500/20">
-                      <span className="font-medium text-sm">React & Next.js Experience</span>
-                      <CheckCircle2 className="w-5 h-5" />
-                    </div>
-                    <div className="flex justify-between items-center bg-green-500/10 text-green-700 dark:text-green-400 p-3 rounded-lg border border-green-500/20">
-                      <span className="font-medium text-sm">TypeScript Proficiency</span>
-                      <CheckCircle2 className="w-5 h-5" />
-                    </div>
-                    <div className="flex justify-between items-center bg-amber-500/10 text-amber-700 dark:text-amber-400 p-3 rounded-lg border border-amber-500/20">
-                      <span className="font-medium text-sm">GraphQL Knowledge</span>
-                      <span className="text-xs font-semibold px-2 py-1 bg-background rounded-full">Missing</span>
-                    </div>
-                  </div>
-                  
-                  <Button className="w-full mt-6" variant="secondary">Generate Tailored Resume</Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Container>
+          </GsapReveal>
+        </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-primary text-primary-foreground text-center">
-        <Container>
-          <h2 className="text-3xl font-bold mb-6">Ready to land your dream job?</h2>
-          <p className="text-primary-foreground/80 text-lg mb-8 max-w-2xl mx-auto">
-            Join thousands of professionals who are using AI to build truthful, highly-targeted applications.
-          </p>
-          <Link href="/sign-up">
-            <Button size="lg" variant="secondary" className="h-12 px-8 font-semibold">
-              Create your free account
-            </Button>
-          </Link>
-        </Container>
+      {/* Capabilities Section */}
+      <section className="py-24 lg:py-32 relative z-10">
+        <div className="container px-4 md:px-6">
+          <GsapReveal direction="up">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">Next-Gen Capabilities</h2>
+              <p className="text-[#908fa0] text-lg max-w-2xl mx-auto">
+                Powered by neural graphics and real-time processing, Candidexa offers an unparalleled workspace.
+              </p>
+            </div>
+          </GsapReveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <GsapReveal direction="up" delay={0.2}>
+              <Card3D>
+                <div className="h-12 w-12 rounded-full bg-[#171f33] border border-[#6366f1]/30 flex items-center justify-center mb-6">
+                  <Brain className="h-6 w-6 text-[#c0c1ff]" />
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-white">Immersive Engines</h3>
+                <p className="text-[#908fa0] leading-relaxed">
+                  Our proprietary rendering engines create deep, spatial environments that reduce cognitive load and maximize focus during intense job searches.
+                </p>
+              </Card3D>
+            </GsapReveal>
+
+            <GsapReveal direction="up" delay={0.4}>
+              <Card3D>
+                <div className="h-12 w-12 rounded-full bg-[#171f33] border border-[#a855f7]/30 flex items-center justify-center mb-6">
+                  <Zap className="h-6 w-6 text-[#ddb7ff]" />
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-white">Real-time Spatiality</h3>
+                <p className="text-[#908fa0] leading-relaxed">
+                  Experience lightning-fast, real-time updates as you navigate through opportunities, with seamless GSAP-powered transitions.
+                </p>
+              </Card3D>
+            </GsapReveal>
+
+            <GsapReveal direction="up" delay={0.6}>
+              <Card3D>
+                <div className="h-12 w-12 rounded-full bg-[#171f33] border border-[#06b6d4]/30 flex items-center justify-center mb-6">
+                  <Globe className="h-6 w-6 text-[#4cd7f6]" />
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-white">Neural Graphics</h3>
+                <p className="text-[#908fa0] leading-relaxed">
+                  AI-driven interface generation that adapts the 3D environment to your specific workflow and preference patterns.
+                </p>
+              </Card3D>
+            </GsapReveal>
+          </div>
+        </div>
       </section>
-    </MarketingLayout>
+      
+      {/* Footer is already included in layout.tsx */}
+    </div>
   );
 }

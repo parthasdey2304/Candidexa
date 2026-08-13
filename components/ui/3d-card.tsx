@@ -58,8 +58,8 @@ export const Card3D = ({
       style={{
         transformStyle: "preserve-3d",
       }}
-      className={`relative w-full rounded-xl bg-[#0F172A]/60 backdrop-blur-xl border border-white/10 ${
-        isHovered ? "shadow-[0_0_30px_rgba(99,102,241,0.2)] border-indigo-500/50" : ""
+      className={`relative w-full rounded-xl bg-card/60 backdrop-blur-xl border border-border transition-colors ${
+        isHovered ? "shadow-xl border-primary/50 shadow-primary/20" : ""
       } ${className || ""}`}
     >
       <div 

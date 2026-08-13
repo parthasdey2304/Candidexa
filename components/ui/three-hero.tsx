@@ -40,8 +40,7 @@ function Icosahedron() {
 export function ThreeHero() {
   return (
     <div className="absolute inset-0 z-0 h-full w-full opacity-60">
-      <Canvas camera={{ position: [0, 0, 8], fov: 45 }}>
-        <color attach="background" args={["#0b1326"]} />
+      <Canvas camera={{ position: [0, 0, 8], fov: 45 }} style={{ background: 'transparent' }}>
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} intensity={1} color="#c0c1ff" />
         <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
@@ -49,7 +48,7 @@ export function ThreeHero() {
       </Canvas>
       
       {/* Gradient overlay to blend bottom into the page */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0b1326] to-transparent z-10" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-10" />
     </div>
   );
 }

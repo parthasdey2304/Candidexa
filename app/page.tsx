@@ -28,7 +28,7 @@ export default function Home() {
   return (
     <MarketingLayout>
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-24 sm:py-32 bg-background/50">
+      <section className="relative overflow-hidden py-24 sm:py-32 bg-muted/30">
         <ThreeHero />
         
         <Container className="text-center relative z-10">
@@ -52,7 +52,7 @@ export default function Home() {
           
           {/* Search Bar */}
           <GsapReveal direction="up" delay={0.8}>
-            <div className="mt-10 max-w-3xl mx-auto bg-card/80 backdrop-blur-xl rounded-2xl shadow-[0_0_30px_rgba(99,102,241,0.2)] border border-white/10 p-2 flex flex-col sm:flex-row gap-2">
+            <div className="mt-10 max-w-3xl mx-auto bg-card/80 backdrop-blur-xl rounded-2xl shadow-xl border border-border p-2 flex flex-col sm:flex-row gap-2">
               <div className="relative flex-1 flex items-center">
                 <Search className="absolute left-4 w-5 h-5 text-muted-foreground" />
                 <Input 
@@ -68,7 +68,7 @@ export default function Home() {
                   className="pl-12 bg-transparent border-0 focus-visible:ring-0 shadow-none h-12 text-base text-foreground placeholder:text-muted-foreground"
                 />
               </div>
-              <Button size="lg" className="h-12 px-8 w-full sm:w-auto bg-primary hover:bg-primary/90 shadow-[0_0_15px_rgba(99,102,241,0.5)]">
+              <Button size="lg" className="h-12 px-8 w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20">
                 Find Jobs
               </Button>
             </div>
@@ -86,7 +86,7 @@ export default function Home() {
       </section>
 
       {/* Trending Categories */}
-      <section className="py-20 border-b border-white/5 relative z-10 bg-background">
+      <section className="py-20 border-b border-border relative z-10 bg-background">
         <Container>
           <GsapReveal direction="up">
             <h2 className="text-2xl font-bold mb-8 text-foreground">Trending Categories</h2>
@@ -142,10 +142,10 @@ export default function Home() {
                         {job.match} Match
                       </Badge>
                     </div>
-                    <div className="flex gap-2 mt-4 pt-4 border-t border-white/10">
-                      <Badge variant="outline" className="border-white/10">Full-time</Badge>
-                      <Badge variant="outline" className="border-white/10">Remote</Badge>
-                      <Badge variant="outline" className="border-white/10">Senior</Badge>
+                    <div className="flex gap-2 mt-4 pt-4 border-t border-border">
+                      <Badge variant="outline" className="border-border">Full-time</Badge>
+                      <Badge variant="outline" className="border-border">Remote</Badge>
+                      <Badge variant="outline" className="border-border">Senior</Badge>
                     </div>
                   </div>
                 </Card3D>
@@ -156,20 +156,20 @@ export default function Home() {
       </section>
 
       {/* Candidate Workspace Showcase */}
-      <section className="py-24 border-y border-white/5 relative z-10 bg-background">
+      <section className="py-24 border-y border-border relative z-10 bg-background">
         <Container>
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <GsapReveal direction="left">
               <div>
-                <Badge className="bg-primary/20 text-primary hover:bg-primary/30 mb-4 border border-primary/20 shadow-[0_0_15px_rgba(99,102,241,0.2)]">The Candidexa Workspace</Badge>
-                <h2 className="text-3xl font-bold mb-6 text-foreground drop-shadow-md">Stop guessing. Start matching.</h2>
+                <Badge className="bg-primary/10 text-primary hover:bg-primary/20 mb-4 border-0">The Candidexa Workspace</Badge>
+                <h2 className="text-3xl font-bold mb-6 text-foreground">Stop guessing. Start matching.</h2>
                 <p className="text-lg text-muted-foreground mb-8">
                   Don't just send the same resume to every employer. Candidexa analyzes your profile against the job description and instantly highlights skill gaps.
                 </p>
                 
                 <ul className="space-y-6">
                   <li className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(99,102,241,0.3)]">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                       <Zap className="w-5 h-5 text-primary" />
                     </div>
                     <div>
@@ -178,7 +178,7 @@ export default function Home() {
                     </div>
                   </li>
                   <li className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(99,102,241,0.3)]">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                       <Target className="w-5 h-5 text-primary" />
                     </div>
                     <div>
@@ -187,7 +187,7 @@ export default function Home() {
                     </div>
                   </li>
                   <li className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(99,102,241,0.3)]">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                       <Briefcase className="w-5 h-5 text-primary" />
                     </div>
                     <div>
@@ -199,7 +199,7 @@ export default function Home() {
                 
                 <div className="mt-10">
                   <Link href="/sign-up">
-                    <Button size="lg" className="h-12 px-8 bg-primary hover:bg-primary/90 shadow-[0_0_15px_rgba(99,102,241,0.5)]">Upload Your Resume</Button>
+                    <Button size="lg" className="h-12 px-8">Upload Your Resume</Button>
                   </Link>
                 </div>
               </div>
@@ -209,8 +209,8 @@ export default function Home() {
             <GsapReveal direction="right">
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 to-transparent blur-3xl -z-10 rounded-full"></div>
-                <Card3D className="!p-0 border-white/20 bg-card/60 backdrop-blur-2xl overflow-hidden shadow-2xl">
-                  <div className="p-4 border-b border-white/10 flex gap-2 items-center bg-black/20">
+                <Card3D className="!p-0 border border-border bg-card/60 backdrop-blur-2xl overflow-hidden shadow-2xl">
+                  <div className="p-4 border-b border-border flex gap-2 items-center bg-muted/50">
                     <div className="flex gap-2">
                       <div className="w-3 h-3 rounded-full bg-red-400"></div>
                       <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
@@ -245,7 +245,7 @@ export default function Home() {
                       </div>
                     </div>
                     
-                    <Button className="w-full mt-6 bg-secondary hover:bg-secondary/80 text-secondary-foreground border border-white/10">Generate Tailored Resume</Button>
+                    <Button className="w-full mt-6" variant="secondary">Generate Tailored Resume</Button>
                   </div>
                 </Card3D>
               </div>
@@ -255,16 +255,16 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-card border-t border-white/5 text-center relative z-10 overflow-hidden">
+      <section className="py-24 bg-card border-t border-border text-center relative z-10 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent"></div>
         <Container className="relative z-10">
           <GsapReveal direction="up">
-            <h2 className="text-3xl font-bold mb-6 text-foreground drop-shadow-md">Ready to land your dream job?</h2>
-            <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto drop-shadow">
+            <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to land your dream job?</h2>
+            <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
               Join thousands of professionals who are using AI to build truthful, highly-targeted applications.
             </p>
             <Link href="/sign-up">
-              <Button size="lg" className="h-12 px-8 font-semibold bg-primary hover:bg-primary/90 shadow-[0_0_20px_rgba(99,102,241,0.6)]">
+              <Button size="lg" className="h-12 px-8 font-semibold">
                 Create your free account
               </Button>
             </Link>

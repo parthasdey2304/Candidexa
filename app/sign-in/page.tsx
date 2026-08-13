@@ -35,7 +35,7 @@ export default function SignIn() {
           <form className="space-y-4" onSubmit={handleSignIn}>
             <div className="space-y-2">
               <Label htmlFor="email">Email address</Label>
-              <Input id="email" type="email" placeholder="john@example.com" defaultValue="admin@admin.com" required />
+              <Input id="email" type="email" placeholder="john@example.com" defaultValue="admin@admin.com" className="py-4" required />
             </div>
 
             <div className="space-y-2">
@@ -45,7 +45,7 @@ export default function SignIn() {
                   Forgot password?
                 </Link>
               </div>
-              <Input id="password" type="password" defaultValue="partha" required />
+              <Input id="password" type="password" defaultValue="partha" className="py-4" required />
             </div>
 
             <div className="flex items-center space-x-2 pt-2">

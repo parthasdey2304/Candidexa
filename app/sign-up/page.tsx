@@ -25,22 +25,22 @@ export default function SignUp() {
           <form className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">Full Name</Label>
-              <Input id="name" type="text" placeholder="John Doe" required />
+              <Input id="name" type="text" placeholder="John Doe" className="py-4" required />
             </div>
             
             <div className="space-y-2">
               <Label htmlFor="email">Email address</Label>
-              <Input id="email" type="email" placeholder="john@example.com" required />
+              <Input id="email" type="email" placeholder="john@example.com" className="py-4" required />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required />
+              <Input id="password" type="password" className="py-4" required />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <Input id="confirmPassword" type="password" required />
+              <Input id="confirmPassword" type="password" className="py-4" required />
             </div>
 
             <div className="flex items-center space-x-2 pt-2">

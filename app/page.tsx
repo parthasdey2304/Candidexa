@@ -10,6 +10,8 @@ import { ThreeHero } from "@/components/ui/three-hero";
 import { Card3D } from "@/components/ui/3d-card";
 import { GsapReveal } from "@/components/animations/gsap-reveal";
 
+import { ScrollIndicator } from "@/components/ui/scroll-indicator";
+
 const trendingCategories = [
   { name: "Software Engineering", icon: Code, count: "12,400+ jobs" },
   { name: "Marketing & PR", icon: Megaphone, count: "8,200+ jobs" },
@@ -28,7 +30,7 @@ export default function Home() {
   return (
     <MarketingLayout>
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-24 sm:py-32 bg-muted/30">
+      <section className="relative min-h-[calc(100vh-64px)] flex flex-col justify-center overflow-hidden py-24 sm:py-32 bg-muted/30">
         <ThreeHero />
         
         <Container className="text-center relative z-10">
@@ -83,6 +85,8 @@ export default function Home() {
             </div>
           </GsapReveal>
         </Container>
+        
+        <ScrollIndicator />
       </section>
 
       {/* Trending Categories */}

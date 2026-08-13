@@ -6,12 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { User, Shield, Bell, Zap, CreditCard, Trash2 } from "lucide-react";
+import { User, Shield, Bell, Zap, CreditCard, Trash2, Palette } from "lucide-react";
 import Link from "next/link";
+import { AppearanceSettings } from "@/components/AppearanceSettings";
 
 const sections = [
   { icon: User, label: "Account Details", href: "#account" },
   { icon: Shield, label: "Login & Security", href: "#security" },
+  { icon: Palette, label: "Appearance", href: "#appearance" },
   { icon: Bell, label: "Notifications", href: "#notifications" },
   { icon: Zap, label: "AI Preferences", href: "#ai" },
   { icon: CreditCard, label: "Subscription & Billing", href: "/settings/billing" },
@@ -69,6 +71,9 @@ export default function Settings() {
                 <Button>Update Password</Button>
               </CardContent>
             </Card>
+
+            {/* Appearance */}
+            <AppearanceSettings />
 
             {/* Notifications */}
             <Card id="notifications">

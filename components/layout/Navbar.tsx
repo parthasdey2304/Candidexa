@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/shared/Logo";
 import { Container } from "@/components/shared/Container";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Navbar() {
   return (
@@ -9,6 +10,7 @@ export function Navbar() {
       <Container className="flex h-16 items-center justify-between">
         <Logo />
         <nav className="flex items-center gap-4">
+          <ThemeToggle />
           <Link href="/sign-in">
             <Button variant="ghost">Log in</Button>
           </Link>

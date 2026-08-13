@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, X } from "lucide-react";
 import Link from "next/link";
+import { MarketingLayout } from "@/components/layout/MarketingLayout";
 
 const plans = [
   {
@@ -52,7 +53,7 @@ const faq = [
 
 export default function Pricing() {
   return (
-    <>
+    <MarketingLayout>
       <section className="py-20 text-center">
         <Container>
           <h1 className="text-4xl font-extrabold">Simple, honest pricing</h1>
@@ -118,6 +119,6 @@ export default function Pricing() {
           </div>
         </Container>
       </section>
-    </>
+    </MarketingLayout>
   );
 }

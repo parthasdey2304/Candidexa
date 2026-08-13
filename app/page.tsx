@@ -3,10 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { CheckCircle2, Shield, Zap, Target } from "lucide-react";
+import { MarketingLayout } from "@/components/layout/MarketingLayout";
 
 export default function Home() {
   return (
-    <>
+    <MarketingLayout>
       {/* Hero Section */}
       <section className="py-24 text-center">
         <Container>
@@ -168,6 +169,6 @@ export default function Home() {
           </Link>
         </Container>
       </section>
-    </>
+    </MarketingLayout>
   );
 }

@@ -11,10 +11,13 @@ import { useRouter } from "next/navigation";
 
 export default function SignIn() {
   const router = useRouter();
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
+    // Simulate login and redirect to dashboard
     router.push("/dashboard");
   };
+
   return (
     <div className="flex-1 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-muted/30">
       <div className="w-full max-w-md space-y-8 mb-8 text-center">
@@ -29,7 +32,7 @@ export default function SignIn() {
 
       <Card className="w-full max-w-md">
         <CardContent className="pt-6">
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSignIn}>
             <div className="space-y-2">
               <Label htmlFor="email">Email address</Label>
               <Input id="email" type="email" placeholder="john@example.com" defaultValue="admin@admin.com" required />

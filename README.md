@@ -1,5 +1,4 @@
 <div align="center">
-  <img src="https://via.placeholder.com/150x150/6366f1/ffffff?text=Candidexa" alt="Candidexa Logo" width="120" height="120" />
   <h1>Candidexa 🚀</h1>
   <p><strong>The Intelligent Career Workspace</strong></p>
   <p>Apply with a resume built specifically for the role you want. Stop guessing and start matching with AI-powered insights, automated tailoring, and deep experience tracking.</p>

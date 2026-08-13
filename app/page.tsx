@@ -54,10 +54,11 @@ export default function Home() {
           
           {/* Search Bar */}
           <GsapReveal direction="up" delay={0.8}>
-            <div className="mt-10 max-w-3xl mx-auto bg-card/80 backdrop-blur-xl rounded-2xl shadow-xl border border-border p-2 flex flex-col sm:flex-row gap-2">
+            <form action="/jobs" className="mt-10 max-w-3xl mx-auto bg-card/80 backdrop-blur-xl rounded-2xl shadow-xl border border-border p-2 flex flex-col sm:flex-row gap-2">
               <div className="relative flex-1 flex items-center">
                 <Search className="absolute left-4 w-5 h-5 text-muted-foreground" />
                 <Input 
+                  name="q"
                   placeholder="Job title, keywords, or company" 
                   className="pl-12 bg-transparent border-0 focus-visible:ring-0 shadow-none h-12 text-base text-foreground placeholder:text-muted-foreground"
                 />
@@ -66,14 +67,15 @@ export default function Home() {
               <div className="relative flex-1 flex items-center border-t border-border/50 sm:border-0 pt-2 sm:pt-0">
                 <MapPin className="absolute left-4 w-5 h-5 text-muted-foreground" />
                 <Input 
+                  name="location"
                   placeholder="City, state, or 'Remote'" 
                   className="pl-12 bg-transparent border-0 focus-visible:ring-0 shadow-none h-12 text-base text-foreground placeholder:text-muted-foreground"
                 />
               </div>
-              <Button size="lg" className="h-12 px-8 w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20">
+              <Button type="submit" size="lg" className="h-12 px-8 w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20">
                 Find Jobs
               </Button>
-            </div>
+            </form>
           </GsapReveal>
           
           <GsapReveal direction="up" delay={1.0}>

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Logo } from "@/components/shared/Logo";
 import { cn } from "@/lib/utils";
 import {
-  LayoutDashboard, User, FileText, Briefcase, Target, Layers, KanbanSquare, Settings
+  LayoutDashboard, User, FileText, Briefcase, Target, Layers, KanbanSquare, Settings, Link as LinkIcon
 } from "lucide-react";
 
 const navItems = [
@@ -13,6 +13,7 @@ const navItems = [
   { href: "/match", label: "Match a Job", icon: Target },
   { href: "/applications/tailored", label: "Tailored Applications", icon: Layers },
   { href: "/applications", label: "Application Tracker", icon: KanbanSquare },
+  { href: "/dashboard/integrations", label: "Integrations", icon: LinkIcon },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 

@@ -17,7 +17,7 @@ export function AppearanceSettings() {
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <Label>Theme Preference</Label>
-          <Select value={theme} onValueChange={setTheme}>
+          <Select value={theme} onValueChange={(val) => { if (val) setTheme(val); }}>
             <SelectTrigger className="w-full sm:w-64">
               <SelectValue placeholder="Select a theme" />
             </SelectTrigger>

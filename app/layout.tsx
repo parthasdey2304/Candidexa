@@ -33,7 +33,7 @@ export default function RootLayout({
         <SecurityConsole />
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >

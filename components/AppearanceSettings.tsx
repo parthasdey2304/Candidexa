@@ -9,22 +9,22 @@ export function AppearanceSettings() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <Card id="appearance">
+      <Card id="appearance" className="bg-[#131b2e] border-[#2d3449] shadow-none">
       <CardHeader>
-        <CardTitle>Appearance</CardTitle>
-        <CardDescription>Customize the look and feel of Candidexa.</CardDescription>
+        <CardTitle className="text-white text-xl">Appearance</CardTitle>
+        <CardDescription className="text-[#908fa0]">Customize the look and feel of Candidexa.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label>Theme Preference</Label>
+        <div className="space-y-3">
+          <Label className="text-[#908fa0] uppercase tracking-wider text-xs font-semibold">Theme Preference</Label>
           <Select value={theme} onValueChange={(val) => { if (val) setTheme(val); }}>
-            <SelectTrigger className="w-full sm:w-64">
+            <SelectTrigger className="w-full sm:w-64 bg-[#0b1326] border-[#2d3449] text-white focus:ring-[#6366f1] h-11">
               <SelectValue placeholder="Select a theme" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="light">Light</SelectItem>
-              <SelectItem value="dark">Dark</SelectItem>
-              <SelectItem value="system">System</SelectItem>
+            <SelectContent className="bg-[#131b2e] border-[#2d3449] text-white">
+              <SelectItem value="light" className="focus:bg-[#171f33] focus:text-white">Light</SelectItem>
+              <SelectItem value="dark" className="focus:bg-[#171f33] focus:text-white">Dark</SelectItem>
+              <SelectItem value="system" className="focus:bg-[#171f33] focus:text-white">System</SelectItem>
             </SelectContent>
           </Select>
         </div>

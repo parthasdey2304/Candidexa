@@ -23,52 +23,56 @@ const sections = [
 export default function Settings() {
   return (
     <AppLayout currentPath="/settings">
-      <div className="p-6 md:p-8 max-w-4xl mx-auto space-y-6">
-        <h1 className="text-2xl font-bold">Settings</h1>
+      <div className="p-6 md:p-8 max-w-5xl mx-auto space-y-8 bg-[#060e20] min-h-screen text-[#dae2fd]">
+        <h1 className="text-3xl font-bold text-white tracking-tight">Settings</h1>
 
-        <div className="grid md:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-4 gap-8">
           {/* Sidebar nav */}
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             {sections.map(({ icon: Icon, label, href }) => (
-              <Link key={label} href={href} className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
+              <Link key={label} href={href} className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-[#908fa0] hover:bg-[#131b2e] hover:text-white transition-colors">
                 <Icon className="w-4 h-4" />{label}
               </Link>
             ))}
           </div>
 
           {/* Content */}
-          <div className="md:col-span-3 space-y-6">
+          <div className="md:col-span-3 space-y-8">
             {/* Account */}
-            <Card id="account">
-              <CardHeader><CardTitle>Account Details</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Full Name</Label>
-                    <Input defaultValue="Alex Johnson" />
+            <Card id="account" className="bg-[#131b2e] border-[#2d3449] shadow-none">
+              <CardHeader>
+                <CardTitle className="text-white text-xl">Account Details</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <div className="grid sm:grid-cols-2 gap-5">
+                  <div className="space-y-3">
+                    <Label className="text-[#908fa0] uppercase tracking-wider text-xs font-semibold">Full Name</Label>
+                    <Input defaultValue="Alex Johnson" className="bg-[#0b1326] border-[#2d3449] text-white focus-visible:ring-[#6366f1] h-11" />
                   </div>
-                  <div className="space-y-2">
-                    <Label>Email</Label>
-                    <Input defaultValue="alex@example.com" />
+                  <div className="space-y-3">
+                    <Label className="text-[#908fa0] uppercase tracking-wider text-xs font-semibold">Email</Label>
+                    <Input defaultValue="alex@example.com" className="bg-[#0b1326] border-[#2d3449] text-white focus-visible:ring-[#6366f1] h-11" />
                   </div>
                 </div>
-                <Button>Save Account</Button>
+                <Button className="bg-[#6366f1] hover:bg-[#4f46e5] text-white shadow-[0_0_15px_rgba(99,102,241,0.3)]">Save Account</Button>
               </CardContent>
             </Card>
 
             {/* Security */}
-            <Card id="security">
-              <CardHeader><CardTitle>Login & Security</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Current Password</Label>
-                  <Input type="password" />
+            <Card id="security" className="bg-[#131b2e] border-[#2d3449] shadow-none">
+              <CardHeader>
+                <CardTitle className="text-white text-xl">Login & Security</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <div className="space-y-3">
+                  <Label className="text-[#908fa0] uppercase tracking-wider text-xs font-semibold">Current Password</Label>
+                  <Input type="password" className="bg-[#0b1326] border-[#2d3449] text-white focus-visible:ring-[#6366f1] h-11" />
                 </div>
-                <div className="space-y-2">
-                  <Label>New Password</Label>
-                  <Input type="password" />
+                <div className="space-y-3">
+                  <Label className="text-[#908fa0] uppercase tracking-wider text-xs font-semibold">New Password</Label>
+                  <Input type="password" className="bg-[#0b1326] border-[#2d3449] text-white focus-visible:ring-[#6366f1] h-11" />
                 </div>
-                <Button>Update Password</Button>
+                <Button className="bg-[#171f33] border border-[#2d3449] text-white hover:bg-[#222a3d] hover:text-[#dae2fd]">Update Password</Button>
               </CardContent>
             </Card>
 
@@ -76,9 +80,11 @@ export default function Settings() {
             <AppearanceSettings />
 
             {/* Notifications */}
-            <Card id="notifications">
-              <CardHeader><CardTitle>Notifications</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
+            <Card id="notifications" className="bg-[#131b2e] border-[#2d3449] shadow-none">
+              <CardHeader>
+                <CardTitle className="text-white text-xl">Notifications</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-5">
                 {[
                   "Application reminders",
                   "Follow-up reminders",
@@ -86,40 +92,40 @@ export default function Settings() {
                   "Product updates",
                 ].map((item) => (
                   <div key={item} className="flex items-center justify-between">
-                    <Label className="font-normal">{item}</Label>
-                    <Switch />
+                    <Label className="font-medium text-[15px] text-white">{item}</Label>
+                    <Switch className="data-[state=checked]:bg-[#6366f1]" />
                   </div>
                 ))}
               </CardContent>
             </Card>
 
             {/* Subscription */}
-            <Card id="billing">
+            <Card id="billing" className="bg-[#131b2e] border-[#2d3449] shadow-none">
               <CardHeader>
-                <CardTitle>Subscription & Billing</CardTitle>
-                <CardDescription>Manage your plan and payment information.</CardDescription>
+                <CardTitle className="text-white text-xl">Subscription & Billing</CardTitle>
+                <CardDescription className="text-[#908fa0]">Manage your plan and payment information.</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-muted rounded-xl">
+              <CardContent className="space-y-5">
+                <div className="flex items-center justify-between p-5 bg-[#0b1326] border border-[#2d3449] rounded-xl">
                   <div>
-                    <p className="font-semibold">Free Plan</p>
-                    <p className="text-sm text-muted-foreground">3 job matches remaining this month</p>
+                    <p className="font-bold text-white text-lg">Free Plan</p>
+                    <p className="text-sm text-[#908fa0] mt-1">3 job matches remaining this month</p>
                   </div>
                   <Link href="/pricing">
-                    <Button>Upgrade to Candidate</Button>
+                    <Button className="bg-[#6366f1] hover:bg-[#4f46e5] text-white shadow-[0_0_15px_rgba(99,102,241,0.3)]">Upgrade to Candidate</Button>
                   </Link>
                 </div>
               </CardContent>
             </Card>
 
             {/* Danger Zone */}
-            <Card className="border-destructive/40">
+            <Card className="bg-[#131b2e] border-[#93000a]/30 shadow-none">
               <CardHeader>
-                <CardTitle className="text-destructive">Danger Zone</CardTitle>
-                <CardDescription>Permanently delete your account and all associated data.</CardDescription>
+                <CardTitle className="text-[#ffb4ab] text-xl">Danger Zone</CardTitle>
+                <CardDescription className="text-[#908fa0]">Permanently delete your account and all associated data.</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button variant="destructive">
+                <Button variant="destructive" className="bg-[#93000a] text-[#ffb4ab] hover:bg-[#ba1a1a] hover:text-white border-none">
                   <Trash2 className="w-4 h-4 mr-2" />Delete Account
                 </Button>
               </CardContent>

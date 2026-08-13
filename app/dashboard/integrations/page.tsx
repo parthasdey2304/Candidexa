@@ -41,83 +41,89 @@ export default function Integrations() {
 
   return (
     <AppLayout currentPath="/dashboard/integrations">
-      <div className="max-w-7xl mx-auto space-y-8 p-4">
+      <div className="max-w-7xl mx-auto space-y-8 p-6 md:p-8 bg-[#060e20] min-h-screen text-[#dae2fd]">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Job Portal Integrations</h1>
-            <p className="text-muted-foreground mt-1">
+            <h1 className="text-3xl font-bold tracking-tight text-white">Job Portal Integrations</h1>
+            <p className="text-[#908fa0] mt-2 text-lg">
               Connect your accounts to sync job matches and applications directly to Candidexa.
             </p>
           </div>
-          <Badge variant="secondary" className="px-4 py-2 text-sm font-medium w-fit">
-            <CheckCircle2 className="w-4 h-4 mr-2 text-green-500" />
+          <Badge className="px-5 py-2.5 text-sm font-semibold w-fit bg-[#002f38] text-[#4cd7f6] border border-[#009eb9]/30 rounded-full">
+            <CheckCircle2 className="w-4 h-4 mr-2 text-[#4cd7f6]" />
             {connectedCount} / {portals.length} Connected
           </Badge>
         </div>
 
         {/* Search */}
-        <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+        <div className="relative max-w-xl">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#908fa0]" />
           <Input 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search portals (e.g., LinkedIn, Remote)..." 
-            className="pl-10 h-12"
+            className="pl-12 h-14 bg-[#0b1326] border-[#2d3449] text-white focus-visible:ring-[#6366f1] placeholder:text-[#464554] text-base rounded-xl shadow-none"
           />
         </div>
 
         {/* Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filtered.map((portal) => (
-            <Card key={portal.id} className={`flex flex-col ${portal.connected ? 'border-primary/50 shadow-sm shadow-primary/10' : ''}`}>
-              <CardHeader className="pb-4">
-                <div className="flex justify-between items-start mb-2">
-                  <div className="w-12 h-12 rounded-xl bg-muted/50 flex items-center justify-center border">
-                    <Building2 className="w-6 h-6 text-muted-foreground" />
+            <Card key={portal.id} className={`flex flex-col bg-[#131b2e] shadow-none transition-all duration-300 group ${portal.connected ? 'border-[#6366f1] shadow-[0_0_20px_rgba(99,102,241,0.15)] bg-[#171f33]' : 'border-[#2d3449] hover:border-[#464554] hover:bg-[#171f33]'}`}>
+              <CardHeader className="pb-5">
+                <div className="flex justify-between items-start mb-4">
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center border ${portal.connected ? 'bg-[#6366f1]/10 border-[#6366f1]/30' : 'bg-[#0b1326] border-[#2d3449]'}`}>
+                    <Building2 className={`w-7 h-7 ${portal.connected ? 'text-[#6366f1]' : 'text-[#908fa0]'}`} />
                   </div>
                   {portal.connected && (
-                    <Badge className="bg-green-500/10 text-green-700 dark:text-green-400 hover:bg-green-500/20 border-0">Connected</Badge>
+                    <Badge className="bg-[#002f38] text-[#4cd7f6] border border-[#009eb9]/30 font-bold px-2.5 py-1">Connected</Badge>
                   )}
                 </div>
-                <CardTitle className="text-xl">{portal.name}</CardTitle>
-                <CardDescription className="font-medium text-foreground">{portal.type}</CardDescription>
+                <CardTitle className="text-xl text-white group-hover:text-[#c0c1ff] transition-colors">{portal.name}</CardTitle>
+                <CardDescription className="font-semibold text-[#6366f1] mt-1">{portal.type}</CardDescription>
               </CardHeader>
               <CardContent className="flex-1">
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  Provides jobs in: {portal.jobs}
+                <p className="text-[15px] text-[#908fa0] leading-relaxed">
+                  Provides jobs in: <span className="text-[#dae2fd]">{portal.jobs}</span>
                 </p>
               </CardContent>
-              <CardFooter className="pt-4 border-t">
+              <CardFooter className="pt-5 border-t border-[#2d3449]">
                 {portal.connected ? (
-                  <Button variant="outline" className="w-full text-muted-foreground" onClick={() => {
+                  <Button variant="outline" className="w-full bg-[#0b1326] border-[#2d3449] text-[#908fa0] hover:bg-[#93000a] hover:text-[#ffb4ab] hover:border-[#ba1a1a]/50 h-11 transition-colors" onClick={() => {
                     setIntegrations(prev => prev.map(p => p.id === portal.id ? { ...p, connected: false } : p));
                   }}>
                     Disconnect
                   </Button>
                 ) : (
                   <Dialog>
-                    <DialogTrigger render={<Button className="w-full"><LinkIcon className="w-4 h-4 mr-2" /> Connect API</Button>} />
-                    <DialogContent>
+                    <DialogTrigger asChild>
+                      <Button className="w-full bg-[#171f33] border border-[#2d3449] text-white hover:bg-[#6366f1] hover:border-transparent hover:shadow-[0_0_15px_rgba(99,102,241,0.4)] h-11 transition-all"><LinkIcon className="w-4 h-4 mr-2" /> Connect API</Button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-[#131b2e] border-[#2d3449] text-white sm:max-w-md">
                       <DialogHeader>
-                        <DialogTitle>Connect to {portal.name}</DialogTitle>
-                        <DialogDescription>
+                        <DialogTitle className="text-2xl text-white">Connect to {portal.name}</DialogTitle>
+                        <DialogDescription className="text-[#908fa0] text-base mt-2">
                           Enter your Partner API Key or authenticate via OAuth to sync jobs from {portal.name}.
                         </DialogDescription>
                       </DialogHeader>
-                      <div className="space-y-4 py-4">
-                        <div className="space-y-2">
-                          <Label>API Key</Label>
-                          <Input type="password" placeholder="sk_test_..." />
+                      <div className="space-y-5 py-6">
+                        <div className="space-y-3">
+                          <Label className="text-[#908fa0] uppercase tracking-wider text-xs font-semibold">API Key</Label>
+                          <Input type="password" placeholder="sk_test_..." className="bg-[#0b1326] border-[#2d3449] text-white focus-visible:ring-[#6366f1] h-12" />
                         </div>
-                        <div className="p-4 bg-muted/50 rounded-lg text-sm text-muted-foreground">
-                          Note: Since {portal.name} does not offer public open job APIs, this simulates a verified partner connection.
+                        <div className="p-4 bg-[#0d0096]/20 border border-[#494bd6]/30 rounded-xl text-sm text-[#c0c1ff] leading-relaxed">
+                          <span className="font-semibold text-white">Note:</span> Since {portal.name} does not offer public open job APIs, this simulates a verified partner connection.
                         </div>
                       </div>
-                      <DialogFooter>
-                        <DialogClose render={<Button variant="outline">Cancel</Button>} />
-                        <DialogClose render={<Button onClick={() => handleConnect(portal.id)}>Save Connection</Button>} />
+                      <DialogFooter className="gap-3 sm:gap-0">
+                        <DialogClose asChild>
+                          <Button variant="outline" className="bg-[#0b1326] border-[#2d3449] text-white hover:bg-[#171f33] hover:text-[#dae2fd]">Cancel</Button>
+                        </DialogClose>
+                        <DialogClose asChild>
+                          <Button className="bg-[#6366f1] hover:bg-[#4f46e5] text-white shadow-[0_0_15px_rgba(99,102,241,0.4)]" onClick={() => handleConnect(portal.id)}>Save Connection</Button>
+                        </DialogClose>
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
@@ -128,7 +134,7 @@ export default function Integrations() {
         </div>
         
         {filtered.length === 0 && (
-          <div className="text-center py-24 text-muted-foreground">
+          <div className="text-center py-32 text-[#908fa0] text-lg bg-[#131b2e] border border-[#2d3449] rounded-2xl border-dashed">
             No portals found matching "{search}".
           </div>
         )}

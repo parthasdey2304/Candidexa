@@ -47,15 +47,15 @@ const statusColors: Record<string, string> = {
 export default function Dashboard() {
   return (
     <AppLayout currentPath="/dashboard">
-      <div className="p-6 md:p-8 space-y-8">
+      <div className="p-6 md:p-8 space-y-8 bg-[#060e20] min-h-screen text-[#dae2fd]">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Good afternoon, Alex 👋</h1>
-            <p className="text-muted-foreground mt-1">Here's what's happening with your applications.</p>
+            <h1 className="text-3xl font-bold text-white tracking-tight">Good afternoon, Alex 👋</h1>
+            <p className="text-[#908fa0] mt-2 text-lg">Here's what's happening with your applications.</p>
           </div>
           <Link href="/match">
-            <Button size="lg" className="shrink-0">
+            <Button size="lg" className="shrink-0 bg-[#6366f1] hover:bg-[#4f46e5] text-white shadow-[0_0_20px_rgba(99,102,241,0.3)]">
               <Target className="w-4 h-4 mr-2" />
               Match a new job
             </Button>
@@ -63,49 +63,53 @@ export default function Dashboard() {
         </div>
 
         {/* Stat Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {statCards.map(({ label, value, icon: Icon, color, progress }) => (
-            <Card key={label}>
+            <Card key={label} className="bg-[#131b2e] border-[#2d3449] hover:border-[#6366f1]/50 transition-colors shadow-none">
               <CardContent className="pt-6">
-                <div className="flex items-start justify-between mb-3">
+                <div className="flex items-start justify-between mb-4">
                   <div>
-                    <p className="text-xs text-muted-foreground font-medium">{label}</p>
-                    <p className={`text-2xl font-bold mt-1 ${color}`}>{value}</p>
+                    <p className="text-sm text-[#908fa0] font-medium mb-1">{label}</p>
+                    <p className="text-3xl font-bold text-white tracking-tight">{value}</p>
                   </div>
-                  <div className={`p-2 rounded-lg bg-muted ${color}`}>
-                    <Icon className="w-4 h-4" />
+                  <div className={`p-3 rounded-xl bg-[#0b1326] shadow-inner`}>
+                    <Icon className={`w-5 h-5 ${color.replace('text-', 'text-').replace('600', '400')}`} />
                   </div>
                 </div>
                 {progress !== undefined && (
-                  <Progress value={progress} className="h-1.5" />
+                  <Progress value={progress} className="h-1.5 bg-[#222a3d] [&>div]:bg-[#6366f1]" />
                 )}
               </CardContent>
             </Card>
           ))}
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-3 gap-8">
           {/* Recent Job Matches */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Recent Job Matches</h2>
-              <Link href="/jobs" className="text-sm text-primary hover:underline flex items-center gap-1">
+              <h2 className="text-xl font-semibold text-white">Recent Job Matches</h2>
+              <Link href="/jobs" className="text-sm text-[#6366f1] hover:text-[#8083ff] transition-colors flex items-center gap-1 font-medium">
                 View all <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
-            <Card>
-              <CardContent className="p-0 divide-y">
+            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none overflow-hidden">
+              <CardContent className="p-0 divide-y divide-[#2d3449]">
                 {recentJobs.map((job) => (
-                  <Link key={job.title} href="/match" className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors">
+                  <Link key={job.title} href="/match" className="flex items-center justify-between p-5 hover:bg-[#171f33] transition-colors group">
                     <div>
-                      <p className="font-medium text-sm">{job.title}</p>
-                      <p className="text-xs text-muted-foreground">{job.company}</p>
+                      <p className="font-semibold text-[15px] text-white group-hover:text-[#6366f1] transition-colors">{job.title}</p>
+                      <p className="text-sm text-[#908fa0] mt-1">{job.company}</p>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${matchColors[job.status]}`}>
+                    <div className="flex items-center gap-4">
+                      <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${
+                        job.status === 'strong' ? 'bg-[#002f38] text-[#4cd7f6] border border-[#009eb9]/30' :
+                        job.status === 'partial' ? 'bg-[#0d0096] text-[#c0c1ff] border border-[#494bd6]/30' :
+                        'bg-[#93000a] text-[#ffb4ab] border border-[#ba1a1a]/30'
+                      }`}>
                         {job.match}% match
                       </span>
-                      <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                      <ChevronRight className="w-5 h-5 text-[#464554] group-hover:text-[#908fa0] transition-colors" />
                     </div>
                   </Link>
                 ))}
@@ -113,21 +117,25 @@ export default function Dashboard() {
             </Card>
 
             {/* Recent Applications */}
-            <div className="flex items-center justify-between mt-6">
-              <h2 className="text-lg font-semibold">Recent Applications</h2>
-              <Link href="/applications" className="text-sm text-primary hover:underline flex items-center gap-1">
+            <div className="flex items-center justify-between mt-8">
+              <h2 className="text-xl font-semibold text-white">Recent Applications</h2>
+              <Link href="/applications" className="text-sm text-[#6366f1] hover:text-[#8083ff] transition-colors flex items-center gap-1 font-medium">
                 View all <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
-            <Card>
-              <CardContent className="p-0 divide-y">
+            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none overflow-hidden">
+              <CardContent className="p-0 divide-y divide-[#2d3449]">
                 {recentApps.map((app) => (
-                  <div key={app.role} className="flex items-center justify-between p-4">
+                  <div key={app.role} className="flex items-center justify-between p-5 hover:bg-[#171f33] transition-colors">
                     <div>
-                      <p className="font-medium text-sm">{app.role}</p>
-                      <p className="text-xs text-muted-foreground">{app.company} · {app.date}</p>
+                      <p className="font-semibold text-[15px] text-white">{app.role}</p>
+                      <p className="text-sm text-[#908fa0] mt-1">{app.company} <span className="mx-2 text-[#464554]">·</span> {app.date}</p>
                     </div>
-                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${statusColors[app.status]}`}>
+                    <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${
+                      app.status === 'Interview' ? 'bg-[#002f38] text-[#4cd7f6] border border-[#009eb9]/30' :
+                      app.status === 'Applied' ? 'bg-[#0d0096] text-[#c0c1ff] border border-[#494bd6]/30' :
+                      'bg-[#2c0051] text-[#ddb7ff] border border-[#6f00be]/30'
+                    }`}>
                       {app.status}
                     </span>
                   </div>
@@ -137,27 +145,27 @@ export default function Dashboard() {
           </div>
 
           {/* Onboarding Checklist */}
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold">Getting Started</h2>
-            <Card>
-              <CardContent className="pt-6 space-y-4">
+          <div className="space-y-6">
+            <h2 className="text-xl font-semibold text-white">Getting Started</h2>
+            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+              <CardContent className="pt-6 space-y-5">
                 {checklist.map(({ label, done }) => (
-                  <div key={label} className="flex items-center gap-3">
+                  <div key={label} className="flex items-center gap-4 p-3 rounded-lg hover:bg-[#171f33] transition-colors">
                     {done
-                      ? <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0" />
-                      : <Circle className="w-5 h-5 text-muted-foreground shrink-0" />
+                      ? <CheckCircle2 className="w-6 h-6 text-[#4cd7f6] shrink-0" />
+                      : <Circle className="w-6 h-6 text-[#464554] shrink-0" />
                     }
-                    <span className={`text-sm ${done ? "line-through text-muted-foreground" : "text-foreground font-medium"}`}>
+                    <span className={`text-[15px] ${done ? "line-through text-[#908fa0]" : "text-white font-medium"}`}>
                       {label}
                     </span>
                   </div>
                 ))}
-                <div className="pt-2">
-                  <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                <div className="pt-4 border-t border-[#2d3449]">
+                  <div className="flex justify-between text-sm text-[#908fa0] mb-2 font-medium">
                     <span>Progress</span>
-                    <span>2/4 done</span>
+                    <span className="text-[#c0c1ff]">2/4 done</span>
                   </div>
-                  <Progress value={50} className="h-1.5" />
+                  <Progress value={50} className="h-2 bg-[#222a3d] [&>div]:bg-[#6366f1]" />
                 </div>
               </CardContent>
             </Card>

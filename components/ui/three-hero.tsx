@@ -5,7 +5,10 @@ import { Float, Wireframe, Stars } from "@react-three/drei";
 import { useRef } from "react";
 import * as THREE from "three";
 
-function Icosahedron() {
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+
+function Icosahedron({ isDark }: { isDark: boolean }) {
   const meshRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
@@ -27,10 +30,10 @@ function Icosahedron() {
       <mesh ref={meshRef}>
         <icosahedronGeometry args={[2, 1]} />
         <meshStandardMaterial 
-          color="#6366f1" 
+          color={isDark ? "#6366f1" : "#4F46E5"} 
           wireframe 
-          emissive="#6366f1" 
-          emissiveIntensity={0.8} 
+          emissive={isDark ? "#6366f1" : "#4F46E5"} 
+          emissiveIntensity={isDark ? 0.8 : 0.4} 
         />
       </mesh>
     </Float>
@@ -38,13 +41,20 @@ function Icosahedron() {
 }
 
 export function ThreeHero() {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => setMounted(true), []);
+  
+  const isDark = mounted ? resolvedTheme === 'dark' : true;
+
   return (
     <div className="absolute inset-0 z-0 h-full w-full opacity-60">
       <Canvas camera={{ position: [0, 0, 8], fov: 45 }} style={{ background: 'transparent' }}>
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} intensity={1} color="#c0c1ff" />
-        <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-        <Icosahedron />
+        <ambientLight intensity={isDark ? 0.5 : 1} />
+        <pointLight position={[10, 10, 10]} intensity={isDark ? 1 : 1.5} color={isDark ? "#c0c1ff" : "#4F46E5"} />
+        {isDark && <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />}
+        <Icosahedron isDark={isDark} />
       </Canvas>
       
       {/* Gradient overlay to blend bottom into the page */}

@@ -98,8 +98,8 @@ export default function Integrations() {
                   </Button>
                 ) : (
                   <Dialog>
-                    <DialogTrigger asChild>
-                      <Button className="w-full bg-[#171f33] border border-[#2d3449] text-white hover:bg-[#6366f1] hover:border-transparent hover:shadow-[0_0_15px_rgba(99,102,241,0.4)] h-11 transition-all"><LinkIcon className="w-4 h-4 mr-2" /> Connect API</Button>
+                    <DialogTrigger render={<Button className="w-full bg-[#171f33] border border-[#2d3449] text-white hover:bg-[#6366f1] hover:border-transparent hover:shadow-[0_0_15px_rgba(99,102,241,0.4)] h-11 transition-all" />}>
+                      <LinkIcon className="w-4 h-4 mr-2" /> Connect API
                     </DialogTrigger>
                     <DialogContent className="bg-[#131b2e] border-[#2d3449] text-white sm:max-w-md">
                       <DialogHeader>
@@ -118,11 +118,11 @@ export default function Integrations() {
                         </div>
                       </div>
                       <DialogFooter className="gap-3 sm:gap-0">
-                        <DialogClose asChild>
-                          <Button variant="outline" className="bg-[#0b1326] border-[#2d3449] text-white hover:bg-[#171f33] hover:text-[#dae2fd]">Cancel</Button>
+                        <DialogClose render={<Button variant="outline" className="bg-[#0b1326] border-[#2d3449] text-white hover:bg-[#171f33] hover:text-[#dae2fd]" />}>
+                          Cancel
                         </DialogClose>
-                        <DialogClose asChild>
-                          <Button className="bg-[#6366f1] hover:bg-[#4f46e5] text-white shadow-[0_0_15px_rgba(99,102,241,0.4)]" onClick={() => handleConnect(portal.id)}>Save Connection</Button>
+                        <DialogClose render={<Button className="bg-[#6366f1] hover:bg-[#4f46e5] text-white shadow-[0_0_15px_rgba(99,102,241,0.4)]" onClick={() => handleConnect(portal.id)} />}>
+                          Save Connection
                         </DialogClose>
                       </DialogFooter>
                     </DialogContent>

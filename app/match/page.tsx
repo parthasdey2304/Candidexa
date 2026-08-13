@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { Shield, ChevronRight } from "lucide-react";
+import { Shield, ChevronRight, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 

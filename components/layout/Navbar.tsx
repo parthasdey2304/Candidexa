@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Logo } from "@/components/shared/Logo";
 import { Container } from "@/components/shared/Container";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -61,14 +61,13 @@ export function Navbar() {
           {/* Mobile Actions */}
           <div className="flex md:hidden items-center gap-4">
             <ThemeToggle />
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <button 
+              className={cn(buttonVariants({ variant: "ghost", size: "icon" }))}
               onClick={() => setIsMobileMenuOpen(true)}
               aria-label="Open Menu"
             >
               <Menu className="w-6 h-6" />
-            </Button>
+            </button>
           </div>
         </Container>
       </header>
@@ -81,14 +80,13 @@ export function Navbar() {
         )}
       >
         <div className="flex items-center justify-end p-4 h-16 border-b border-transparent">
-          <Button 
-            variant="ghost" 
-            size="icon" 
+          <button 
+            className={cn(buttonVariants({ variant: "ghost", size: "icon" }))}
             onClick={() => setIsMobileMenuOpen(false)}
             aria-label="Close Menu"
           >
             <X className="w-6 h-6" />
-          </Button>
+          </button>
         </div>
         
         <div className="flex-1 flex flex-col items-center justify-center p-8 gap-8">

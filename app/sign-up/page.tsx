@@ -1,3 +1,5 @@
+"use client";
+
 import { Container } from "@/components/shared/Container";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";

@@ -1,3 +1,4 @@
+"use client";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -5,25 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Target, Briefcase, KanbanSquare, Zap, ChevronRight, CheckCircle2, Circle } from "lucide-react";
 import Link from "next/link";
-
-const statCards = [
-  { label: "Resume Readiness", value: "72%", icon: Target, color: "text-indigo-600", progress: 72 },
-  { label: "Saved Jobs", value: "8", icon: Briefcase, color: "text-blue-600" },
-  { label: "Active Applications", value: "3", icon: KanbanSquare, color: "text-green-600" },
-  { label: "AI Credits Used", value: "12/30", icon: Zap, color: "text-amber-600", progress: 40 },
-];
-
-const recentJobs = [
-  { title: "Frontend Engineer", company: "Stripe", match: 87, status: "strong" },
-  { title: "React Developer", company: "Notion", match: 73, status: "partial" },
-  { title: "UI Engineer", company: "Vercel", match: 61, status: "weak" },
-];
-
-const recentApps = [
-  { role: "Product Engineer", company: "Linear", status: "Interview", date: "Aug 10" },
-  { role: "Software Engineer", company: "Figma", status: "Applied", date: "Aug 8" },
-  { role: "Full-Stack Dev", company: "Loom", status: "Screening", date: "Aug 6" },
-];
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const checklist = [
   { label: "Upload resume", done: true },
@@ -45,13 +29,71 @@ const statusColors: Record<string, string> = {
 };
 
 export default function Dashboard() {
+  const router = useRouter();
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSummary = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          router.push("/sign-in");
+          return;
+        }
+
+        const res = await fetch("http://localhost:8000/api/dashboard/summary", {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
+        if (res.ok) {
+          const summary = await res.json();
+          setData(summary);
+        } else {
+          if (res.status === 401 || res.status === 403) {
+            localStorage.removeItem("token");
+            router.push("/sign-in");
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch dashboard data", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSummary();
+  }, [router]);
+
+  if (loading) {
+    return (
+      <AppLayout currentPath="/dashboard">
+        <div className="flex items-center justify-center min-h-screen bg-[#060e20]">
+          <div className="w-16 h-16 border-4 border-[#2d3449] border-t-[#6366f1] rounded-full animate-spin"></div>
+        </div>
+      </AppLayout>
+    );
+  }
+
+  const statCards = [
+    { label: "Resume Readiness", value: `${data?.resume_readiness || 0}%`, icon: Target, color: "text-indigo-600", progress: data?.resume_readiness || 0 },
+    { label: "Saved Jobs", value: `${data?.saved_jobs_count || 0}`, icon: Briefcase, color: "text-blue-600" },
+    { label: "Active Applications", value: `${data?.active_apps_count || 0}`, icon: KanbanSquare, color: "text-green-600" },
+    { label: "AI Credits Used", value: "12/30", icon: Zap, color: "text-amber-600", progress: 40 },
+  ];
+
+  const recentJobs = data?.recent_jobs || [];
+  const recentApps = data?.recent_apps || [];
+
   return (
     <AppLayout currentPath="/dashboard">
       <div className="p-6 md:p-8 space-y-8 bg-[#060e20] min-h-screen text-[#dae2fd]">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">Good afternoon, Alex 👋</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight">Good afternoon 👋</h1>
             <p className="text-[#908fa0] mt-2 text-lg">Here's what's happening with your applications.</p>
           </div>
           <Link href="/match">
@@ -95,7 +137,7 @@ export default function Dashboard() {
             </div>
             <Card className="bg-[#131b2e] border-[#2d3449] shadow-none overflow-hidden">
               <CardContent className="p-0 divide-y divide-[#2d3449]">
-                {recentJobs.map((job) => (
+                {recentJobs.length > 0 ? recentJobs.map((job: any) => (
                   <Link key={job.title} href="/match" className="flex items-center justify-between p-5 hover:bg-[#171f33] transition-colors group">
                     <div>
                       <p className="font-semibold text-[15px] text-white group-hover:text-[#6366f1] transition-colors">{job.title}</p>
@@ -112,7 +154,11 @@ export default function Dashboard() {
                       <ChevronRight className="w-5 h-5 text-[#464554] group-hover:text-[#908fa0] transition-colors" />
                     </div>
                   </Link>
-                ))}
+                )) : (
+                  <div className="p-8 text-center text-[#908fa0]">
+                    No recent jobs found. Start matching!
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -125,7 +171,7 @@ export default function Dashboard() {
             </div>
             <Card className="bg-[#131b2e] border-[#2d3449] shadow-none overflow-hidden">
               <CardContent className="p-0 divide-y divide-[#2d3449]">
-                {recentApps.map((app) => (
+                {recentApps.length > 0 ? recentApps.map((app: any) => (
                   <div key={app.role} className="flex items-center justify-between p-5 hover:bg-[#171f33] transition-colors">
                     <div>
                       <p className="font-semibold text-[15px] text-white">{app.role}</p>
@@ -139,7 +185,11 @@ export default function Dashboard() {
                       {app.status}
                     </span>
                   </div>
-                ))}
+                )) : (
+                  <div className="p-8 text-center text-[#908fa0]">
+                    No active applications found.
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>

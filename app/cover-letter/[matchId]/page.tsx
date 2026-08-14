@@ -8,30 +8,66 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RefreshCw, Copy, Download, CheckCircle2, Zap } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const evidenceChips = ["4 years React experience", "TypeScript certified", "Open source contributor", "Remote-first experience"];
 
-const sampleLetter = `Dear Stripe Hiring Team,
+const fallbackLetter = `Dear Hiring Team,
 
-I am writing to express my enthusiasm for the Frontend Engineer position at Stripe. With four years of hands-on experience building React and TypeScript applications, I am confident in my ability to contribute meaningfully to your product and engineering culture.
+I am writing to express my enthusiasm for the Frontend Engineer position at Stripe. With my experience building React and TypeScript applications, I am confident in my ability to contribute meaningfully to your product and engineering culture.
 
-In my current role at Acme Corp, I architected a component library in React and TypeScript that is now used across four product teams, reducing development time by approximately 30%. I also led the migration of our frontend build pipeline to Vite, cutting cold-start times significantly.
+I look forward to discussing this opportunity further.
 
-What excites me most about Stripe is the technical rigour your engineering team demonstrates. I am particularly drawn to the challenge of building payment experiences that are both powerful and delightfully simple.
-
-I would love to bring my experience to Stripe and help your team continue building world-class infrastructure for the internet economy.
-
-Thank you for your consideration.
-
-Alex Johnson`;
+Best regards,
+Alex`;
 
 export default function CoverLetterGenerator({ params }: { params: { matchId: string } }) {
+  const router = useRouter();
   const [generated, setGenerated] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [tone, setTone] = useState("professional");
+  const [length, setLength] = useState("medium");
+  const [letterContent, setLetterContent] = useState("");
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     setLoading(true);
-    setTimeout(() => { setGenerated(true); setLoading(false); }, 1500);
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        router.push("/sign-in");
+        return;
+      }
+      
+      const res = await fetch("http://localhost:8000/api/ai/cover-letter", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          resume_text: "Mock resume text (should be fetched from DB in full version)",
+          job_description: "Mock job description (should be fetched from Job DB in full version)",
+          tone: tone,
+          length: length
+        })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setLetterContent(data.cover_letter);
+        setGenerated(true);
+      } else {
+        console.error("Failed to generate");
+        setLetterContent(fallbackLetter);
+        setGenerated(true);
+      }
+    } catch (err) {
+      console.error(err);
+      setLetterContent(fallbackLetter);
+      setGenerated(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -50,7 +86,7 @@ export default function CoverLetterGenerator({ params }: { params: { matchId: st
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label>Tone</Label>
-                  <Select defaultValue="professional">
+                  <Select value={tone} onValueChange={setTone}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="professional">Professional</SelectItem>
@@ -61,7 +97,7 @@ export default function CoverLetterGenerator({ params }: { params: { matchId: st
                 </div>
                 <div className="space-y-2">
                   <Label>Length</Label>
-                  <Select defaultValue="medium">
+                  <Select value={length} onValueChange={setLength}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="short">Short (~150 words)</SelectItem>
@@ -117,7 +153,8 @@ export default function CoverLetterGenerator({ params }: { params: { matchId: st
                 ) : (
                   <Textarea
                     className="min-h-96 font-serif text-sm resize-none"
-                    defaultValue={sampleLetter}
+                    value={letterContent}
+                    onChange={(e) => setLetterContent(e.target.value)}
                   />
                 )}
               </CardContent>

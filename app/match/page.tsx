@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Shield, ChevronRight, CheckCircle2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const stages = [
@@ -20,11 +20,41 @@ const stages = [
 export default function MatchJob() {
   const [loading, setLoading] = useState(false);
   const [stageIndex, setStageIndex] = useState(0);
+  const [jobDescription, setJobDescription] = useState("");
+  const [resumes, setResumes] = useState<any[]>([]);
+  const [selectedResumeId, setSelectedResumeId] = useState<string>("");
   const router = useRouter();
 
-  const handleAnalyze = () => {
+  useEffect(() => {
+    const fetchResumes = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+        const res = await fetch("http://localhost:8000/api/resumes", {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setResumes(data);
+          if (data.length > 0) {
+            // Default to master resume if exists, else first one
+            const master = data.find((r: any) => r.is_master);
+            setSelectedResumeId(master ? master.id.toString() : data[0].id.toString());
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch resumes", err);
+      }
+    };
+    fetchResumes();
+  }, []);
+
+  const handleAnalyze = async () => {
+    if (!jobDescription || !selectedResumeId) return;
     setLoading(true);
     setStageIndex(0);
+    
+    // Simulate stages for UI UX
     let i = 0;
     const iv = setInterval(() => {
       i++;
@@ -32,9 +62,38 @@ export default function MatchJob() {
         setStageIndex(i);
       } else {
         clearInterval(iv);
-        router.push("/match/demo-match-id");
       }
     }, 900);
+
+    try {
+      const token = localStorage.getItem("token");
+      
+      const selectedResume = resumes.find(r => r.id.toString() === selectedResumeId);
+      const resumeContent = selectedResume ? selectedResume.content : "No resume selected";
+
+      const res = await fetch("http://localhost:8000/api/ai/match", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          resume_text: resumeContent,
+          job_description: jobDescription
+        }),
+      });
+
+      if (!res.ok) {
+        console.error("Analysis failed", await res.text());
+      }
+      
+      // Navigate to results
+      router.push("/match/demo-match-id");
+    } catch (err) {
+      console.error(err);
+    } finally {
+      clearInterval(iv);
+    }
   };
 
   return (
@@ -60,6 +119,8 @@ export default function MatchJob() {
                 <Label className="text-[#908fa0] uppercase tracking-wider text-xs font-semibold">Job Description</Label>
                 <Textarea
                   placeholder="Paste the full job description here..."
+                  value={jobDescription}
+                  onChange={(e) => setJobDescription(e.target.value)}
                   className="min-h-56 resize-none bg-[#0b1326] border-[#2d3449] text-white focus-visible:ring-[#6366f1] placeholder:text-[#464554] p-4 text-[15px] leading-relaxed"
                 />
               </div>
@@ -71,14 +132,19 @@ export default function MatchJob() {
 
               <div className="space-y-3">
                 <Label className="text-[#908fa0] uppercase tracking-wider text-xs font-semibold">Resume Version</Label>
-                <Select defaultValue="master">
+                <Select value={selectedResumeId} onValueChange={setSelectedResumeId}>
                   <SelectTrigger className="bg-[#0b1326] border-[#2d3449] text-white focus:ring-[#6366f1] h-11">
-                    <SelectValue />
+                    <SelectValue placeholder="Select a resume" />
                   </SelectTrigger>
                   <SelectContent className="bg-[#131b2e] border-[#2d3449] text-white">
-                    <SelectItem value="master" className="focus:bg-[#171f33] focus:text-white">Master Resume (Aug 12)</SelectItem>
-                    <SelectItem value="stripe" className="focus:bg-[#171f33] focus:text-white">Stripe – Frontend Engineer</SelectItem>
-                    <SelectItem value="notion" className="focus:bg-[#171f33] focus:text-white">Notion – React Developer</SelectItem>
+                    {resumes.map(r => (
+                      <SelectItem key={r.id} value={r.id.toString()} className="focus:bg-[#171f33] focus:text-white">
+                        {r.title}
+                      </SelectItem>
+                    ))}
+                    {resumes.length === 0 && (
+                      <SelectItem value="none" disabled>No resumes found. Upload one first!</SelectItem>
+                    )}
                   </SelectContent>
                 </Select>
               </div>

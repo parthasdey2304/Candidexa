@@ -9,13 +9,48 @@ import Link from "next/link";
 import { Logo } from "@/components/shared/Logo";
 import { useRouter } from "next/navigation";
 
+import { useState } from "react";
+
 export default function SignIn() {
   const router = useRouter();
+  const [email, setEmail] = useState("admin@admin.com");
+  const [password, setPassword] = useState("partha");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSignIn = (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate login and redirect to dashboard
-    router.push("/dashboard");
+    setLoading(true);
+    setError("");
+    
+    try {
+      const formData = new URLSearchParams();
+      formData.append("username", email);
+      formData.append("password", password);
+
+      const res = await fetch("http://localhost:8000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString(),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.detail || "Login failed");
+      }
+
+      const data = await res.json();
+      // Store JWT (in a real app, prefer HttpOnly cookies, but for this demo localStorage is used)
+      localStorage.setItem("token", data.access_token);
+      
+      router.push("/dashboard");
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -33,9 +68,22 @@ export default function SignIn() {
       <Card className="w-full max-w-md">
         <CardContent className="pt-6">
           <form className="space-y-4" onSubmit={handleSignIn}>
+            {error && (
+              <div className="p-3 text-sm text-red-500 bg-red-100/10 border border-red-500/20 rounded-md">
+                {error}
+              </div>
+            )}
             <div className="space-y-2">
               <Label htmlFor="email">Email address</Label>
-              <Input id="email" type="email" placeholder="john@example.com" defaultValue="admin@admin.com" className="py-5" required />
+              <Input 
+                id="email" 
+                type="email" 
+                placeholder="john@example.com" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="py-5" 
+                required 
+              />
             </div>
 
             <div className="space-y-2">
@@ -45,7 +93,14 @@ export default function SignIn() {
                   Forgot password?
                 </Link>
               </div>
-              <Input id="password" type="password" defaultValue="partha" className="py-5" required />
+              <Input 
+                id="password" 
+                type="password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="py-5" 
+                required 
+              />
             </div>
 
             <div className="flex items-center space-x-2 pt-2">
@@ -58,8 +113,8 @@ export default function SignIn() {
               </label>
             </div>
 
-            <Button type="submit" className="w-full mt-6 py-5">
-              Log in
+            <Button type="submit" className="w-full mt-6 py-5" disabled={loading}>
+              {loading ? "Logging in..." : "Log in"}
             </Button>
           </form>
 

@@ -1,3 +1,4 @@
+"use client";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -5,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle2, XCircle, AlertCircle, Zap, Download, Bookmark, FileText, Shield } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const matchedSkills = ["React", "TypeScript", "Next.js", "REST APIs", "Git", "CSS Modules"];
 const missingSkills = [
@@ -15,6 +18,42 @@ const missingSkills = [
 const atsKeywords = ["frontend", "react", "typescript", "performance", "component library", "scalable"];
 
 export default function MatchAnalysis({ params }: { params: { matchId: string } }) {
+  const router = useRouter();
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const handleSaveJob = async () => {
+    setSaving(true);
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        router.push("/sign-in");
+        return;
+      }
+      
+      const res = await fetch("http://localhost:8000/api/jobs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          title: "Frontend Engineer",
+          company: "Stripe",
+          description: "Simulated job description for Stripe Frontend role"
+        })
+      });
+
+      if (res.ok) {
+        setSaved(true);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <AppLayout currentPath="/match">
       <div className="p-6 md:p-8 max-w-5xl mx-auto space-y-6">
@@ -26,7 +65,10 @@ export default function MatchAnalysis({ params }: { params: { matchId: string } 
             <p className="text-muted-foreground mt-1">Match Analysis · Master Resume (Aug 12)</p>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline"><Bookmark className="w-4 h-4 mr-2" />Save</Button>
+            <Button variant="outline" onClick={handleSaveJob} disabled={saving || saved}>
+              <Bookmark className="w-4 h-4 mr-2" />
+              {saved ? "Saved" : saving ? "Saving..." : "Save"}
+            </Button>
             <Link href="/applications/tailored">
               <Button><FileText className="w-4 h-4 mr-2" />Tailor Resume</Button>
             </Link>

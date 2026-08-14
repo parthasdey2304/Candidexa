@@ -7,7 +7,55 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { Logo } from "@/components/shared/Logo";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 export default function SignUp() {
+  const router = useRouter();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+    
+    setLoading(true);
+    setError("");
+    
+    try {
+      const res = await fetch("http://localhost:8000/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          full_name: name
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.detail || "Sign up failed");
+      }
+
+      // After successful signup, redirect to login
+      router.push("/sign-in");
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex-1 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-muted/30">
       <div className="w-full max-w-md space-y-8 mb-8 text-center">
@@ -22,25 +70,60 @@ export default function SignUp() {
 
       <Card className="w-full max-w-md">
         <CardContent className="pt-6">
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSignUp}>
+            {error && (
+              <div className="p-3 text-sm text-red-500 bg-red-100/10 border border-red-500/20 rounded-md">
+                {error}
+              </div>
+            )}
             <div className="space-y-2">
               <Label htmlFor="name">Full Name</Label>
-              <Input id="name" type="text" placeholder="John Doe" className="py-5" required />
+              <Input 
+                id="name" 
+                type="text" 
+                placeholder="John Doe" 
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="py-5" 
+                required 
+              />
             </div>
             
             <div className="space-y-2">
               <Label htmlFor="email">Email address</Label>
-              <Input id="email" type="email" placeholder="john@example.com" className="py-5" required />
+              <Input 
+                id="email" 
+                type="email" 
+                placeholder="john@example.com" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="py-5" 
+                required 
+              />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" className="py-5" required />
+              <Input 
+                id="password" 
+                type="password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="py-5" 
+                required 
+              />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <Input id="confirmPassword" type="password" className="py-5" required />
+              <Input 
+                id="confirmPassword" 
+                type="password" 
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="py-5" 
+                required 
+              />
             </div>
 
             <div className="flex items-center space-x-2 pt-2">
@@ -53,8 +136,8 @@ export default function SignUp() {
               </label>
             </div>
 
-            <Button type="submit" className="w-full mt-6 py-5">
-              Create account
+            <Button type="submit" className="w-full mt-6 py-5" disabled={loading}>
+              {loading ? "Creating account..." : "Create account"}
             </Button>
           </form>
 

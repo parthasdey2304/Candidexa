@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { UploadCloud, FileText, CheckCircle2, AlertCircle, X } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-type UploadState = "idle" | "dragging" | "uploading" | "parsing" | "success" | "error";
+type UploadState = "idle" | "dragging" | "uploading" | "parsing" | "success" | "error" | "saving";
 
 export default function ResumeUpload() {
+  const router = useRouter();
   const [state, setState] = useState<UploadState>("idle");
   const [progress, setProgress] = useState(0);
 
@@ -26,6 +28,40 @@ export default function ResumeUpload() {
         return p + 15;
       });
     }, 200);
+  };
+
+  const handleConfirmAndSave = async () => {
+    setState("saving");
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        router.push("/sign-in");
+        return;
+      }
+
+      const res = await fetch("http://localhost:8000/api/resumes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          title: "Master Resume",
+          content: "Extracted work experience: Software Engineer at Stripe (2020-2023). Extracted education: BS Computer Science. Skills: React, TypeScript, Next.js, Git.",
+          is_master: true,
+          ats_score: 91
+        })
+      });
+
+      if (res.ok) {
+        router.push("/resume");
+      } else {
+        setState("error");
+      }
+    } catch (err) {
+      console.error(err);
+      setState("error");
+    }
   };
 
   return (
@@ -88,8 +124,17 @@ export default function ResumeUpload() {
               </div>
               <div className="flex gap-3 justify-center">
                 <Button variant="outline" onClick={() => setState("idle")}>Upload different</Button>
-                <Button>Review & Confirm</Button>
+                <Button onClick={handleConfirmAndSave}>Review & Confirm</Button>
               </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {state === "saving" && (
+          <Card>
+            <CardContent className="pt-8 pb-8 text-center space-y-4">
+              <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+              <p className="font-medium">Saving to Database...</p>
             </CardContent>
           </Card>
         )}

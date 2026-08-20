@@ -132,7 +132,7 @@ export default function MatchJob() {
 
               <div className="space-y-3">
                 <Label className="text-[#908fa0] uppercase tracking-wider text-xs font-semibold">Resume Version</Label>
-                <Select value={selectedResumeId} onValueChange={setSelectedResumeId}>
+                <Select value={selectedResumeId} onValueChange={(v) => setSelectedResumeId(v ?? "")}>
                   <SelectTrigger className="bg-[#0b1326] border-[#2d3449] text-white focus:ring-[#6366f1] h-11">
                     <SelectValue placeholder="Select a resume" />
                   </SelectTrigger>

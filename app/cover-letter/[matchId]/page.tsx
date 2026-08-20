@@ -86,7 +86,7 @@ export default function CoverLetterGenerator({ params }: { params: { matchId: st
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label>Tone</Label>
-                  <Select value={tone} onValueChange={setTone}>
+                  <Select value={tone} onValueChange={(v) => setTone(v ?? "professional")}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="professional">Professional</SelectItem>
@@ -97,7 +97,7 @@ export default function CoverLetterGenerator({ params }: { params: { matchId: st
                 </div>
                 <div className="space-y-2">
                   <Label>Length</Label>
-                  <Select value={length} onValueChange={setLength}>
+                  <Select value={length} onValueChange={(v) => setLength(v ?? "medium")}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="short">Short (~150 words)</SelectItem>

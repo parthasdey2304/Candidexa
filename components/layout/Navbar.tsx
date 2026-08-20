@@ -4,13 +4,16 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Logo } from "@/components/shared/Logo";
+import { NavOrb } from "@/components/ui/nav-orb";
 import { Container } from "@/components/shared/Container";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/components/providers/AuthProvider";
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
 
   // Prevent scrolling when mobile menu is open
   useEffect(() => {
@@ -25,18 +28,21 @@ export function Navbar() {
   }, [isMobileMenuOpen]);
 
   const protectedLinks = [
-    { label: "Dashboard", href: "/sign-in" },
-    { label: "Find Jobs", href: "/sign-in" },
-    { label: "My Resume", href: "/sign-in" },
-    { label: "Integrations", href: "/sign-in" },
-    { label: "Settings", href: "/sign-in" },
+    { label: "Dashboard", href: isAuthenticated ? "/app" : "/login" },
+    { label: "Find Jobs", href: isAuthenticated ? "/app/jobs" : "/login" },
+    { label: "My Resume", href: isAuthenticated ? "/app/resume" : "/login" },
+    { label: "Tracker", href: isAuthenticated ? "/app/tracker" : "/login" },
+    { label: "Settings", href: isAuthenticated ? "/app/settings" : "/login" },
   ];
 
   return (
     <>
       <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <Container className="flex h-16 items-center justify-between">
-          <Logo />
+          <div className="flex items-center gap-2.5">
+            <NavOrb />
+            <Logo />
+          </div>
           
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
@@ -49,12 +55,25 @@ export function Navbar() {
             </div>
             <ThemeToggle />
             <div className="flex items-center gap-2">
-              <Link href="/sign-in">
-                <Button variant="ghost">Log in</Button>
-              </Link>
-              <Link href="/sign-up">
-                <Button>Get Started</Button>
-              </Link>
+              {isAuthenticated ? (
+                <>
+                  <Link href="/app">
+                    <Button variant="ghost">Dashboard</Button>
+                  </Link>
+                  <Button onClick={() => void logout()} variant="outline">
+                    Log out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link href="/login">
+                    <Button variant="ghost">Log in</Button>
+                  </Link>
+                  <Link href="/register">
+                    <Button>Get Started</Button>
+                  </Link>
+                </>
+              )}
             </div>
           </nav>
 
@@ -106,12 +125,31 @@ export function Navbar() {
           <div className="w-full h-px bg-border my-4 max-w-[200px]" />
           
           <div className="flex flex-col w-full max-w-[200px] gap-4">
-            <Link href="/sign-in" onClick={() => setIsMobileMenuOpen(false)}>
-              <Button variant="outline" className="w-full h-12 text-lg">Log in</Button>
-            </Link>
-            <Link href="/sign-up" onClick={() => setIsMobileMenuOpen(false)}>
-              <Button className="w-full h-12 text-lg">Get Started</Button>
-            </Link>
+            {isAuthenticated ? (
+              <>
+                <Link href="/app" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button variant="outline" className="w-full h-12 text-lg">Dashboard</Button>
+                </Link>
+                <Button
+                  className="w-full h-12 text-lg"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    void logout();
+                  }}
+                >
+                  Log out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button variant="outline" className="w-full h-12 text-lg">Log in</Button>
+                </Link>
+                <Link href="/register" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button className="w-full h-12 text-lg">Get Started</Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

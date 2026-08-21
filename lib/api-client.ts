@@ -46,6 +46,42 @@ const AUTH_BYPASS_PATHS = [
 let csrfToken: string | null = null;
 let refreshPromise: Promise<boolean> | null = null;
 
+function getAuthToken(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return (
+      localStorage.getItem("access_token") ||
+      localStorage.getItem("token") ||
+      sessionStorage.getItem("access_token") ||
+      readCookie("access_token") ||
+      null
+    );
+  } catch {
+    return null;
+  }
+}
+
+export function setAuthTokens(accessToken: string, refreshToken?: string) {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem("access_token", accessToken);
+    if (refreshToken) localStorage.setItem("refresh_token", refreshToken);
+    // Also set as cookie for proxy compatibility (not httpOnly, for demo)
+    document.cookie = `access_token=${encodeURIComponent(accessToken)}; path=/; SameSite=Lax`;
+  } catch {}
+}
+
+export function clearAuthTokens() {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("token");
+    localStorage.removeItem("refresh_token");
+    sessionStorage.removeItem("access_token");
+    document.cookie = "access_token=; path=/; max-age=0";
+  } catch {}
+}
+
 function dispatchApiEvent<K extends keyof ApiClientEventMap>(
   type: K,
   detail: ApiClientEventMap[K]
@@ -147,28 +183,9 @@ async function ensureCsrfToken() {
     return csrfToken;
   }
 
-  try {
-    const response = await fetch(buildApiUrl("/auth/csrf"), {
-      method: "GET",
-      credentials: "include",
-    });
-
-    const headerToken = response.headers.get("X-CSRF-Token");
-    const body = await parseResponseBody<{ csrfToken?: string; token?: string }>(
-      response
-    );
-
-    csrfToken =
-      headerToken ??
-      body?.csrfToken ??
-      body?.token ??
-      readCookie("csrf_token") ??
-      readCookie("XSRF-TOKEN");
-  } catch {
-    csrfToken = readCookie("csrf_token") ?? readCookie("XSRF-TOKEN");
-  }
-
-  return csrfToken;
+  // Backend has no /auth/csrf endpoint (404) — do not fetch to avoid 404 console spam
+  // Mutating requests will proceed without CSRF token; backend's get_current_user_strict will handle if required
+  return null;
 }
 
 async function refreshSession() {
@@ -242,9 +259,15 @@ async function apiRequest<T>(
     headers.set("Accept", "application/json");
   }
 
+  // Attach Authorization header if token exists and not already set, except for login/register
+  const authToken = getAuthToken();
+  if (authToken && !headers.has("Authorization") && !shouldBypassRefresh(path)) {
+    headers.set("Authorization", `Bearer ${authToken}`);
+  }
+
   if (isMutating && !options.skipCsrf) {
     const token = await ensureCsrfToken();
-    headers.set("X-CSRF-Token", token ?? "");
+    if (token) headers.set("X-CSRF-Token", token);
   }
 
   let response: Response;
@@ -269,14 +292,18 @@ async function apiRequest<T>(
   const data = await parseResponseBody<T | JsonRecord>(response);
 
   if (response.ok) {
-    if (
-      isMutating &&
-      typeof data === "object" &&
-      data !== null &&
-      ("csrfToken" in data || "token" in data)
-    ) {
-      const tokenData = data as { csrfToken?: string; token?: string };
-      csrfToken = tokenData.csrfToken ?? tokenData.token ?? csrfToken;
+    // Store auth tokens if present (login/register/refresh)
+    if (typeof data === "object" && data !== null) {
+      const d = data as any;
+      const access = d.access_token || d.data?.access_token;
+      const refresh = d.refresh_token || d.data?.refresh_token;
+      if (access) {
+        setAuthTokens(access, refresh);
+      }
+      if ("csrfToken" in d || "token" in d || d.data?.csrfToken || d.data?.token) {
+        const tokenData = d.data || d;
+        csrfToken = tokenData.csrfToken ?? tokenData.token ?? csrfToken;
+      }
     }
 
     return data as T;

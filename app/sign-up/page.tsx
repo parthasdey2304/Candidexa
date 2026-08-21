@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Zap, Eye, EyeOff, Mail, Lock, User, Check, X } from "lucide-react";
+import { Zap, Eye, EyeOff, Mail, Lock, User, Check, X, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -57,6 +57,11 @@ export default function SignUpAliasPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <div className="absolute top-4 left-4 z-10 lg:hidden">
+        <Link href="/" className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background hover:bg-accent hover:text-accent-foreground">
+          <ArrowLeft className="h-4 w-4" />
+        </Link>
+      </div>
       <div className="absolute top-4 right-4 z-10">
         <ThemeToggle />
       </div>

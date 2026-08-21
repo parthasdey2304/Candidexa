@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
-import { Eye, EyeOff, Mail, Lock, Zap } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, Zap, ArrowLeft } from "lucide-react";
 
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useToast } from "@/components/providers/ToastProvider";
@@ -72,7 +72,11 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      {/* Top bar with theme toggle - visible on auth pages */}
+      <div className="absolute top-4 left-4 z-10 lg:hidden">
+        <Link href="/" className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background hover:bg-accent hover:text-accent-foreground">
+          <ArrowLeft className="h-4 w-4" />
+        </Link>
+      </div>
       <div className="absolute top-4 right-4 z-10">
         <ThemeToggle />
       </div>

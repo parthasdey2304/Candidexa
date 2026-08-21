@@ -247,13 +247,24 @@ async function apiRequest<T>(
     headers.set("X-CSRF-Token", token ?? "");
   }
 
-  const response = await fetch(url, {
-    ...options,
-    method,
-    body,
-    headers,
-    credentials: "include",
-  });
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      ...options,
+      method,
+      body,
+      headers,
+      credentials: "include",
+    });
+  } catch (networkError) {
+    // Network/CORS errors (e.g., backend sleeping on Railway) - convert to ApiError with status 0 for graceful handling
+    const message = networkError instanceof Error ? networkError.message : "Network error";
+    // Suppress noisy console errors for auth/me on public routes
+    if (path === "/auth/me" || path.startsWith("/auth/me")) {
+      throw new ApiError(`Backend unavailable: ${message}`, 0, undefined, "NETWORK_ERROR");
+    }
+    throw new ApiError(message, 0, undefined, "NETWORK_ERROR");
+  }
 
   const data = await parseResponseBody<T | JsonRecord>(response);
 

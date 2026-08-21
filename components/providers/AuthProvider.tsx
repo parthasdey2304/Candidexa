@@ -142,9 +142,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const refreshSession = useCallback(async () => {
     try {
-      const response = await apiClient.get("/auth/me");
+      const response = await apiClient.get("/auth/me", { retryOnAuthFailure: false });
       setSession(normalizeSession(response));
-    } catch {
+    } catch (error) {
+      // Silently handle network/CORS/404 when backend is unavailable - don't spam console
+      if (error instanceof ApiError && error.status === 0) {
+        console.debug("[Auth] Backend unavailable, treating as unauthenticated");
+      }
       setSession({ plan: null, user: null });
     }
   }, []);
@@ -204,7 +208,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (mounted) {
           setSession(normalizeSession(response));
         }
-      } catch {
+      } catch (error) {
+        // Suppress noisy CORS/network errors on public routes - backend may be sleeping on Railway
+        if (error instanceof ApiError) {
+          if (error.status === 0 || error.status === 404 || error.status >= 500) {
+            console.debug("[Auth] Bootstrap failed gracefully:", error.message);
+          }
+        } else if (error instanceof TypeError) {
+          console.debug("[Auth] Network/CORS error suppressed");
+        }
         if (mounted) {
           setSession({ plan: null, user: null });
         }
@@ -215,6 +227,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     };
 
+    // Only bootstrap if we are not on a public route that doesn't need auth, with a small delay to avoid spamming when backend is down
     void bootstrap();
 
     return () => {

@@ -1,15 +1,14 @@
 import { Container } from "@/components/shared/Container";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { CheckCircle2, Shield, Zap, Target, Search, MapPin, Code, Megaphone, PenTool, BarChart, Building2, Briefcase } from "lucide-react";
+import { CheckCircle2, Shield, Zap, Target, Search, MapPin, Code, Megaphone, PenTool, BarChart, Building2, Briefcase, ArrowRight, Check, Star, X, Sparkles, FileText, Brain, Code2, Rocket, Video, Globe, Kanban, BookOpen } from "lucide-react";
 import { MarketingLayout } from "@/components/layout/MarketingLayout";
 import { ThreeHero } from "@/components/ui/three-hero";
 import { Card3D } from "@/components/ui/3d-card";
 import { GsapReveal } from "@/components/animations/gsap-reveal";
-
 import { ScrollIndicator } from "@/components/ui/scroll-indicator";
 
 const trendingCategories = [
@@ -26,16 +25,59 @@ const topCompanies = [
   { name: "GlobalRetail", role: "Data Scientist", location: "London, UK", match: "85%" },
 ];
 
+const features = [
+  { name: 'AI Resume Generator', description: 'ATS-optimized resumes with AI-powered rewriting', icon: FileText, badge: 'Free' },
+  { name: 'Job Aggregator', description: '35-40 companies across LinkedIn, Naukri, and more', icon: Briefcase, badge: 'Free' },
+  { name: 'JD Analyzer', description: 'Match your resume against any job description', icon: Search, badge: 'Free' },
+  { name: 'Application Tracker', description: 'Kanban board with drag-and-drop pipeline', icon: Kanban, badge: 'Free' },
+  { name: 'AI Project Generator', description: 'Generate projects to fill skill gaps', icon: Code2, badge: 'Paid' },
+  { name: 'Mock Interview Engine', description: 'Text & voice mode with AI feedback', icon: Brain, badge: 'Paid' },
+  { name: 'Resume Tailoring Engine', description: 'Tailor for 500 companies automatically', icon: Zap, badge: 'Paid' },
+  { name: 'Code Generator + GitHub', description: 'AI writes code and pushes to GitHub', icon: Code2, badge: 'Paid' },
+  { name: 'Live Deployment', description: 'Auto-deploy to Vercel, Railway, Render', icon: Rocket, badge: 'Paid' },
+  { name: 'AI Video Demos', description: 'Seedance + Kling video walkthroughs', icon: Video, badge: 'Paid' },
+  { name: 'Portfolio Generator', description: 'Responsive portfolio with video demos', icon: Globe, badge: 'Paid' },
+  { name: 'Skill Gap Analyzer', description: 'Personalized learning roadmaps', icon: BookOpen, badge: 'Paid' },
+];
+
+const steps = [
+  { icon: UploadIcon, title: 'Upload', description: 'Upload your resume or fill a form' },
+  { icon: Target, title: 'Tailor', description: 'AI tailors for 500 companies' },
+  { icon: Rocket, title: 'Generate', description: 'AI generates projects & code' },
+  { icon: Globe, title: 'Deploy', description: 'Live demos on Vercel/Railway' },
+  { icon: Video, title: 'Video', description: 'AI video walkthroughs for portfolio' },
+  { icon: Briefcase, title: 'Apply', description: 'Apply with tailored resumes' },
+  { icon: Brain, title: 'Interview', description: 'Practice with AI mock interviews' },
+];
+
+const competitors = [
+  { name: 'Candidexa', resume: true, ats: true, jobBoard: true, portfolio: true, mockInterview: true, tracker: true, roadmap: true, projectGen: true, tailoring: true, codeGen: true, deployment: true, videoDemos: true },
+  { name: 'Rezi', resume: true, ats: true, jobBoard: false, portfolio: false, mockInterview: false, tracker: false, roadmap: false, projectGen: false, tailoring: false, codeGen: false, deployment: false, videoDemos: false },
+  { name: 'Wobo', resume: true, ats: true, jobBoard: false, portfolio: false, mockInterview: false, tracker: false, roadmap: false, projectGen: false, tailoring: false, codeGen: false, deployment: false, videoDemos: false },
+  { name: 'Jobscan', resume: true, ats: true, jobBoard: false, portfolio: false, mockInterview: false, tracker: false, roadmap: false, projectGen: false, tailoring: false, codeGen: false, deployment: false, videoDemos: false },
+  { name: 'Portfily', resume: true, ats: true, jobBoard: false, portfolio: true, mockInterview: false, tracker: false, roadmap: false, projectGen: false, tailoring: false, codeGen: false, deployment: false, videoDemos: false },
+  { name: 'Seera', resume: false, ats: false, jobBoard: false, portfolio: true, mockInterview: false, tracker: false, roadmap: false, projectGen: false, tailoring: false, codeGen: false, deployment: false, videoDemos: false },
+  { name: 'Seekario', resume: true, ats: true, jobBoard: false, portfolio: false, mockInterview: false, tracker: true, roadmap: false, projectGen: false, tailoring: false, codeGen: false, deployment: false, videoDemos: false },
+];
+
+function UploadIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+    </svg>
+  );
+}
+
 export default function Home() {
   return (
     <MarketingLayout>
-      {/* Hero Section */}
+      {/* Hero Section with Three.js Banner */}
       <section className="relative min-h-[calc(100vh-64px)] flex flex-col justify-center overflow-hidden py-24 sm:py-32 bg-muted/30">
         <ThreeHero />
         
         <Container className="text-center relative z-10">
           <GsapReveal direction="up" delay={0.2}>
-            <Badge variant="outline" className="mb-6 px-10 py-6 text-sm bg-background/80 backdrop-blur-sm border-primary/20 text-primary">
+            <Badge variant="outline" className="mb-6 px-6 py-2 text-sm bg-background/80 backdrop-blur-sm border-primary/20 text-primary">
               Trusted by 50,000+ candidates globally
             </Badge>
           </GsapReveal>
@@ -91,190 +133,228 @@ export default function Home() {
         <ScrollIndicator />
       </section>
 
-      {/* Trending Categories */}
-      <section className="py-20 border-b border-border relative z-10 bg-background">
+      {/* Problem Statement - from Nemotron */}
+      <section className="py-20 bg-background border-y border-border">
         <Container>
           <GsapReveal direction="up">
-            <h2 className="text-2xl font-bold mb-8 text-foreground">Trending Categories</h2>
-          </GsapReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {trendingCategories.map((category, index) => (
-              <GsapReveal key={category.name} direction="up" delay={index * 0.1}>
-                <Link href="#">
-                  <Card3D className="group cursor-pointer !p-0">
-                    <div className="p-6 flex items-center gap-4">
-                      <div className="p-3 bg-primary/20 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors shadow-[0_0_10px_rgba(99,102,241,0.3)] group-hover:shadow-[0_0_20px_rgba(99,102,241,0.6)]">
-                        <category.icon className="w-6 h-6" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground">{category.name}</h3>
-                        <p className="text-sm text-muted-foreground">{category.count}</p>
-                      </div>
-                    </div>
-                  </Card3D>
-                </Link>
-              </GsapReveal>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* Recommended Jobs Feed */}
-      <section className="py-20 bg-muted/30 relative z-10">
-        <Container>
-          <GsapReveal direction="up">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold text-foreground">Recommended for you</h2>
-              <Link href="/jobs" className="text-primary hover:underline text-sm font-medium">View all jobs →</Link>
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">The Problem We Solve</h2>
+              <p className="text-lg text-muted-foreground">Job seekers face a broken system. Here is what Candidexa fixes.</p>
             </div>
           </GsapReveal>
-          
-          <div className="grid md:grid-cols-2 gap-6">
-            {topCompanies.map((job, index) => (
-              <GsapReveal key={job.name} direction="up" delay={index * 0.1}>
-                <Card3D className="!p-0">
-                  <div className="p-6">
-                    <div className="flex justify-between items-start mb-4">
-                      <div className="flex gap-4">
-                        <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center">
-                          <Building2 className="w-6 h-6 text-muted-foreground" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-lg text-foreground">{job.role}</h3>
-                          <p className="text-sm text-muted-foreground">{job.name} • {job.location}</p>
-                        </div>
-                      </div>
-                      <Badge variant="secondary" className="bg-tertiary/20 text-tertiary hover:bg-tertiary/30 border-tertiary/20">
-                        {job.match} Match
-                      </Badge>
-                    </div>
-                    <div className="flex gap-2 mt-4 pt-4 border-t border-border">
-                      <Badge variant="outline" className="border-border">Full-time</Badge>
-                      <Badge variant="outline" className="border-border">Remote</Badge>
-                      <Badge variant="outline" className="border-border">Senior</Badge>
-                    </div>
-                  </div>
-                </Card3D>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { stat: '75%+', label: 'Resumes Rejected by ATS', description: 'Before a human ever sees them' },
+              { stat: '42%', label: 'Duplicate Applications', description: 'Across multiple platforms' },
+              { stat: '0%', label: 'Keyword Feedback', description: 'Candidates do not know why they fail' },
+              { stat: '10x', label: 'More Engagement', description: 'With video demos vs static screenshots' },
+            ].map((item, idx) => (
+              <GsapReveal key={item.label} direction="up" delay={idx * 0.1}>
+                <Card className="p-6 h-full">
+                  <div className="text-4xl font-bold text-primary mb-2">{item.stat}</div>
+                  <div className="font-semibold text-foreground mb-1">{item.label}</div>
+                  <div className="text-sm text-muted-foreground">{item.description}</div>
+                </Card>
               </GsapReveal>
             ))}
           </div>
         </Container>
       </section>
 
-      {/* Candidate Workspace Showcase */}
-      <section className="py-24 border-y border-border relative z-10 bg-background">
+      {/* 12 AI-Powered Features */}
+      <section id="features" className="py-20 bg-muted/30">
         <Container>
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <GsapReveal direction="left">
-              <div>
-                <Badge className="bg-primary/10 text-primary hover:bg-primary/20 mb-4 border-0">The Candidexa Workspace</Badge>
-                <h2 className="text-3xl font-bold mb-6 text-foreground">Stop guessing. Start matching.</h2>
-                <p className="text-lg text-muted-foreground mb-8">
-                  Don't just send the same resume to every employer. Candidexa analyzes your profile against the job description and instantly highlights skill gaps.
-                </p>
-                
-                <ul className="space-y-6">
-                  <li className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      <Zap className="w-5 h-5 text-primary" />
+          <GsapReveal direction="up">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">12 AI-Powered Features</h2>
+              <p className="text-lg text-muted-foreground">Everything you need to go from resume to offer letter.</p>
+            </div>
+          </GsapReveal>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature, idx) => (
+              <GsapReveal key={feature.name} direction="up" delay={idx * 0.05}>
+                <Card className="group p-6 h-full hover:shadow-lg hover:border-primary/30 transition-all">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="rounded-xl bg-primary/10 p-3 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                      <feature.icon className="h-6 w-6" />
                     </div>
-                    <div>
-                      <h4 className="font-semibold text-foreground">Instant Match Analysis</h4>
-                      <p className="text-muted-foreground text-sm mt-1">See exactly how well you fit a role before you apply.</p>
+                    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                      feature.badge === 'Free' ? 'bg-green-500/10 text-green-600 border border-green-500/20' : 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
+                    }`}>
+                      {feature.badge}
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">{feature.name}</h3>
+                  <p className="text-sm text-muted-foreground">{feature.description}</p>
+                </Card>
+              </GsapReveal>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* How It Works - AI Career Loop */}
+      <section id="how-it-works" className="py-20 bg-background border-y border-border">
+        <Container>
+          <GsapReveal direction="up">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">The AI Career Loop</h2>
+              <p className="text-lg text-muted-foreground">Upload to offer letter in one continuous AI-powered pipeline.</p>
+            </div>
+          </GsapReveal>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6">
+            {steps.map((step, i) => (
+              <GsapReveal key={step.title} direction="up" delay={i * 0.07}>
+                <div className="flex flex-col items-center text-center">
+                  <div className="relative">
+                    <div className="rounded-2xl bg-primary p-4 text-primary-foreground shadow-lg shadow-primary/20">
+                      <step.icon className="h-8 w-8" />
                     </div>
-                  </li>
-                  <li className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      <Target className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-foreground">AI Resume Tailoring</h4>
-                      <p className="text-muted-foreground text-sm mt-1">Truthfully adapt your resume to highlight the exact skills the employer is looking for.</p>
-                    </div>
-                  </li>
-                  <li className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      <Briefcase className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-foreground">Track Everything</h4>
-                      <p className="text-muted-foreground text-sm mt-1">Manage all your tailored applications and cover letters in one organized dashboard.</p>
-                    </div>
-                  </li>
-                </ul>
-                
-                <div className="mt-10">
-                  <Link href="/sign-up">
-                    <Button size="lg" className="h-12 px-8">Upload Your Resume</Button>
-                  </Link>
+                    <span className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-background text-xs font-bold">
+                      {i + 1}
+                    </span>
+                  </div>
+                  <h3 className="mt-4 font-semibold text-foreground">{step.title}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">{step.description}</p>
                 </div>
-              </div>
+              </GsapReveal>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Why Candidexa Wins - Comparison Table */}
+      <section className="py-20 bg-muted/30">
+        <Container>
+          <GsapReveal direction="up">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">Why Candidexa Wins</h2>
+              <p className="text-lg text-muted-foreground">The only platform with all 12 AI features in one place.</p>
+            </div>
+          </GsapReveal>
+          <GsapReveal direction="up" delay={0.2}>
+            <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b bg-muted/50">
+                    <th className="px-6 py-4 text-left font-semibold text-foreground">Feature</th>
+                    {competitors.map(c => (
+                      <th key={c.name} className={`px-4 py-4 text-center font-semibold ${c.name === 'Candidexa' ? 'text-primary bg-primary/5' : 'text-foreground'}`}>
+                        {c.name}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { key: 'resume', label: 'AI Resume' },
+                    { key: 'ats', label: 'ATS Score' },
+                    { key: 'jobBoard', label: 'Job Board' },
+                    { key: 'portfolio', label: 'AI Portfolio' },
+                    { key: 'mockInterview', label: 'Mock Interview' },
+                    { key: 'tracker', label: 'App Tracker' },
+                    { key: 'roadmap', label: 'Skill Roadmap' },
+                    { key: 'projectGen', label: 'Project Gen' },
+                    { key: 'tailoring', label: '500-Company Tailoring' },
+                    { key: 'codeGen', label: 'Code Generator' },
+                    { key: 'deployment', label: 'Live Deployment' },
+                    { key: 'videoDemos', label: 'AI Video Demos' },
+                  ].map(({ key, label }) => (
+                    <tr key={key} className="border-b last:border-0 hover:bg-muted/20">
+                      <td className="px-6 py-3 font-medium text-foreground">{label}</td>
+                      {competitors.map(c => (
+                        <td key={c.name} className={`px-4 py-3 text-center ${c.name === 'Candidexa' ? 'bg-primary/5' : ''}`}>
+                          {c[key as keyof typeof c] ? (
+                            <Check className="h-5 w-5 text-green-500 mx-auto" />
+                          ) : (
+                            <X className="h-5 w-5 text-muted-foreground/30 mx-auto" />
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </GsapReveal>
+        </Container>
+      </section>
+
+      {/* Pricing */}
+      <section id="pricing" className="py-20 bg-background border-y border-border">
+        <Container>
+          <GsapReveal direction="up">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">Simple Pricing</h2>
+              <p className="text-lg text-muted-foreground">Start free. Upgrade when you need more AI power.</p>
+            </div>
+          </GsapReveal>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <GsapReveal direction="up" delay={0.1}>
+              <Card className="p-8 h-full flex flex-col">
+                <div className="text-sm font-medium text-muted-foreground mb-2">Free Tier</div>
+                <div className="text-4xl font-bold text-foreground mb-1">₹0</div>
+                <div className="text-sm text-muted-foreground mb-6">Forever free</div>
+                <ul className="space-y-3 mb-8 flex-1">
+                  {['AI Resume Generator (1 resume)', 'Job Aggregator Board', 'Application Tracker (20 apps)', 'JD Analyzer (3/month)', '10K AI tokens/day'].map(f => (
+                    <li key={f} className="flex items-center gap-3 text-sm text-foreground">
+                      <Check className="h-4 w-4 text-green-500 shrink-0" /> {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link href="/register" className="block w-full">
+                  <Button variant="outline" className="w-full rounded-full">Get Started Free</Button>
+                </Link>
+              </Card>
             </GsapReveal>
-            
-            {/* Workspace Mockup */}
-            <GsapReveal direction="right">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 to-transparent blur-3xl -z-10 rounded-full"></div>
-                <Card3D className="!p-0 border border-border bg-card/60 backdrop-blur-2xl overflow-hidden shadow-2xl">
-                  <div className="p-4 border-b border-border flex gap-2 items-center bg-muted/50">
-                    <div className="flex gap-2">
-                      <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                      <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                      <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                    </div>
-                    <div className="text-xs text-muted-foreground font-medium ml-4">Match Analysis</div>
-                  </div>
-                  <div className="p-8">
-                    <div className="flex justify-between items-center mb-6">
-                      <div>
-                        <h3 className="font-bold text-lg text-foreground">Senior Frontend Engineer</h3>
-                        <p className="text-sm text-muted-foreground">TechFlow Inc.</p>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-3xl font-extrabold text-tertiary drop-shadow-[0_0_10px_rgba(76,215,246,0.5)]">92%</span>
-                        <p className="text-xs text-muted-foreground">Match Score</p>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-center bg-tertiary/10 text-tertiary p-3 rounded-lg border border-tertiary/20">
-                        <span className="font-medium text-sm">React & Next.js Experience</span>
-                        <CheckCircle2 className="w-5 h-5" />
-                      </div>
-                      <div className="flex justify-between items-center bg-tertiary/10 text-tertiary p-3 rounded-lg border border-tertiary/20">
-                        <span className="font-medium text-sm">TypeScript Proficiency</span>
-                        <CheckCircle2 className="w-5 h-5" />
-                      </div>
-                      <div className="flex justify-between items-center bg-chart-3/10 text-chart-3 p-3 rounded-lg border border-chart-3/20">
-                        <span className="font-medium text-sm">GraphQL Knowledge</span>
-                        <span className="text-xs font-semibold px-2 py-1 bg-background/50 rounded-full">Missing</span>
-                      </div>
-                    </div>
-                    
-                    <Button className="w-full mt-6" variant="secondary">Generate Tailored Resume</Button>
-                  </div>
-                </Card3D>
-              </div>
+            <GsapReveal direction="up" delay={0.2}>
+              <Card className="relative p-8 h-full flex flex-col border-primary shadow-lg shadow-primary/10">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-semibold text-primary-foreground">Most Popular</div>
+                <div className="text-sm font-medium text-primary mb-2">Paid Tier</div>
+                <div className="text-4xl font-bold text-foreground mb-1">₹299-499<span className="text-lg font-normal text-muted-foreground">/mo</span></div>
+                <div className="text-sm text-muted-foreground mb-6">Everything in Free +</div>
+                <ul className="space-y-3 mb-8 flex-1">
+                  {['Unlimited AI resumes + all templates', 'Resume Tailoring for 500 companies', 'AI Project & Code Generator', 'AI Video Demos (20/month)', 'Portfolio Generator + hosting', 'Mock Interview Engine (voice mode)', '500K AI tokens/day', '2FA Security'].map(f => (
+                    <li key={f} className="flex items-center gap-3 text-sm text-foreground">
+                      <Check className="h-4 w-4 text-primary shrink-0" /> {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link href="/register?plan=paid" className="block w-full">
+                  <Button className="w-full rounded-full shadow-lg">Upgrade to Pro</Button>
+                </Link>
+              </Card>
             </GsapReveal>
           </div>
         </Container>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-card border-t border-border text-center relative z-10 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent"></div>
-        <Container className="relative z-10">
+      {/* Testimonials */}
+      <section className="py-20 bg-muted/30">
+        <Container>
           <GsapReveal direction="up">
-            <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to land your dream job?</h2>
-            <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
-              Join thousands of professionals who are using AI to build truthful, highly-targeted applications.
-            </p>
-            <Link href="/sign-up">
-              <Button size="lg" className="h-12 px-8 font-semibold">
-                Create your free account
-              </Button>
-            </Link>
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">What Users Say</h2>
+            </div>
           </GsapReveal>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { name: 'Priya Sharma', role: 'SDE-1 at Flipkart', quote: 'Candidexa tailored my resume for 200 companies in minutes. I got 5 interview calls in the first week.' },
+              { name: 'Arjun Patel', role: 'Backend Developer', quote: 'The AI mock interview feature was a game-changer. I practiced for 2 weeks and aced my Google interview.' },
+              { name: 'Sneha Reddy', role: 'Full Stack Developer', quote: 'The portfolio generator with video demos blew my recruiters away. Every project had a live demo link.' },
+            ].map((t, idx) => (
+              <GsapReveal key={t.name} direction="up" delay={idx * 0.1}>
+                <Card className="p-6 h-full">
+                  <div className="flex gap-1 mb-4">{[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />)}</div>
+                  <p className="text-foreground mb-4">&ldquo;{t.quote}&rdquo;</p>
+                  <div>
+                    <div className="font-semibold text-foreground">{t.name}</div>
+                    <div className="text-sm text-muted-foreground">{t.role}</div>
+                  </div>
+                </Card>
+              </GsapReveal>
+            ))}
+          </div>
         </Container>
       </section>
     </MarketingLayout>

@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") || "https://candidexa-backend.up.railway.app/api/v1";
-const RAILWAY_URL = "https://candidexa-backend.up.railway.app/api/v1";
 
 function getTargetUrl(path: string[], search: string) {
-  const backend = BACKEND_URL.includes("localhost") ? BACKEND_URL : RAILWAY_URL;
+  const backend = BACKEND_URL;
   const joined = path.join("/");
   return `${backend}/${joined}${search}`;
 }

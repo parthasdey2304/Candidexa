@@ -37,7 +37,9 @@ export default function RegisterPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`/api/proxy/auth/register`, {
+      // Send both query params (for old Render) and JSON body (for new local backend) for compatibility
+      const query = new URLSearchParams({ email, password, full_name: name }).toString();
+      const res = await fetch(`/api/proxy/auth/register?${query}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, full_name: name }),

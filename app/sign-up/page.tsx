@@ -37,7 +37,8 @@ export default function SignUpAliasPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`/api/proxy/auth/register`, {
+      const query = new URLSearchParams({ email, password, full_name: name }).toString();
+      const res = await fetch(`/api/proxy/auth/register?${query}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, full_name: name }),

@@ -154,7 +154,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = useCallback(async (payload: LoginPayload) => {
-    const response = await apiClient.post<AuthResponse>("/auth/login", payload);
+    // Old Render expects form (OAuth2), new backend handles both JSON and form - send form for max compatibility
+    const form = new URLSearchParams();
+    form.append("username", payload.email);
+    form.append("password", payload.password);
+    const response = await apiClient.post<AuthResponse>("/auth/login", form as any);
     const normalized = normalizeAuthResponse(response);
 
     if (!normalized.requiresTwoFactor && normalized.user) {
@@ -170,7 +174,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [refreshSession]);
 
   const register = useCallback(async (payload: RegisterPayload) => {
-    const response = await apiClient.post<AuthResponse>("/auth/register", payload);
+    // Send both query and JSON for compatibility with old (query) and new (JSON) backends
+    const query = `/auth/register?email=${encodeURIComponent(payload.email)}&password=${encodeURIComponent(payload.password)}&full_name=${encodeURIComponent(payload.name)}`;
+    const response = await apiClient.post<AuthResponse>(query, payload as any);
     const normalized = normalizeAuthResponse(response);
 
     if (!normalized.requiresTwoFactor && normalized.user) {

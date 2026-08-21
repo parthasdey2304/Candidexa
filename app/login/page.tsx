@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Spinner } from "@/components/ui/spinner";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { isSupabaseConfigured } from "@/lib/supabase/client";
 
 function GithubMark(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -23,10 +24,13 @@ function GithubMark(props: React.SVGProps<SVGSVGElement>) {
 }
 
 function resolveLoginError(error: unknown) {
-  const msg = (error as { message?: string })?.message?.toLowerCase() ?? "";
-  if (msg.includes("invalid") || msg.includes("credentials") || msg.includes("incorrect")) return "Invalid credentials";
+  const raw = (error as { message?: string })?.message ?? "";
+  const msg = raw.toLowerCase();
+  if (msg.includes("supabase not configured")) return raw + " — fix Vercel env and redeploy.";
+  if (msg.includes("email not confirmed") || msg.includes("confirm")) return "Email not confirmed — check your inbox for the Supabase verification link and confirm before signing in.";
+  if (msg.includes("invalid") || msg.includes("credentials") || msg.includes("incorrect") || msg.includes("not found")) return `${raw || "Invalid credentials"} — no account with this email on Supabase yet? Try Sign up free, or check you used the same Supabase project (lpgtdyktniumthilrsnc.supabase.co) as localhost.`;
   if (msg.includes("locked")) return "Account locked. Try again in 15 minutes.";
-  if (msg) return (error as { message: string }).message;
+  if (raw) return raw;
   return "We couldn't sign you in right now. Please try again.";
 }
 
@@ -89,7 +93,12 @@ export default function LoginPage() {
             <h2 className="text-2xl font-bold text-foreground mb-2">Sign in to Candidexa</h2>
             <p className="text-muted-foreground mb-6">Enter your credentials to access your dashboard.</p>
 
-            {error && <div className="mb-4 rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive">{error}</div>}
+            {!isSupabaseConfigured() && (
+              <div className="mb-4 rounded-lg bg-amber-500/10 border border-amber-500/20 p-3 text-xs text-amber-700 dark:text-amber-300">
+                Supabase not configured on this deployment. Set <code>NEXT_PUBLIC_SUPABASE_URL</code> + <code>NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY</code> in Vercel → Settings → Environment Variables and redeploy. Localhost works because it has .env, but <code>candidexa.online</code> does not.
+              </div>
+            )}
+            {error && <div className="mb-4 rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive whitespace-pre-wrap break-words">{error}</div>}
 
             <div className="grid gap-3 mb-6">
               <Button variant="outline" className="h-11" type="button" onClick={() => void signInWithOAuth("google")}>

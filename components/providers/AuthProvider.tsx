@@ -94,6 +94,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = useCallback(
     async (payload: LoginPayload) => {
+      if (!process.env.NEXT_PUBLIC_SUPABASE_URL || (!process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY && !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+        throw new Error("Supabase not configured on this deployment (candidexa.online). Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY in Vercel -> Settings -> Environment Variables and redeploy.");
+      }
       const { error } = await supabase.auth.signInWithPassword({
         email: payload.email,
         password: payload.password,

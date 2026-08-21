@@ -46,7 +46,11 @@ export default function RegisterPage() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.detail || "Sign up failed");
+        const detail = data.detail;
+        const msg = Array.isArray(detail)
+          ? detail.map((d: any) => d.msg || d.detail || JSON.stringify(d)).join(", ")
+          : typeof detail === "string" ? detail : data.message || data.error || "Sign up failed";
+        throw new Error(msg);
       }
       toast({ title: "Account created", description: "Please sign in to continue.", variant: "success" });
       router.push("/login");

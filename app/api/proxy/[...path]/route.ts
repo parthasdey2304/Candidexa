@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") || "https://candidexa-backend.up.railway.app/api/v1";
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") || "https://candidexa-backend.onrender.com/api/v1";
 
 function getTargetUrl(path: string[], search: string) {
   const backend = BACKEND_URL;
@@ -35,7 +35,7 @@ async function proxy(request: NextRequest, path: string[]) {
     const contentTypeRes = res.headers.get("content-type") || "application/json";
     const data = await res.text();
 
-    // If backend is down and returns HTML (Railway Not Found page), convert to JSON 503 instead of 500
+    // If backend is down and returns HTML (e.g., Railway/Render Not Found), convert to JSON 503
     if (!contentTypeRes.includes("application/json") && res.status >= 400) {
       return NextResponse.json(
         { message: "Backend temporarily unavailable", detail: "Service is starting up, please try again in a moment." },
@@ -48,7 +48,7 @@ async function proxy(request: NextRequest, path: string[]) {
       headers: { "content-type": contentTypeRes },
     });
   } catch (error) {
-    // Network error to Railway (backend sleeping) - return 503 instead of 500 to avoid Internal Server Error spam
+    // Network error to Render/Railway (backend sleeping) - return 503 instead of 500
     console.debug("[Proxy] Backend unavailable:", targetUrl, error);
     return NextResponse.json(
       { message: "Backend unavailable", detail: "Could not reach backend, please try again." },

@@ -4,7 +4,7 @@ export const env = {
   apiBaseUrl: trimTrailingSlash(
     process.env.NEXT_PUBLIC_USE_PROXY === "true"
       ? "/api/proxy"
-      : (process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://candidexa-backend.up.railway.app/api/v1")
+      : (process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://candidexa-backend.onrender.com/api/v1")
   ),
   appName: process.env.NEXT_PUBLIC_APP_NAME ?? "Candidexa",
   appUrl: trimTrailingSlash(

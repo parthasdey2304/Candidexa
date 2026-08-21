@@ -142,7 +142,7 @@ export default function TrackerPage() {
     return (
       <div className="flex flex-col items-center justify-center py-24">
         <Spinner size="lg" />
-        <p className="mt-4 text-sm text-[#908fa0]">Loading your applications...</p>
+        <p className="mt-4 text-sm text-muted-foreground">Loading your applications...</p>
       </div>
     );
   }
@@ -151,29 +151,29 @@ export default function TrackerPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">Application Tracker</h1>
-          <p className="mt-1 text-sm text-[#908fa0]">{applications.length} applications tracked</p>
+          <h1 className="text-2xl font-bold text-foreground">Application Tracker</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{applications.length} applications tracked</p>
         </div>
         <div className="flex gap-2">
           <Link href="/app/tracker/analytics">
-            <Button variant="outline" size="sm" className="border-[#2d3449] bg-transparent text-[#dae2fd] hover:bg-[#171f33]">
+            <Button variant="outline" size="sm" className="border-border bg-transparent text-foreground hover:bg-muted">
               <BarChart3 className="mr-2 h-4 w-4" /> Analytics
             </Button>
           </Link>
-          <Button size="sm" onClick={() => setShowAddModal(true)} className="bg-[#6366f1] text-white hover:bg-[#4f46e5]">
+          <Button size="sm" onClick={() => setShowAddModal(true)} className="bg-[#6366f1] text-foreground hover:bg-[#4f46e5]">
             <Plus className="mr-2 h-4 w-4" /> Add Application
           </Button>
         </div>
       </div>
 
-      <div className="flex gap-4 overflow-x-auto pb-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {(Object.keys(columnConfig) as Column[]).map((column) => {
           const config = columnConfig[column];
           const colApps = getApplicationsByColumn(column);
           return (
-            <div key={column} className="w-72 shrink-0">
+            <div key={column} className="w-full flex flex-col">
               <div className={`mb-3 flex items-center justify-between rounded-xl border px-3 py-2.5 ${config.panel}`}>
-                <h3 className="flex items-center gap-2 text-sm font-semibold text-[#dae2fd]">
+                <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground">
                   <span className={`h-2 w-2 rounded-full ${config.dot}`} />
                   {config.label}
                 </h3>
@@ -184,23 +184,23 @@ export default function TrackerPage() {
                   <Card
                     key={app.id}
                     onClick={() => openDetail(app)}
-                    className="cursor-pointer border-[#2d3449] bg-[#131b2e] transition-all hover:border-[#6366f1]/50 hover:bg-[#171f33]"
+                    className="cursor-pointer border-border bg-card transition-all hover:border-[#6366f1]/50 hover:bg-muted"
                   >
                     <CardContent>
                       <div className="mb-2 flex items-start justify-between gap-2">
                         <div className="flex items-center gap-2">
                           <CompanyLogo name={app.company} size="sm" />
                           <div>
-                            <p className="text-sm font-medium text-white">{app.company}</p>
-                            <p className="text-xs text-[#908fa0]">{app.title}</p>
+                            <p className="text-sm font-medium text-foreground">{app.company}</p>
+                            <p className="text-xs text-muted-foreground">{app.title}</p>
                           </div>
                         </div>
                       </div>
-                      <div className="mb-2 flex items-center gap-2 text-xs text-[#908fa0]">
+                      <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
                         <Calendar className="h-3 w-3 text-[#5c5a72]" /> {app.appliedDate}
                       </div>
                       <div className="flex flex-wrap items-center gap-1.5">
-                        <Badge variant="secondary" className="border-[#2d3449] bg-[#171f33] text-[#dae2fd]">
+                        <Badge variant="secondary" className="border-border bg-muted text-foreground">
                           {app.source}
                         </Badge>
                         {app.atsScore !== undefined && (
@@ -219,7 +219,7 @@ export default function TrackerPage() {
                   </Card>
                 ))}
                 {colApps.length === 0 && (
-                  <div className="flex h-24 items-center justify-center rounded-xl border border-dashed border-[#2d3449] text-xs text-[#908fa0]">
+                  <div className="flex h-24 items-center justify-center rounded-xl border border-dashed border-border text-xs text-muted-foreground">
                     No applications
                   </div>
                 )}
@@ -230,87 +230,87 @@ export default function TrackerPage() {
       </div>
 
       <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
-        <DialogContent className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd] sm:max-w-md">
+        <DialogContent className="border-border bg-muted text-foreground sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-white">Add Application</DialogTitle>
-            <DialogDescription className="text-[#908fa0]">
+            <DialogTitle className="text-foreground">Add Application</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
               Track a new opportunity in your pipeline.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-[#dae2fd]">Company</label>
+              <label className="mb-1 block text-sm font-medium text-foreground">Company</label>
               <Input
                 value={form.company}
                 onChange={(e) => setForm({ ...form, company: e.target.value })}
                 placeholder="e.g., Flipkart"
-                className="border-[#2d3449] bg-[#131b2e] text-[#dae2fd] placeholder:text-[#908fa0]"
+                className="border-border bg-card text-foreground placeholder:text-muted-foreground"
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-[#dae2fd]">Job Title</label>
+              <label className="mb-1 block text-sm font-medium text-foreground">Job Title</label>
               <Input
                 value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
                 placeholder="e.g., SDE-1"
-                className="border-[#2d3449] bg-[#131b2e] text-[#dae2fd] placeholder:text-[#908fa0]"
+                className="border-border bg-card text-foreground placeholder:text-muted-foreground"
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-[#dae2fd]">Source</label>
+                <label className="mb-1 block text-sm font-medium text-foreground">Source</label>
                 <Input
                   value={form.source}
                   onChange={(e) => setForm({ ...form, source: e.target.value })}
                   placeholder="e.g., LinkedIn"
-                  className="border-[#2d3449] bg-[#131b2e] text-[#dae2fd] placeholder:text-[#908fa0]"
+                  className="border-border bg-card text-foreground placeholder:text-muted-foreground"
                 />
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium text-[#dae2fd]">Application Date</label>
+                <label className="mb-1 block text-sm font-medium text-foreground">Application Date</label>
                 <Input
                   type="date"
                   value={form.appliedDate}
                   onChange={(e) => setForm({ ...form, appliedDate: e.target.value })}
-                  className="border-[#2d3449] bg-[#131b2e] text-[#dae2fd]"
+                  className="border-border bg-card text-foreground"
                 />
               </div>
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-[#dae2fd]">Status</label>
+              <label className="mb-1 block text-sm font-medium text-foreground">Status</label>
               <select
                 value={form.status}
                 onChange={(e) => setForm({ ...form, status: e.target.value as Column })}
-                className="h-8 w-full rounded-lg border border-[#2d3449] bg-[#131b2e] px-2.5 text-sm text-[#dae2fd] outline-none focus:ring-2 focus:ring-[#6366f1]/50"
+                className="h-8 w-full rounded-lg border border-border bg-card px-2.5 text-sm text-foreground outline-none focus:ring-2 focus:ring-[#6366f1]/50"
               >
                 {(Object.keys(columnConfig) as Column[]).map((key) => (
-                  <option key={key} value={key} className="bg-[#131b2e]">
+                  <option key={key} value={key} className="bg-card">
                     {columnConfig[key].label}
                   </option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-[#dae2fd]">Notes</label>
+              <label className="mb-1 block text-sm font-medium text-foreground">Notes</label>
               <Textarea
                 rows={3}
                 value={form.notes}
                 onChange={(e) => setForm({ ...form, notes: e.target.value })}
                 placeholder="Any notes about this application..."
-                className="border-[#2d3449] bg-[#131b2e] text-[#dae2fd] placeholder:text-[#908fa0]"
+                className="border-border bg-card text-foreground placeholder:text-muted-foreground"
               />
             </div>
             {formError && <p className="text-sm text-red-400">{formError}</p>}
           </div>
-          <DialogFooter className="-mx-4 -mb-4 border-[#2d3449] bg-[#131b2e]">
+          <DialogFooter className="-mx-4 -mb-4 border-border bg-card">
             <DialogClose
               render={
-                <Button variant="outline" className="border-[#2d3449] bg-transparent text-white hover:bg-[#171f33]">
+                <Button variant="outline" className="border-border bg-transparent text-foreground hover:bg-muted">
                   Cancel
                 </Button>
               }
             />
-            <Button onClick={handleAdd} className="bg-[#6366f1] text-white hover:bg-[#4f46e5]">
+            <Button onClick={handleAdd} className="bg-[#6366f1] text-foreground hover:bg-[#4f46e5]">
               <Plus className="mr-2 h-4 w-4" /> Add Application
             </Button>
           </DialogFooter>
@@ -318,12 +318,12 @@ export default function TrackerPage() {
       </Dialog>
 
       <Dialog open={showDetailModal} onOpenChange={setShowDetailModal}>
-        <DialogContent className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd] sm:max-w-md">
+        <DialogContent className="border-border bg-muted text-foreground sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-white">
+            <DialogTitle className="text-foreground">
               {selectedApp ? `${selectedApp.company} - ${selectedApp.title}` : "Application"}
             </DialogTitle>
-            <DialogDescription className="text-[#908fa0]">
+            <DialogDescription className="text-muted-foreground">
               Application details and suggested next steps.
             </DialogDescription>
           </DialogHeader>
@@ -331,49 +331,49 @@ export default function TrackerPage() {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <span className="text-sm text-[#908fa0]">Status</span>
-                  <p className="mt-1 font-medium capitalize text-[#dae2fd]">
+                  <span className="text-sm text-muted-foreground">Status</span>
+                  <p className="mt-1 font-medium capitalize text-foreground">
                     {columnConfig[selectedApp.status].label}
                   </p>
                 </div>
                 <div>
-                  <span className="text-sm text-[#908fa0]">Source</span>
-                  <p className="mt-1 font-medium text-[#dae2fd]">{selectedApp.source}</p>
+                  <span className="text-sm text-muted-foreground">Source</span>
+                  <p className="mt-1 font-medium text-foreground">{selectedApp.source}</p>
                 </div>
                 <div>
-                  <span className="text-sm text-[#908fa0]">Applied</span>
-                  <p className="mt-1 font-medium text-[#dae2fd]">{selectedApp.appliedDate}</p>
+                  <span className="text-sm text-muted-foreground">Applied</span>
+                  <p className="mt-1 font-medium text-foreground">{selectedApp.appliedDate}</p>
                 </div>
                 {selectedApp.atsScore !== undefined && (
                   <div>
-                    <span className="text-sm text-[#908fa0]">ATS Score</span>
-                    <p className="mt-1 font-medium text-[#dae2fd]">{selectedApp.atsScore}%</p>
+                    <span className="text-sm text-muted-foreground">ATS Score</span>
+                    <p className="mt-1 font-medium text-foreground">{selectedApp.atsScore}%</p>
                   </div>
                 )}
               </div>
               {selectedApp.nextAction && (
                 <div>
-                  <span className="text-sm text-[#908fa0]">Next Action</span>
-                  <p className="mt-1 text-sm font-medium text-[#dae2fd]">{selectedApp.nextAction}</p>
+                  <span className="text-sm text-muted-foreground">Next Action</span>
+                  <p className="mt-1 text-sm font-medium text-foreground">{selectedApp.nextAction}</p>
                 </div>
               )}
               {selectedApp.notes && (
                 <div>
-                  <span className="text-sm text-[#908fa0]">Notes</span>
-                  <p className="mt-1 text-sm text-[#dae2fd]">{selectedApp.notes}</p>
+                  <span className="text-sm text-muted-foreground">Notes</span>
+                  <p className="mt-1 text-sm text-foreground">{selectedApp.notes}</p>
                 </div>
               )}
               <div className="flex flex-col gap-2 sm:flex-row">
-                <Button variant="outline" className="flex-1 border-[#2d3449] bg-transparent text-[#dae2fd] hover:bg-[#171f33]">
+                <Button variant="outline" className="flex-1 border-border bg-transparent text-foreground hover:bg-muted">
                   <ExternalLink className="mr-2 h-4 w-4" /> View Job
                 </Button>
                 {selectedApp.hasResume && (
-                  <Button variant="outline" className="flex-1 border-[#2d3449] bg-transparent text-[#dae2fd] hover:bg-[#171f33]">
+                  <Button variant="outline" className="flex-1 border-border bg-transparent text-foreground hover:bg-muted">
                     <FileText className="mr-2 h-4 w-4" /> View Resume
                   </Button>
                 )}
                 <Link href={isPro ? "/app/tailor" : "/pricing"} className="flex-1">
-                  <Button className="w-full bg-[#6366f1] text-white hover:bg-[#4f46e5]">
+                  <Button className="w-full bg-[#6366f1] text-foreground hover:bg-[#4f46e5]">
                     <TrendingUp className="mr-2 h-4 w-4" /> Tailor Resume
                   </Button>
                 </Link>

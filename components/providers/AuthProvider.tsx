@@ -1,17 +1,10 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-
-import { ApiError, apiClient } from "@/lib/api-client";
+import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/providers/ToastProvider";
+import type { User, Session } from "@supabase/supabase-js";
 
 export interface AuthUser {
   id: string;
@@ -47,77 +40,22 @@ type RegisterPayload = {
 interface AuthContextValue extends AuthSession {
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (payload: LoginPayload) => Promise<AuthResponse>;
+  login: (payload: LoginPayload) => Promise<{ requiresTwoFactor?: boolean }>;
   logout: () => Promise<void>;
   refreshSession: () => Promise<void>;
-  register: (payload: RegisterPayload) => Promise<AuthResponse>;
-}
-
-interface AuthResponse {
-  requiresTwoFactor?: boolean;
-  ticket?: string;
-  user?: AuthUser | null;
-  plan?: AuthPlan | null;
+  register: (payload: RegisterPayload) => Promise<{ requiresTwoFactor?: boolean }>;
+  signInWithOAuth: (provider: "google" | "github") => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-function normalizeSession(payload: unknown): AuthSession {
-  const root =
-    typeof payload === "object" && payload !== null && "data" in payload
-      ? (payload as { data?: unknown }).data
-      : payload;
-
-  const source = (typeof root === "object" && root !== null ? root : {}) as {
-    user?: Partial<AuthUser>;
-    plan?: Partial<AuthPlan>;
-    subscription?: Partial<AuthPlan>;
-  };
-
-  const user = source.user
-    ? {
-        id: String(source.user.id ?? source.user.email ?? "current-user"),
-        email: String(source.user.email ?? ""),
-        name: String(
-          source.user.name ?? source.user.email?.split("@")[0] ?? "Candidate"
-        ),
-        avatarUrl: source.user.avatarUrl ?? null,
-      }
-    : null;
-
-  const planSource = source.plan ?? source.subscription;
-  const plan = planSource
-    ? {
-        id: planSource.id,
-        name: String(planSource.name ?? planSource.tier ?? "Free"),
-        tier: typeof planSource.tier === "string" ? planSource.tier : undefined,
-        usageLimit:
-          typeof planSource.usageLimit === "number" ? planSource.usageLimit : null,
-      }
-    : null;
-
-  return { plan, user };
-}
-
-function normalizeAuthResponse(payload: unknown): AuthResponse {
-  const root =
-    typeof payload === "object" && payload !== null && "data" in payload
-      ? (payload as { data?: unknown }).data
-      : payload;
-
-  const source = (typeof root === "object" && root !== null ? root : {}) as {
-    ticket?: string;
-    requiresTwoFactor?: boolean;
-    requires_2fa?: boolean;
-  };
-
-  const session = normalizeSession(root);
-
+function mapSupabaseUser(user: User | null): AuthUser | null {
+  if (!user) return null;
   return {
-    ...session,
-    requiresTwoFactor:
-      source.requiresTwoFactor ?? source.requires_2fa ?? false,
-    ticket: source.ticket,
+    id: user.id,
+    email: user.email ?? "",
+    name: (user.user_metadata?.full_name as string) || (user.user_metadata?.name as string) || user.email?.split("@")[0] || "Candidate",
+    avatarUrl: (user.user_metadata?.avatar_url as string) || (user.user_metadata?.picture as string) || null,
   };
 }
 
@@ -125,6 +63,8 @@ const PUBLIC_AUTH_ROUTES = new Set([
   "/",
   "/login",
   "/register",
+  "/sign-in",
+  "/sign-up",
   "/forgot-password",
   "/reset-password",
   "/privacy",
@@ -137,128 +77,108 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const { toast } = useToast();
+  const supabase = useMemo(() => createClient(), []);
   const [session, setSession] = useState<AuthSession>({ plan: null, user: null });
   const [isLoading, setIsLoading] = useState(true);
+  const [supabaseSession, setSupabaseSession] = useState<Session | null>(null);
 
   const refreshSession = useCallback(async () => {
-    try {
-      const response = await apiClient.get("/auth/me", { retryOnAuthFailure: false });
-      setSession(normalizeSession(response));
-    } catch (error) {
-      // Silently handle network/CORS/404 when backend is unavailable - don't spam console
-      if (error instanceof ApiError && error.status === 0) {
-        console.debug("[Auth] Backend unavailable, treating as unauthenticated");
-      }
-      setSession({ plan: null, user: null });
-    }
-  }, []);
+    const { data } = await supabase.auth.getSession();
+    const s = data.session;
+    setSupabaseSession(s);
+    setSession({
+      user: mapSupabaseUser(s?.user ?? null),
+      plan: { name: "Free", tier: "free" },
+    });
+  }, [supabase]);
 
-  const login = useCallback(async (payload: LoginPayload) => {
-    // Old Render expects form (OAuth2), new backend handles both JSON and form - send form for max compatibility
-    const form = new URLSearchParams();
-    form.append("username", payload.email);
-    form.append("password", payload.password);
-    const response = await apiClient.post<AuthResponse>("/auth/login", form as any);
-    const normalized = normalizeAuthResponse(response);
-
-    if (!normalized.requiresTwoFactor && normalized.user) {
-      setSession({
-        plan: normalized.plan ?? null,
-        user: normalized.user,
+  const login = useCallback(
+    async (payload: LoginPayload) => {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: payload.email,
+        password: payload.password,
       });
-    } else if (!normalized.requiresTwoFactor) {
+      if (error) throw error;
       await refreshSession();
-    }
+      return {};
+    },
+    [supabase, refreshSession]
+  );
 
-    return normalized;
-  }, [refreshSession]);
-
-  const register = useCallback(async (payload: RegisterPayload) => {
-    // Send both query and JSON for compatibility with old (query) and new (JSON) backends
-    const query = `/auth/register?email=${encodeURIComponent(payload.email)}&password=${encodeURIComponent(payload.password)}&full_name=${encodeURIComponent(payload.name)}`;
-    const response = await apiClient.post<AuthResponse>(query, payload as any);
-    const normalized = normalizeAuthResponse(response);
-
-    if (!normalized.requiresTwoFactor && normalized.user) {
-      setSession({
-        plan: normalized.plan ?? null,
-        user: normalized.user,
+  const register = useCallback(
+    async (payload: RegisterPayload) => {
+      const { error } = await supabase.auth.signUp({
+        email: payload.email,
+        password: payload.password,
+        options: {
+          data: { full_name: payload.name },
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
       });
-    } else if (!normalized.requiresTwoFactor) {
+      if (error) throw error;
       await refreshSession();
-    }
+      return {};
+    },
+    [supabase, refreshSession]
+  );
 
-    return normalized;
-  }, [refreshSession]);
+  const signInWithOAuth = useCallback(
+    async (provider: "google" | "github") => {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback?next=/app`,
+        },
+      });
+      if (error) throw error;
+    },
+    [supabase]
+  );
 
   const logout = useCallback(async () => {
-    try {
-      await apiClient.post("/auth/logout");
-    } catch {
-      // Best effort logout keeps the client responsive if the backend session is gone.
-    } finally {
-      setSession({ plan: null, user: null });
-      router.push("/login");
-    }
-  }, [router]);
+    await supabase.auth.signOut();
+    setSession({ plan: null, user: null });
+    setSupabaseSession(null);
+    router.push("/login");
+  }, [supabase, router]);
 
   useEffect(() => {
     let mounted = true;
-
-    const bootstrap = async () => {
-      // Skip auth check on public routes when no auth indicator - prevents 500/CORS spam when Railway is sleeping
-      const isPublicRoute = PUBLIC_AUTH_ROUTES.has(pathname);
-      const hasAuthIndicator =
-        typeof document !== "undefined" &&
-        (document.cookie.includes("token") ||
-          document.cookie.includes("session") ||
-          localStorage.getItem("token") ||
-          localStorage.getItem("access_token") ||
-          sessionStorage.getItem("token"));
-
-      if (isPublicRoute && !hasAuthIndicator) {
-        if (mounted) setIsLoading(false);
-        return;
-      }
-
-      try {
-        const response = await apiClient.get("/auth/me", {
-          retryOnAuthFailure: false,
-        });
-
-        if (mounted) {
-          setSession(normalizeSession(response));
-        }
-      } catch (error) {
-        // Suppress noisy CORS/network errors on public routes - backend may be sleeping on Railway
-        if (error instanceof ApiError) {
-          if (error.status === 0 || error.status === 404 || error.status >= 500) {
-            console.debug("[Auth] Bootstrap failed gracefully:", error.message);
-          }
-        } else if (error instanceof TypeError) {
-          console.debug("[Auth] Network/CORS error suppressed");
-        }
-        if (mounted) {
-          setSession({ plan: null, user: null });
-        }
-      } finally {
-        if (mounted) {
-          setIsLoading(false);
-        }
-      }
+    const init = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (!mounted) return;
+      const s = data.session;
+      setSupabaseSession(s);
+      setSession({
+        user: mapSupabaseUser(s?.user ?? null),
+        plan: s ? { name: "Free", tier: "free" } : null,
+      });
+      setIsLoading(false);
     };
+    void init();
 
-    void bootstrap();
+    const { data: listener } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
+      setSupabaseSession(newSession);
+      setSession({
+        user: mapSupabaseUser(newSession?.user ?? null),
+        plan: newSession ? { name: "Free", tier: "free" } : null,
+      });
+      setIsLoading(false);
+    });
 
     return () => {
       mounted = false;
+      listener.subscription.unsubscribe();
     };
-  }, [pathname]);
+  }, [supabase]);
+
+  useEffect(() => {
+    if (supabaseSession === undefined) return;
+  }, [supabaseSession]);
 
   useEffect(() => {
     const handleExpired = () => {
       setSession({ plan: null, user: null });
-
       if (!PUBLIC_AUTH_ROUTES.has(pathname)) {
         toast({
           title: "Session expired",
@@ -268,18 +188,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         router.push("/login");
       }
     };
-
-    window.addEventListener(
-      "candidexa:auth-expired",
-      handleExpired as EventListener
-    );
-
-    return () => {
-      window.removeEventListener(
-        "candidexa:auth-expired",
-        handleExpired as EventListener
-      );
-    };
+    window.addEventListener("candidexa:auth-expired", handleExpired as EventListener);
+    return () => window.removeEventListener("candidexa:auth-expired", handleExpired as EventListener);
   }, [pathname, router, toast]);
 
   const value = useMemo<AuthContextValue>(
@@ -291,8 +201,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       logout,
       refreshSession,
       register,
+      signInWithOAuth,
     }),
-    [isLoading, login, logout, refreshSession, register, session]
+    [isLoading, login, logout, refreshSession, register, signInWithOAuth, session]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -300,14 +211,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error("useAuth must be used inside AuthProvider");
-  }
-
+  if (!context) throw new Error("useAuth must be used inside AuthProvider");
   return context;
 }
 
 export function isInvalidCredentialsError(error: unknown) {
-  return error instanceof ApiError && error.status === 401;
+  const msg = (error as { message?: string })?.message?.toLowerCase() ?? "";
+  return msg.includes("invalid") || msg.includes("credentials") || msg.includes("incorrect");
 }

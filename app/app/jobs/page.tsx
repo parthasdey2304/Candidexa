@@ -103,7 +103,7 @@ export default function JobsPage() {
     return (
       <div className="flex flex-col items-center justify-center py-24">
         <Spinner size="lg" />
-        <p className="mt-4 text-sm text-[#908fa0]">Loading job board...</p>
+        <p className="mt-4 text-sm text-muted-foreground">Loading job board...</p>
       </div>
     );
   }
@@ -112,8 +112,8 @@ export default function JobsPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">Job Board</h1>
-          <p className="mt-1 text-sm text-[#908fa0]">Browse jobs from 35+ companies across platforms</p>
+          <h1 className="text-2xl font-bold text-foreground">Job Board</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Browse jobs from 35+ companies across platforms</p>
         </div>
         <div className="flex items-center gap-2">
           {savedJobs.length > 0 && (
@@ -122,7 +122,7 @@ export default function JobsPage() {
               {savedJobs.length} saved
             </Badge>
           )}
-          <Badge variant="outline" className="border-[#2d3449] bg-[#131b2e] text-[#dae2fd]">
+          <Badge variant="outline" className="border-border bg-card text-foreground">
             {filteredJobs.length} jobs found
           </Badge>
         </div>
@@ -130,23 +130,23 @@ export default function JobsPage() {
 
       <div className="flex flex-col gap-3 lg:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#908fa0]" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             type="text"
             placeholder="Search by title, company, or skill..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="h-9 border-[#2d3449] bg-[#0b1326] pl-10 pr-4 text-sm text-[#dae2fd] placeholder:text-[#908fa0] focus-visible:ring-[#6366f1]/50"
+            className="h-9 border-border bg-muted pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus-visible:ring-[#6366f1]/50"
           />
         </div>
         <select
           value={selectedCompany}
           onChange={(e) => setSelectedCompany(e.target.value)}
-          className="h-9 w-full rounded-lg border border-[#2d3449] bg-[#0b1326] px-3 text-sm text-[#dae2fd] outline-none focus:ring-2 focus:ring-[#6366f1]/50 sm:w-44"
+          className="h-9 w-full rounded-lg border border-border bg-muted px-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-[#6366f1]/50 sm:w-44"
         >
-          <option value="" className="bg-[#0b1326]">All Companies</option>
+          <option value="" className="bg-muted">All Companies</option>
           {companies.map((c) => (
-            <option key={c} value={c} className="bg-[#0b1326]">
+            <option key={c} value={c} className="bg-muted">
               {c}
             </option>
           ))}
@@ -154,11 +154,11 @@ export default function JobsPage() {
         <select
           value={selectedLocation}
           onChange={(e) => setSelectedLocation(e.target.value)}
-          className="h-9 w-full rounded-lg border border-[#2d3449] bg-[#0b1326] px-3 text-sm text-[#dae2fd] outline-none focus:ring-2 focus:ring-[#6366f1]/50 sm:w-44"
+          className="h-9 w-full rounded-lg border border-border bg-muted px-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-[#6366f1]/50 sm:w-44"
         >
-          <option value="" className="bg-[#0b1326]">All Locations</option>
+          <option value="" className="bg-muted">All Locations</option>
           {locations.map((l) => (
-            <option key={l} value={l} className="bg-[#0b1326]">
+            <option key={l} value={l} className="bg-muted">
               {l}
             </option>
           ))}
@@ -167,7 +167,7 @@ export default function JobsPage() {
           <Button
             variant="outline"
             onClick={clearFilters}
-            className="h-9 border-[#2d3449] bg-[#131b2e] text-[#dae2fd] hover:bg-[#171f33]"
+            className="h-9 border-border bg-card text-foreground hover:bg-muted"
           >
             <X className="mr-2 h-4 w-4" /> Clear filters
           </Button>
@@ -175,7 +175,7 @@ export default function JobsPage() {
           <Button
             variant="outline"
             disabled
-            className="h-9 border-[#2d3449] bg-[#131b2e] text-[#908fa0]"
+            className="h-9 border-border bg-card text-muted-foreground"
           >
             <Filter className="mr-2 h-4 w-4" /> Filters
           </Button>
@@ -186,29 +186,29 @@ export default function JobsPage() {
         {filteredJobs.map((job) => (
           <Card
             key={job.id}
-            className="border-[#2d3449] bg-[#131b2e] transition-all hover:border-[#6366f1]/50 hover:bg-[#171f33]"
+            className="border-border bg-card transition-all hover:border-[#6366f1]/50 hover:bg-muted"
           >
             <CardContent className="flex h-full flex-col">
               <div className="mb-3 flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <CompanyLogo name={job.company} size="md" />
                   <div>
-                    <h3 className="font-semibold text-white">{job.title}</h3>
-                    <p className="text-sm text-[#908fa0]">{job.company}</p>
+                    <h3 className="font-semibold text-foreground">{job.title}</h3>
+                    <p className="text-sm text-muted-foreground">{job.company}</p>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => toggleSave(job.id)}
                   aria-label={savedJobs.includes(job.id) ? "Remove from saved jobs" : "Save job"}
-                  className="rounded-lg p-1 text-[#908fa0] transition-colors hover:bg-[#0b1326] hover:text-white"
+                  className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 >
                   <Bookmark
                     className={`h-5 w-5 ${savedJobs.includes(job.id) ? "fill-[#6366f1] text-[#6366f1]" : ""}`}
                   />
                 </button>
               </div>
-              <div className="mb-4 space-y-2 text-sm text-[#908fa0]">
+              <div className="mb-4 space-y-2 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <MapPin className="h-4 w-4 text-[#5c5a72]" /> {job.location}
                 </div>
@@ -220,7 +220,7 @@ export default function JobsPage() {
                 </div>
               </div>
               <div className="mt-auto flex items-center justify-between gap-2">
-                <Badge variant="secondary" className="border-[#2d3449] bg-[#171f33] text-[#dae2fd]">
+                <Badge variant="secondary" className="border-border bg-muted text-foreground">
                   {job.source}
                 </Badge>
                 <span className="text-sm font-medium text-emerald-400">{job.salary}</span>
@@ -230,19 +230,19 @@ export default function JobsPage() {
                   variant="outline"
                   size="sm"
                   onClick={() => window.open("#", "_blank")}
-                  className="flex-1 border-[#2d3449] bg-transparent text-[#dae2fd] hover:bg-[#171f33]"
+                  className="flex-1 border-border bg-transparent text-foreground hover:bg-muted"
                 >
                   <ExternalLink className="mr-2 h-4 w-4" /> Apply
                 </Button>
                 {isPro ? (
                   <Link href="/app/jd-analyzer" className="flex-1">
-                    <Button size="sm" className="w-full bg-[#6366f1] text-white hover:bg-[#4f46e5]">
+                    <Button size="sm" className="w-full bg-[#6366f1] text-foreground hover:bg-[#4f46e5]">
                       Analyze Match
                     </Button>
                   </Link>
                 ) : (
                   <Link href="/pricing" className="flex-1">
-                    <Button size="sm" className="w-full bg-[#6366f1] text-white hover:bg-[#4f46e5]">
+                    <Button size="sm" className="w-full bg-[#6366f1] text-foreground hover:bg-[#4f46e5]">
                       Upgrade to analyze
                     </Button>
                   </Link>
@@ -262,7 +262,7 @@ export default function JobsPage() {
             <Button
               variant="outline"
               onClick={clearFilters}
-              className="border-[#2d3449] bg-transparent text-[#dae2fd] hover:bg-[#171f33]"
+              className="border-border bg-transparent text-foreground hover:bg-muted"
             >
               Clear filters
             </Button>

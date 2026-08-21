@@ -57,7 +57,7 @@ const difficultyClass = (d: Question["difficulty"]) => {
 };
 
 function selectClass() {
-  return "flex h-10 w-full rounded-lg border border-[#2d3449] bg-[#0b1326] px-3 text-sm text-[#dae2fd] outline-none transition-colors focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40";
+  return "flex h-10 w-full rounded-lg border border-border bg-muted px-3 text-sm text-foreground outline-none transition-colors focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40";
 }
 
 export default function InterviewQuestionsPage() {
@@ -88,8 +88,8 @@ export default function InterviewQuestionsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Interview Question Generator</h1>
-        <p className="text-[#908fa0]">AI generates role-calibrated questions for your projects</p>
+        <h1 className="text-2xl font-bold text-foreground">Interview Question Generator</h1>
+        <p className="text-muted-foreground">AI generates role-calibrated questions for your projects</p>
       </div>
 
       {total.length === 0 ? (
@@ -97,7 +97,7 @@ export default function InterviewQuestionsPage() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-[#dae2fd]">Project</label>
+                <label className="mb-1.5 block text-sm font-medium text-foreground">Project</label>
                 <select value={project} onChange={(e) => setProject(e.target.value)} className={selectClass()}>
                   <option value="real-time-order-tracking">Real-Time Order Tracking with Kafka</option>
                   <option value="distributed-cache">Distributed Cache</option>
@@ -105,7 +105,7 @@ export default function InterviewQuestionsPage() {
                 </select>
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-[#dae2fd]">Target Role</label>
+                <label className="mb-1.5 block text-sm font-medium text-foreground">Target Role</label>
                 <select value={role} onChange={(e) => setRole(e.target.value)} className={selectClass()}>
                   <option value="SDE-1">SDE-1</option>
                   <option value="Backend Developer">Backend Developer</option>
@@ -130,14 +130,14 @@ export default function InterviewQuestionsPage() {
       ) : (
         <>
           <div className="flex items-center justify-between gap-3">
-            <Badge variant="outline" className="border-[#2d3449] text-[#908fa0]">
+            <Badge variant="outline" className="border-border text-muted-foreground">
               {total.length} questions generated
             </Badge>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" className="border-[#2d3449] bg-transparent text-[#dae2fd] hover:bg-[#171f33]">
+              <Button variant="outline" size="sm" className="border-border bg-transparent text-foreground hover:bg-muted">
                 <Download className="mr-2 size-4" /> Download All
               </Button>
-              <Button variant="ghost" size="sm" className="text-[#908fa0] hover:bg-[#171f33] hover:text-white" onClick={reset}>
+              <Button variant="ghost" size="sm" className="text-muted-foreground hover:bg-muted hover:text-foreground" onClick={reset}>
                 Regenerate
               </Button>
             </div>
@@ -148,16 +148,16 @@ export default function InterviewQuestionsPage() {
               <Card key={category}>
                 <CardContent className="gap-4">
                   <div className="mb-3 flex items-center gap-3">
-                    <span className="font-medium text-white">{category}</span>
-                    <Badge variant="outline" className="border-[#2d3449] text-[#908fa0]">
+                    <span className="font-medium text-foreground">{category}</span>
+                    <Badge variant="outline" className="border-border text-muted-foreground">
                       {qs.length}
                     </Badge>
                   </div>
                   <div className="space-y-3">
                     {qs.map((q, i) => (
-                      <div key={i} className="rounded-lg border border-[#2d3449] bg-[#0b1326] p-4">
+                      <div key={i} className="rounded-lg border border-border bg-muted p-4">
                         <div className="flex items-start justify-between gap-2">
-                          <p className="text-sm font-medium text-[#dae2fd]">{q.question}</p>
+                          <p className="text-sm font-medium text-foreground">{q.question}</p>
                           <Badge className={`shrink-0 ${difficultyClass(q.difficulty)}`}>{q.difficulty}</Badge>
                         </div>
                         <div className="mt-3">
@@ -176,16 +176,16 @@ export default function InterviewQuestionsPage() {
                             )}
                           </button>
                           {expandedAnswers.includes(q.question) && (
-                            <div className="mt-2 rounded-lg bg-[#131b2e] p-3 text-sm text-[#dae2fd] ring-1 ring-inset ring-white/10">
+                            <div className="mt-2 rounded-lg bg-card p-3 text-sm text-foreground ring-1 ring-inset ring-white/10">
                               {q.modelAnswer}
                             </div>
                           )}
                         </div>
                         {q.followUps.length > 0 && (
                           <div className="mt-3 space-y-1">
-                            <p className="text-xs font-semibold uppercase tracking-wide text-[#908fa0]">Follow-ups</p>
+                            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Follow-ups</p>
                             {q.followUps.map((f, j) => (
-                              <p key={j} className="text-sm text-[#dae2fd]">
+                              <p key={j} className="text-sm text-foreground">
                                 - {f}
                               </p>
                             ))}

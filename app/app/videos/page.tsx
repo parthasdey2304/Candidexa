@@ -144,20 +144,20 @@ export default function VideosPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">AI Video Generation</h1>
-        <p className="text-[#908fa0]">
+        <h1 className="text-2xl font-bold text-foreground">AI Video Generation</h1>
+        <p className="text-muted-foreground">
           Create AI video walkthroughs for your portfolio projects
         </p>
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="bg-[#171f33] text-[#dae2fd]">
+          <Badge variant="secondary" className="bg-muted text-foreground">
             0 of 20 videos used this month
           </Badge>
           <Badge
             variant="outline"
-            className="border-[#2d3449] text-[#908fa0]"
+            className="border-border text-muted-foreground"
           >
             Free tier: 0 videos
           </Badge>
@@ -169,20 +169,20 @@ export default function VideosPage() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div className="space-y-4">
-          <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+          <Card className="bg-card border-border shadow-none">
             <CardHeader>
-              <CardTitle className="text-base text-white">Generate Video Script</CardTitle>
+              <CardTitle className="text-base text-foreground">Generate Video Script</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-[#dae2fd]">
+                <label className="mb-1 block text-sm font-medium text-foreground">
                   Project
                 </label>
                 <Select value={project} onValueChange={(v) => v !== null && setProject(v)}>
-                  <SelectTrigger className="w-full border-[#2d3449] bg-[#0b1326] text-[#dae2fd]">
+                  <SelectTrigger className="w-full border-border bg-muted text-foreground">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="border-[#2d3449] bg-[#171f33] text-[#dae2fd]">
+                  <SelectContent className="border-border bg-muted text-foreground">
                     {projectOptions.map((p) => (
                       <SelectItem key={p} value={p}>
                         {p}
@@ -194,7 +194,7 @@ export default function VideosPage() {
               <Button
                 onClick={handleGenerateScript}
                 disabled={generatingScript}
-                className="w-full bg-indigo-500 text-white hover:bg-indigo-400"
+                className="w-full bg-indigo-500 text-foreground hover:bg-indigo-400"
               >
                 {generatingScript ? (
                   <>
@@ -210,10 +210,10 @@ export default function VideosPage() {
           </Card>
 
           {script && (
-            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+            <Card className="bg-card border-border shadow-none">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-base text-white">Script Preview</CardTitle>
+                  <CardTitle className="text-base text-foreground">Script Preview</CardTitle>
                   <Badge
                     variant="default"
                     className="bg-indigo-500/20 text-indigo-300 ring-1 ring-inset ring-indigo-500/30"
@@ -224,23 +224,23 @@ export default function VideosPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 {script.map((scene) => (
-                  <div key={scene.number} className="rounded-lg border border-[#2d3449] p-4">
+                  <div key={scene.number} className="rounded-lg border border-border p-4">
                     <div className="mb-2 flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <span className="flex h-6 w-6 items-center justify-center rounded-full bg-indigo-500/20 text-xs font-bold text-indigo-300">
                           {scene.number}
                         </span>
-                        <span className="text-xs text-[#908fa0]">{scene.duration}s</span>
-                        <Badge variant="secondary" className="bg-[#171f33] text-[#dae2fd]">
+                        <span className="text-xs text-muted-foreground">{scene.duration}s</span>
+                        <Badge variant="secondary" className="bg-muted text-foreground">
                           {scene.engine}
                         </Badge>
                       </div>
                     </div>
-                    <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-[#908fa0]">
+                    <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                       Visual
                     </p>
-                    <p className="mb-2 text-sm text-[#dae2fd]">{scene.visual}</p>
-                    <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-[#908fa0]">
+                    <p className="mb-2 text-sm text-foreground">{scene.visual}</p>
+                    <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                       Voiceover
                     </p>
                     {editingScene === scene.number ? (
@@ -249,7 +249,7 @@ export default function VideosPage() {
                           value={editText}
                           onChange={(e) => setEditText(e.target.value)}
                           rows={2}
-                          className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd]"
+                          className="border-border bg-muted text-foreground"
                         />
                         <div className="flex gap-2">
                           <Button
@@ -261,7 +261,7 @@ export default function VideosPage() {
                           </Button>
                           <Button
                             size="sm"
-                            className="bg-indigo-500 text-white hover:bg-indigo-400"
+                            className="bg-indigo-500 text-foreground hover:bg-indigo-400"
                             onClick={() => saveEdit(scene.number)}
                           >
                             Save
@@ -270,7 +270,7 @@ export default function VideosPage() {
                       </div>
                     ) : (
                       <div className="flex items-start justify-between gap-2">
-                        <p className="flex-1 text-sm text-[#dae2fd]">&quot;{scene.voiceover}&quot;</p>
+                        <p className="flex-1 text-sm text-foreground">&quot;{scene.voiceover}&quot;</p>
                         <button
                           onClick={() => {
                             setEditingScene(scene.number);
@@ -287,7 +287,7 @@ export default function VideosPage() {
                 <Button
                   onClick={handleGenerateVideo}
                   disabled={generatingVideo}
-                  className="w-full bg-indigo-500 text-white hover:bg-indigo-400"
+                  className="w-full bg-indigo-500 text-foreground hover:bg-indigo-400"
                 >
                   {generatingVideo ? (
                     <>
@@ -307,19 +307,19 @@ export default function VideosPage() {
 
         <div className="space-y-4">
           {generatingVideo && (
-            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+            <Card className="bg-card border-border shadow-none">
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
                     <Loader2 className="h-6 w-6 animate-spin text-indigo-400" />
                     <div>
-                      <p className="text-sm font-medium text-white">Rendering with Kling 3.0...</p>
-                      <p className="text-xs text-[#908fa0]">Estimated time: ~2 minutes</p>
+                      <p className="text-sm font-medium text-foreground">Rendering with Kling 3.0...</p>
+                      <p className="text-xs text-muted-foreground">Estimated time: ~2 minutes</p>
                     </div>
                   </div>
                   <Progress
                     value={45}
-                    className="[&_[data-slot=progress-track]]:bg-[#171f33]"
+                    className="[&_[data-slot=progress-track]]:bg-muted"
                   />
                   <Button variant="outline" size="sm" onClick={cancelRender}>
                     <X className="mr-2 h-4 w-4" /> Cancel
@@ -329,10 +329,10 @@ export default function VideosPage() {
             </Card>
           )}
 
-          <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+          <Card className="bg-card border-border shadow-none">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="text-base text-white">Video Result</CardTitle>
+                <CardTitle className="text-base text-foreground">Video Result</CardTitle>
                 <div className="flex items-center gap-1.5">
                   <Badge
                     variant="default"
@@ -340,10 +340,10 @@ export default function VideosPage() {
                   >
                     Kling
                   </Badge>
-                  <Badge variant="secondary" className="bg-[#171f33] text-[#dae2fd]">
+                  <Badge variant="secondary" className="bg-muted text-foreground">
                     13s
                   </Badge>
-                  <Badge variant="secondary" className="bg-[#171f33] text-[#dae2fd]">
+                  <Badge variant="secondary" className="bg-muted text-foreground">
                     1080p
                   </Badge>
                 </div>
@@ -361,7 +361,7 @@ export default function VideosPage() {
                 </div>
               )}
               {downloadNote && (
-                <p className="text-xs text-[#908fa0]">{downloadNote}</p>
+                <p className="text-xs text-muted-foreground">{downloadNote}</p>
               )}
               <div className="flex gap-2">
                 <Button
@@ -375,7 +375,7 @@ export default function VideosPage() {
                 </Button>
                 <Button
                   size="sm"
-                  className="flex-1 bg-indigo-500 text-white hover:bg-indigo-400"
+                  className="flex-1 bg-indigo-500 text-foreground hover:bg-indigo-400"
                   onClick={() => setShowPortfolioConfirm(true)}
                   disabled={!currentVideo}
                 >
@@ -385,7 +385,7 @@ export default function VideosPage() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-[#908fa0] hover:bg-[#171f33] hover:text-white"
+                    className="text-muted-foreground hover:bg-muted hover:text-foreground"
                     onClick={() => setCurrentVideo(false)}
                     aria-label="Clear result"
                   >
@@ -396,23 +396,23 @@ export default function VideosPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+          <Card className="bg-card border-border shadow-none">
             <CardHeader>
-              <CardTitle className="text-base text-white">Video History</CardTitle>
+              <CardTitle className="text-base text-foreground">Video History</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
                 {mockVideos.map((v, i) => (
                   <div
                     key={`${v.project}-${i}`}
-                    className="flex items-center gap-3 rounded-lg p-3 hover:bg-[#171f33]"
+                    className="flex items-center gap-3 rounded-lg p-3 hover:bg-muted"
                   >
                     <div className="flex h-10 w-14 items-center justify-center rounded bg-[#060e20]">
-                      <Play className="h-4 w-4 text-white" />
+                      <Play className="h-4 w-4 text-foreground" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-white">{v.project}</p>
-                      <p className="text-xs text-[#908fa0]">
+                      <p className="text-sm font-medium text-foreground">{v.project}</p>
+                      <p className="text-xs text-muted-foreground">
                         {v.duration} · {v.resolution} · {v.engine}
                       </p>
                     </div>

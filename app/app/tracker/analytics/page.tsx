@@ -77,7 +77,7 @@ export default function AnalyticsPage() {
     return (
       <div className="flex flex-col items-center justify-center py-24">
         <Spinner size="lg" />
-        <p className="mt-4 text-sm text-[#908fa0]">Crunching your numbers...</p>
+        <p className="mt-4 text-sm text-muted-foreground">Crunching your numbers...</p>
       </div>
     );
   }
@@ -87,13 +87,13 @@ export default function AnalyticsPage() {
       <div className="flex items-center gap-4">
         <Link
           href="/app/tracker"
-          className="rounded-lg p-2 text-[#908fa0] transition-colors hover:bg-[#171f33] hover:text-white"
+          className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
           <ArrowLeft className="h-5 w-5" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-white">Application Analytics</h1>
-          <p className="mt-1 text-sm text-[#908fa0]">
+          <h1 className="text-2xl font-bold text-foreground">Application Analytics</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
             {user?.name ? `${user.name.split(" ")[0]}'s` : "Your"} job search performance at a glance
           </p>
         </div>
@@ -101,14 +101,14 @@ export default function AnalyticsPage() {
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {statCards.map(({ label, icon: Icon, value, tone }) => (
-          <Card key={label} className="border-[#2d3449] bg-[#131b2e]">
+          <Card key={label} className="border-border bg-card">
             <CardContent>
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <p className="text-sm font-medium text-[#908fa0]">{label}</p>
-                  <p className={`mt-1 text-2xl font-bold text-white ${tone ?? ""}`}>{value(stats)}</p>
+                  <p className="text-sm font-medium text-muted-foreground">{label}</p>
+                  <p className={`mt-1 text-2xl font-bold text-foreground ${tone ?? ""}`}>{value(stats)}</p>
                 </div>
-                <div className="rounded-xl bg-[#0b1326] p-2.5 text-indigo-300 ring-1 ring-inset ring-[#2d3449]">
+                <div className="rounded-xl bg-muted p-2.5 text-indigo-300 ring-1 ring-inset ring-[#2d3449]">
                   <Icon className="h-5 w-5" />
                 </div>
               </div>
@@ -118,9 +118,9 @@ export default function AnalyticsPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <Card className="border-[#2d3449] bg-[#131b2e]">
+        <Card className="border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-base text-white">Response Rate</CardTitle>
+            <CardTitle className="text-base text-foreground">Response Rate</CardTitle>
           </CardHeader>
           <CardContent className="flex items-center justify-center py-4">
             <ScoreGauge
@@ -132,9 +132,9 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-[#2d3449] bg-[#131b2e]">
+        <Card className="border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-base text-white">Interview Conversion</CardTitle>
+            <CardTitle className="text-base text-foreground">Interview Conversion</CardTitle>
           </CardHeader>
           <CardContent className="flex items-center justify-center py-4">
             <ScoreGauge
@@ -146,9 +146,9 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-[#2d3449] bg-[#131b2e]">
+        <Card className="border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-base text-white">Application Funnel</CardTitle>
+            <CardTitle className="text-base text-foreground">Application Funnel</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -157,10 +157,10 @@ export default function AnalyticsPage() {
                 return (
                   <div key={f.stage}>
                     <div className="mb-1 flex justify-between text-xs">
-                      <span className="font-medium text-[#dae2fd]">{f.stage}</span>
-                      <span className="text-[#908fa0]">{f.count}</span>
+                      <span className="font-medium text-foreground">{f.stage}</span>
+                      <span className="text-muted-foreground">{f.count}</span>
                     </div>
-                    <div className="h-3 overflow-hidden rounded-full bg-[#171f33]">
+                    <div className="h-3 overflow-hidden rounded-full bg-muted">
                       <div
                         className="h-full rounded-full bg-gradient-to-r from-[#6366f1] to-[#818cf8] transition-all duration-500"
                         style={{ width: `${width}%` }}
@@ -173,16 +173,16 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-[#2d3449] bg-[#131b2e]">
+        <Card className="border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-base text-white">Avg Time in Each Stage</CardTitle>
+            <CardTitle className="text-base text-foreground">Avg Time in Each Stage</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-2 text-center sm:grid-cols-5">
               {Object.entries(stats.avgTimeInStage).map(([stage, time]) => (
-                <div key={stage} className="rounded-lg border border-[#2d3449] bg-[#0b1326] p-3">
+                <div key={stage} className="rounded-lg border border-border bg-muted p-3">
                   <p className="text-lg font-bold text-indigo-300">{time}</p>
-                  <p className="mt-1 text-xs capitalize text-[#908fa0]">
+                  <p className="mt-1 text-xs capitalize text-muted-foreground">
                     {stage === "phone" ? "Phone" : stage}
                   </p>
                 </div>
@@ -191,9 +191,9 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-[#2d3449] bg-[#131b2e]">
+        <Card className="border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-base text-white">Top Companies</CardTitle>
+            <CardTitle className="text-base text-foreground">Top Companies</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -201,14 +201,14 @@ export default function AnalyticsPage() {
                 const width = (c.count / stats.topCompanies[0].count) * 100;
                 return (
                   <div key={c.name} className="flex items-center gap-3">
-                    <span className="w-24 truncate text-sm font-medium text-[#dae2fd]">{c.name}</span>
-                    <div className="h-3 flex-1 overflow-hidden rounded-full bg-[#171f33]">
+                    <span className="w-24 truncate text-sm font-medium text-foreground">{c.name}</span>
+                    <div className="h-3 flex-1 overflow-hidden rounded-full bg-muted">
                       <div
                         className="h-full rounded-full bg-emerald-500/80 transition-all duration-500"
                         style={{ width: `${width}%` }}
                       />
                     </div>
-                    <span className="text-sm tabular-nums text-[#908fa0]">{c.count}</span>
+                    <span className="text-sm tabular-nums text-muted-foreground">{c.count}</span>
                   </div>
                 );
               })}
@@ -216,9 +216,9 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-[#2d3449] bg-[#131b2e]">
+        <Card className="border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-base text-white">
+            <CardTitle className="text-base text-foreground">
               <span className="inline-flex items-center gap-2">
                 <CalendarClock className="h-4 w-4 text-indigo-300" /> Applications Over Time
               </span>
@@ -230,12 +230,12 @@ export default function AnalyticsPage() {
                 const max = Math.max(...stats.timeline.map((x) => x.count));
                 return (
                   <div key={t.month} className="flex h-full flex-1 flex-col items-center justify-end gap-2">
-                    <span className="text-xs tabular-nums text-[#908fa0]">{t.count}</span>
+                    <span className="text-xs tabular-nums text-muted-foreground">{t.count}</span>
                     <div
                       className="w-full rounded-t-lg bg-gradient-to-t from-[#4f46e5] to-[#818cf8] transition-all duration-500"
                       style={{ height: `${(t.count / max) * 100}%` }}
                     />
-                    <span className="text-xs text-[#908fa0]">{t.month}</span>
+                    <span className="text-xs text-muted-foreground">{t.month}</span>
                   </div>
                 );
               })}

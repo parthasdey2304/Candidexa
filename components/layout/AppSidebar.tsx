@@ -51,20 +51,20 @@ export function AppSidebar() {
   const { plan } = useAuth();
 
   return (
-    <aside className="hidden md:flex w-64 flex-col border-r border-[#2d3449] bg-[#0b1326] h-screen sticky top-0 shrink-0">
-      <div className="h-16 flex items-center px-6 border-b border-[#2d3449]">
-        <Logo className="text-[#dae2fd] hover:text-[#6366f1]" />
+    <aside className="hidden md:flex w-64 flex-col border-r border-sidebar-border bg-sidebar h-screen sticky top-0 shrink-0">
+      <div className="h-16 flex items-center px-6 border-b border-sidebar-border shrink-0">
+        <Logo className="text-sidebar-foreground hover:text-primary" />
       </div>
       <div className="px-4 pt-5">
-        <div className="rounded-2xl border border-[#2d3449] bg-[#131b2e] p-4">
+        <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-[#dae2fd]">Current plan</p>
-            <Bell className="size-4 text-[#908fa0]" />
+            <p className="text-sm font-medium text-card-foreground">Current plan</p>
+            <Bell className="size-4 text-muted-foreground" />
           </div>
-          <p className="mt-2 text-2xl font-semibold text-white">
+          <p className="mt-2 text-2xl font-semibold text-foreground">
             {plan?.name ?? "Free"}
           </p>
-          <p className="mt-1 text-xs text-[#908fa0]">
+          <p className="mt-1 text-xs text-muted-foreground">
             Upgrade to unlock batch tailoring and more AI runs.
           </p>
         </div>
@@ -72,7 +72,7 @@ export function AppSidebar() {
       <nav className="flex-1 space-y-5 overflow-y-auto px-4 py-6">
         {navGroups.map((group) => (
           <div key={group.heading}>
-            <p className="mb-1.5 px-4 text-[11px] font-semibold uppercase tracking-wider text-[#2d3449]">
+            <p className="mb-1.5 px-4 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">
               {group.heading}
             </p>
             <div className="space-y-1">
@@ -83,13 +83,13 @@ export function AppSidebar() {
                     key={href}
                     href={href}
                     className={cn(
-                      "flex items-center gap-4 rounded-xl px-4 py-2.5 text-[14px] font-medium transition-all duration-200",
+                      "flex items-center gap-3 rounded-xl px-4 py-2.5 text-[14px] font-medium transition-all duration-200",
                       isActive
-                        ? "bg-[#6366f1] text-white shadow-[0_4px_20px_-4px_rgba(99,102,241,0.5)]"
-                        : "text-[#908fa0] hover:bg-[#171f33] hover:text-[#dae2fd]"
+                        ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
+                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                     )}
                   >
-                    <Icon className={cn("size-5 shrink-0", isActive ? "text-white" : "text-[#908fa0]")} />
+                    <Icon className={cn("size-5 shrink-0", isActive ? "text-primary-foreground" : "text-muted-foreground")} />
                     {label}
                   </Link>
                 );

@@ -58,16 +58,16 @@ const gapBadgeClass: Record<SkillGap["gap"], string> = {
 };
 
 const inputClass =
-  "border-[#2d3449] bg-[#0b1326] text-[#dae2fd] placeholder:text-[#464554] focus-visible:ring-[#6366f1]";
+  "border-border bg-muted text-foreground placeholder:text-[#464554] focus-visible:ring-[#6366f1]";
 
 const outlineBtnClass =
-  "border-[#2d3449] bg-[#0b1326] text-[#dae2fd] hover:bg-[#171f33]";
+  "border-border bg-muted text-foreground hover:bg-muted";
 
 const proBadgeClass =
   "bg-[#6366f1]/15 text-[#818cf8] ring-1 ring-inset ring-[#6366f1]/30";
 
 const freeBadgeClass =
-  "bg-[#171f33] text-[#908fa0] ring-1 ring-inset ring-[#2d3449]";
+  "bg-muted text-muted-foreground ring-1 ring-inset ring-[#2d3449]";
 
 export default function RoadmapPage() {
   const { plan, user } = useAuth();
@@ -150,12 +150,12 @@ export default function RoadmapPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Skill Gap Analyzer & Roadmap</h1>
-          <p className="mt-1 text-[#908fa0]">
+          <h1 className="text-2xl font-bold text-foreground">Skill Gap Analyzer & Roadmap</h1>
+          <p className="mt-1 text-muted-foreground">
             AI-powered personalized learning path for your target role
           </p>
           {user ? (
-            <p className="mt-1 text-sm text-[#908fa0]">
+            <p className="mt-1 text-sm text-muted-foreground">
               Welcome back, {user.name.split(" ")[0]} — let&apos;s close your gaps.
             </p>
           ) : null}
@@ -166,7 +166,7 @@ export default function RoadmapPage() {
       </div>
 
       {!gaps.length ? (
-        <Card className="border-[#2d3449] bg-[#131b2e]">
+        <Card className="border-border bg-card">
           <CardContent className="space-y-4">
             <div className="space-y-1.5">
               <Label htmlFor="target-role">Target Role</Label>
@@ -212,14 +212,14 @@ export default function RoadmapPage() {
         </Card>
       ) : (
         <>
-          <Card className="border-[#2d3449] bg-[#131b2e]">
+          <Card className="border-border bg-card">
             <CardHeader>
-              <CardTitle className="text-base text-white">Skill Gap Matrix</CardTitle>
+              <CardTitle className="text-base text-foreground">Skill Gap Matrix</CardTitle>
               <CardAction>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-[#908fa0] hover:bg-[#171f33] hover:text-[#dae2fd]"
+                  className="text-muted-foreground hover:bg-muted hover:text-foreground"
                   onClick={resetAnalysis}
                 >
                   <RotateCcw className="size-3.5" /> Analyze a different role
@@ -227,9 +227,9 @@ export default function RoadmapPage() {
               </CardAction>
             </CardHeader>
             <CardContent>
-              <div className="overflow-hidden rounded-xl border border-[#2d3449] bg-[#0b1326]">
+              <div className="overflow-hidden rounded-xl border border-border bg-muted">
                 <table className="w-full text-sm">
-                  <thead className="text-xs uppercase tracking-wide text-[#908fa0]">
+                  <thead className="text-xs uppercase tracking-wide text-muted-foreground">
                     <tr>
                       <th className="px-4 py-3 text-left font-medium">Skill</th>
                       <th className="px-4 py-3 text-left font-medium">Current</th>
@@ -241,19 +241,19 @@ export default function RoadmapPage() {
                   <tbody>
                     {gaps.map((gap) => (
                       <tr key={gap.skill}>
-                        <td className="border-t border-[#1c2440] px-4 py-3 text-sm font-medium text-[#dae2fd]">
+                        <td className="border-t border-border px-4 py-3 text-sm font-medium text-foreground">
                           {gap.skill}
                         </td>
-                        <td className="border-t border-[#1c2440] px-4 py-3 text-sm text-[#dae2fd]">
+                        <td className="border-t border-border px-4 py-3 text-sm text-foreground">
                           {gap.current}
                         </td>
-                        <td className="border-t border-[#1c2440] px-4 py-3 text-sm text-[#dae2fd]">
+                        <td className="border-t border-border px-4 py-3 text-sm text-foreground">
                           {gap.target}
                         </td>
-                        <td className="border-t border-[#1c2440] px-4 py-3 text-sm text-[#dae2fd]">
+                        <td className="border-t border-border px-4 py-3 text-sm text-foreground">
                           <Badge className={gapBadgeClass[gap.gap]}>{gap.gap}</Badge>
                         </td>
-                        <td className="border-t border-[#1c2440] px-4 py-3 text-sm text-[#dae2fd]">
+                        <td className="border-t border-border px-4 py-3 text-sm text-foreground">
                           #{gap.priority}
                         </td>
                       </tr>
@@ -282,13 +282,13 @@ export default function RoadmapPage() {
           </Card>
 
           {roadmap.length ? (
-            <Card className="border-[#2d3449] bg-[#131b2e]">
+            <Card className="border-border bg-card">
               <CardHeader>
-                <CardTitle className="text-base text-white">Learning Roadmap</CardTitle>
+                <CardTitle className="text-base text-foreground">Learning Roadmap</CardTitle>
                 <CardAction>
                   <Badge
                     variant="secondary"
-                    className="bg-[#171f33] text-[#dae2fd] ring-1 ring-inset ring-[#2d3449]"
+                    className="bg-muted text-foreground ring-1 ring-inset ring-[#2d3449]"
                   >
                     {roadmap.length} weeks
                   </Badge>
@@ -296,7 +296,7 @@ export default function RoadmapPage() {
               </CardHeader>
               <CardContent>
                 <Progress value={completed} max={roadmap.length} className="mb-6">
-                  <ProgressLabel className="text-[#dae2fd]">Overall progress</ProgressLabel>
+                  <ProgressLabel className="text-foreground">Overall progress</ProgressLabel>
                   <ProgressValue>
                     {() => `${completed}/${roadmap.length} weeks`}
                   </ProgressValue>
@@ -305,14 +305,14 @@ export default function RoadmapPage() {
                   {roadmap.map((week) => (
                     <div
                       key={week.number}
-                      className="overflow-hidden rounded-lg border border-[#2d3449] bg-[#0b1326]"
+                      className="overflow-hidden rounded-lg border border-border bg-muted"
                     >
                       <button
                         type="button"
                         onClick={() =>
                           setExpandedWeek(expandedWeek === week.number ? null : week.number)
                         }
-                        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-[#171f33]"
+                        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-muted"
                       >
                         <span className="flex items-center gap-3">
                           <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#6366f1]/15 text-sm font-bold text-[#818cf8] ring-1 ring-inset ring-[#6366f1]/30">
@@ -320,33 +320,33 @@ export default function RoadmapPage() {
                           </span>
                           <span>
                             <span className="flex items-center gap-2">
-                              <span className="text-sm font-medium text-[#dae2fd]">
+                              <span className="text-sm font-medium text-foreground">
                                 Week {week.number}
                               </span>
                               <StatusBadge status={week.status} />
                             </span>
-                            <span className="mt-0.5 block text-xs text-[#908fa0]">
+                            <span className="mt-0.5 block text-xs text-muted-foreground">
                               {week.topics.join(", ")}
                             </span>
                           </span>
                         </span>
                         {expandedWeek === week.number ? (
-                          <ChevronUp className="size-4 shrink-0 text-[#908fa0]" />
+                          <ChevronUp className="size-4 shrink-0 text-muted-foreground" />
                         ) : (
-                          <ChevronDown className="size-4 shrink-0 text-[#908fa0]" />
+                          <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
                         )}
                       </button>
                       {expandedWeek === week.number ? (
-                        <div className="space-y-4 border-t border-[#1c2440] px-4 py-4">
+                        <div className="space-y-4 border-t border-border px-4 py-4">
                           <div>
-                            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#908fa0]">
+                            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                               Topics
                             </h4>
                             <ul className="space-y-1">
                               {week.topics.map((topic) => (
                                 <li
                                   key={topic}
-                                  className="flex items-center gap-2 text-sm text-[#dae2fd]"
+                                  className="flex items-center gap-2 text-sm text-foreground"
                                 >
                                   <Check className="size-3 text-[#818cf8]" />
                                   {topic}
@@ -355,7 +355,7 @@ export default function RoadmapPage() {
                             </ul>
                           </div>
                           <div>
-                            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#908fa0]">
+                            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                               Resources
                             </h4>
                             <div className="flex flex-wrap gap-2">
@@ -371,10 +371,10 @@ export default function RoadmapPage() {
                             </div>
                           </div>
                           <div>
-                            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#908fa0]">
+                            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                               Exercise
                             </h4>
-                            <p className="text-sm text-[#dae2fd]">{week.exercise}</p>
+                            <p className="text-sm text-foreground">{week.exercise}</p>
                           </div>
                           <div className="flex flex-wrap gap-2">
                             <Button

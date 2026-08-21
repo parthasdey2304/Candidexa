@@ -138,44 +138,44 @@ export default function DeploymentsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Deployments</h1>
-        <p className="text-[#908fa0]">
+        <h1 className="text-2xl font-bold text-foreground">Deployments</h1>
+        <p className="text-muted-foreground">
           Auto-deploy your AI-generated projects to production
         </p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+        <Card className="bg-card border-border shadow-none">
           <CardContent>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-[#908fa0]">Total</span>
-              <Server className="h-4 w-4 text-[#908fa0]" />
+              <span className="text-sm text-muted-foreground">Total</span>
+              <Server className="h-4 w-4 text-muted-foreground" />
             </div>
-            <p className="mt-1 text-2xl font-bold text-white">{deployments.length}</p>
+            <p className="mt-1 text-2xl font-bold text-foreground">{deployments.length}</p>
           </CardContent>
         </Card>
-        <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+        <Card className="bg-card border-border shadow-none">
           <CardContent>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-[#908fa0]">Live</span>
+              <span className="text-sm text-muted-foreground">Live</span>
               <Activity className="h-4 w-4 text-emerald-400" />
             </div>
             <p className="mt-1 text-2xl font-bold text-emerald-400">{allLive}</p>
           </CardContent>
         </Card>
-        <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+        <Card className="bg-card border-border shadow-none">
           <CardContent>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-[#908fa0]">Deploying</span>
+              <span className="text-sm text-muted-foreground">Deploying</span>
               <Loader2 className="h-4 w-4 animate-spin text-amber-400" />
             </div>
             <p className="mt-1 text-2xl font-bold text-amber-400">{allDeploying}</p>
           </CardContent>
         </Card>
-        <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+        <Card className="bg-card border-border shadow-none">
           <CardContent>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-[#908fa0]">Avg Uptime</span>
+              <span className="text-sm text-muted-foreground">Avg Uptime</span>
               <TrendingUp className="h-4 w-4 text-indigo-400" />
             </div>
             <p className="mt-1 text-2xl font-bold text-indigo-400">99.2%</p>
@@ -183,13 +183,13 @@ export default function DeploymentsPage() {
         </Card>
       </div>
 
-      <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+      <Card className="bg-card border-border shadow-none">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-base text-white">Active Deployments</CardTitle>
+            <CardTitle className="text-base text-foreground">Active Deployments</CardTitle>
             <Button
               size="sm"
-              className="bg-indigo-500 text-white hover:bg-indigo-400"
+              className="bg-indigo-500 text-foreground hover:bg-indigo-400"
               onClick={handleDeploy}
             >
               <Rocket className="mr-2 h-4 w-4" /> Deploy Project
@@ -208,23 +208,23 @@ export default function DeploymentsPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#1c2440]">
-                  <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-[#908fa0]">
+                <tr className="border-b border-border">
+                  <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     Project
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-[#908fa0]">
+                  <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     Platform
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-[#908fa0]">
+                  <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     URL
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-[#908fa0]">
+                  <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     Status
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-[#908fa0]">
+                  <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     Health Check
                   </th>
-                  <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-[#908fa0]">
+                  <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     Actions
                   </th>
                 </tr>
@@ -232,15 +232,15 @@ export default function DeploymentsPage() {
               <tbody>
                 {deployments.map((d) => (
                   <tr key={d.id}>
-                    <td className="border-t border-[#1c2440] px-4 py-3 font-medium text-white">
+                    <td className="border-t border-border px-4 py-3 font-medium text-foreground">
                       {d.project}
                     </td>
-                    <td className="border-t border-[#1c2440] px-4 py-3">
-                      <Badge variant="secondary" className="bg-[#171f33] text-[#dae2fd]">
+                    <td className="border-t border-border px-4 py-3">
+                      <Badge variant="secondary" className="bg-muted text-foreground">
                         {d.platform}
                       </Badge>
                     </td>
-                    <td className="border-t border-[#1c2440] px-4 py-3">
+                    <td className="border-t border-border px-4 py-3">
                       <div className="flex items-center gap-1.5">
                         <a
                           href={d.url}
@@ -252,7 +252,7 @@ export default function DeploymentsPage() {
                         </a>
                         <button
                           onClick={() => copyUrl(d.url)}
-                          className="rounded p-0.5 text-[#908fa0] hover:bg-[#171f33] hover:text-white"
+                          className="rounded p-0.5 text-muted-foreground hover:bg-muted hover:text-foreground"
                           aria-label="Copy URL"
                         >
                           {copied === d.url ? (
@@ -263,18 +263,18 @@ export default function DeploymentsPage() {
                         </button>
                       </div>
                     </td>
-                    <td className="border-t border-[#1c2440] px-4 py-3">
+                    <td className="border-t border-border px-4 py-3">
                       <StatusBadge status={d.status} />
                     </td>
-                    <td className="border-t border-[#1c2440] px-4 py-3 text-xs text-[#908fa0]">
+                    <td className="border-t border-border px-4 py-3 text-xs text-muted-foreground">
                       {d.lastCheck}
                     </td>
-                    <td className="border-t border-[#1c2440] px-4 py-3">
+                    <td className="border-t border-border px-4 py-3">
                       <div className="flex justify-end gap-1">
                         <Button
                           variant="ghost"
                           size="icon-sm"
-                          className="text-[#908fa0] hover:bg-[#171f33] hover:text-white"
+                          className="text-muted-foreground hover:bg-muted hover:text-foreground"
                           aria-label="Visit"
                           onClick={() => void navigator.clipboard.writeText(d.url)}
                         >
@@ -283,7 +283,7 @@ export default function DeploymentsPage() {
                         <Button
                           variant="ghost"
                           size="icon-sm"
-                          className="text-[#908fa0] hover:bg-[#171f33] hover:text-white"
+                          className="text-muted-foreground hover:bg-muted hover:text-foreground"
                           aria-label="Redeploy"
                         >
                           <RefreshCw className="h-4 w-4" />
@@ -291,7 +291,7 @@ export default function DeploymentsPage() {
                         <Button
                           variant="ghost"
                           size="icon-sm"
-                          className="text-[#908fa0] hover:bg-[#171f33] hover:text-white"
+                          className="text-muted-foreground hover:bg-muted hover:text-foreground"
                           aria-label="Video demo"
                         >
                           <Video className="h-4 w-4" />
@@ -307,23 +307,23 @@ export default function DeploymentsPage() {
       </Card>
 
       <Dialog open={showConfirm} onOpenChange={setShowConfirm}>
-        <DialogContent className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd]">
+        <DialogContent className="border-border bg-muted text-foreground">
           <DialogHeader>
-            <DialogTitle className="text-white">Deploy Project</DialogTitle>
-            <DialogDescription className="text-[#908fa0]">
+            <DialogTitle className="text-foreground">Deploy Project</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
               Deploy an AI-generated project to your favorite platform.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-[#dae2fd]">
+              <label className="mb-1 block text-sm font-medium text-foreground">
                 Project
               </label>
               <Select value={project} onValueChange={(v) => v !== null && setProject(v)}>
-                <SelectTrigger className="w-full border-[#2d3449] bg-[#0b1326] text-[#dae2fd]">
+                <SelectTrigger className="w-full border-border bg-muted text-foreground">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="border-[#2d3449] bg-[#171f33] text-[#dae2fd]">
+                <SelectContent className="border-border bg-muted text-foreground">
                   {deployableProjects.map((p) => (
                     <SelectItem key={p} value={p}>
                       {p}
@@ -333,14 +333,14 @@ export default function DeploymentsPage() {
               </Select>
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-[#dae2fd]">
+              <label className="mb-1 block text-sm font-medium text-foreground">
                 Platform (auto-selected)
               </label>
               <Select value={platform} onValueChange={(v) => v !== null && setPlatform(v as Deployment["platform"])}>
-                <SelectTrigger className="w-full border-[#2d3449] bg-[#0b1326] text-[#dae2fd]">
+                <SelectTrigger className="w-full border-border bg-muted text-foreground">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="border-[#2d3449] bg-[#171f33] text-[#dae2fd]">
+                <SelectContent className="border-border bg-muted text-foreground">
                   {(["Vercel", "Railway", "Render", "Netlify"] as Deployment["platform"][]).map(
                     (p) => (
                       <SelectItem key={p} value={p}>
@@ -351,7 +351,7 @@ export default function DeploymentsPage() {
                 </SelectContent>
               </Select>
             </div>
-            <p className="text-xs text-[#908fa0]">
+            <p className="text-xs text-muted-foreground">
               Vercel is auto-selected for Next.js frontends. Backends deploy to Railway/Render
               automatically.
             </p>
@@ -361,14 +361,14 @@ export default function DeploymentsPage() {
               render={
                 <Button
                   variant="outline"
-                  className="border-[#2d3449] bg-transparent text-white hover:bg-[#171f33]"
+                  className="border-border bg-transparent text-foreground hover:bg-muted"
                 >
                   Cancel
                 </Button>
               }
             />
             <Button
-              className="bg-indigo-500 text-white hover:bg-indigo-400"
+              className="bg-indigo-500 text-foreground hover:bg-indigo-400"
               onClick={confirmDeploy}
             >
               <Rocket className="mr-2 h-4 w-4" /> Deploy Now

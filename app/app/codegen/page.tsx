@@ -139,13 +139,13 @@ export default function CodegenPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">AI Code Generator</h1>
-        <p className="text-[#908fa0]">
+        <h1 className="text-2xl font-bold text-foreground">AI Code Generator</h1>
+        <p className="text-muted-foreground">
           Generate production-grade code and push to GitHub
         </p>
       </div>
 
-      <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+      <Card className="bg-card border-border shadow-none">
         <CardContent>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -153,16 +153,16 @@ export default function CodegenPage() {
                 className={`flex h-10 w-10 items-center justify-center rounded-full ${
                   connected
                     ? "bg-emerald-500/15 text-emerald-400"
-                    : "bg-[#171f33] text-[#908fa0]"
+                    : "bg-muted text-muted-foreground"
                 }`}
               >
                 <GithubMark className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm font-medium text-white">
+                <p className="text-sm font-medium text-foreground">
                   {connected ? "Connected to GitHub" : "Not connected"}
                 </p>
-                <p className="text-xs text-[#908fa0]">
+                <p className="text-xs text-muted-foreground">
                   {connected ? "@username" : "Connect to auto-push generated code"}
                 </p>
               </div>
@@ -179,20 +179,20 @@ export default function CodegenPage() {
       </Card>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+        <Card className="bg-card border-border shadow-none">
           <CardHeader>
-            <CardTitle className="text-base text-white">Generate Code</CardTitle>
+            <CardTitle className="text-base text-foreground">Generate Code</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-[#dae2fd]">
+              <label className="mb-1 block text-sm font-medium text-foreground">
                 Project
               </label>
               <Select value={project} onValueChange={(v) => v !== null && setProject(v)}>
-                <SelectTrigger className="w-full border-[#2d3449] bg-[#0b1326] text-[#dae2fd]">
+                <SelectTrigger className="w-full border-border bg-muted text-foreground">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="border-[#2d3449] bg-[#171f33] text-[#dae2fd]">
+                <SelectContent className="border-border bg-muted text-foreground">
                   {projects.map((p) => (
                     <SelectItem key={p.name} value={p.name}>
                       {p.name}
@@ -202,7 +202,7 @@ export default function CodegenPage() {
               </Select>
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-[#dae2fd]">
+              <label className="mb-1 block text-sm font-medium text-foreground">
                 Type
               </label>
               <Badge
@@ -213,7 +213,7 @@ export default function CodegenPage() {
               </Badge>
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-[#dae2fd]">
+              <label className="mb-1 block text-sm font-medium text-foreground">
                 Tech Stack
               </label>
               <TechStackBadges stack={activeProject.stack} />
@@ -221,7 +221,7 @@ export default function CodegenPage() {
             <Button
               onClick={handleGenerate}
               disabled={generating}
-              className="w-full bg-indigo-500 text-white hover:bg-indigo-400"
+              className="w-full bg-indigo-500 text-foreground hover:bg-indigo-400"
             >
               {generating ? (
                 <>
@@ -235,8 +235,8 @@ export default function CodegenPage() {
             </Button>
             {generating && (
               <div className="space-y-2">
-                <Progress value={progress} className="[&_[data-slot=progress-track]]:bg-[#171f33]" />
-                <p className="truncate text-xs text-[#908fa0]">
+                <Progress value={progress} className="[&_[data-slot=progress-track]]:bg-muted" />
+                <p className="truncate text-xs text-muted-foreground">
                   Generating: {currentFile}
                 </p>
               </div>
@@ -264,14 +264,14 @@ export default function CodegenPage() {
         </Card>
 
         <div className="space-y-4 lg:col-span-2">
-          <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+          <Card className="bg-card border-border shadow-none">
             <CardHeader>
-              <CardTitle className="text-base text-white">Code Preview</CardTitle>
+              <CardTitle className="text-base text-foreground">Code Preview</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
               <div className="grid grid-cols-1 md:grid-cols-4">
-                <div className="max-h-96 overflow-y-auto border-[#2d3449] p-3 md:border-r">
-                  <p className="mb-2 flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-[#908fa0]">
+                <div className="max-h-96 overflow-y-auto border-border p-3 md:border-r">
+                  <p className="mb-2 flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     <FolderTree className="h-3 w-3" /> Files ({mockFiles.length})
                   </p>
                   <div className="space-y-0.5">
@@ -282,7 +282,7 @@ export default function CodegenPage() {
                         className={`w-full rounded px-2 py-1.5 text-left font-mono text-xs ${
                           selectedFile === f.path
                             ? "bg-indigo-500/20 text-indigo-300"
-                            : "text-[#dae2fd] hover:bg-[#171f33]"
+                            : "text-foreground hover:bg-muted"
                         }`}
                       >
                         <FileCode className="-mt-0.5 mr-1.5 inline h-3 w-3" />
@@ -305,14 +305,14 @@ export default function CodegenPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+          <Card className="bg-card border-border shadow-none">
             <CardContent>
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
-                  <GitBranch className="h-4 w-4 text-[#908fa0]" />
-                  <span className="text-sm text-[#908fa0]">
-                    Files: <strong className="text-[#dae2fd]">{mockFiles.length}</strong>
-                    {" · "}Lines: <strong className="text-[#dae2fd]">{totalLines}</strong>
+                  <GitBranch className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">
+                    Files: <strong className="text-foreground">{mockFiles.length}</strong>
+                    {" · "}Lines: <strong className="text-foreground">{totalLines}</strong>
                   </span>
                   {validated && (
                     <Badge
@@ -341,7 +341,7 @@ export default function CodegenPage() {
           </Card>
 
           {pushed && (
-            <Card className="border-[#2d3449] bg-[#131b2e] shadow-none">
+            <Card className="border-border bg-card shadow-none">
               <CardContent>
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
@@ -349,7 +349,7 @@ export default function CodegenPage() {
                       <Check className="h-5 w-5 text-emerald-400" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white">
+                      <p className="text-sm font-medium text-foreground">
                         Repository created and pushed!
                       </p>
                       <a
@@ -366,7 +366,7 @@ export default function CodegenPage() {
                     <Button variant="outline" size="sm">
                       <ExternalLink className="mr-2 h-4 w-4" /> View on GitHub
                     </Button>
-                    <Button size="sm" className="bg-indigo-500 text-white hover:bg-indigo-400">
+                    <Button size="sm" className="bg-indigo-500 text-foreground hover:bg-indigo-400">
                       <Rocket className="mr-2 h-4 w-4" /> Deploy Now
                     </Button>
                   </div>
@@ -378,18 +378,18 @@ export default function CodegenPage() {
       </div>
 
       <Dialog open={showPushConfirm} onOpenChange={setShowPushConfirm}>
-        <DialogContent className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd]">
+        <DialogContent className="border-border bg-muted text-foreground">
           <DialogHeader>
-            <DialogTitle className="text-white">Confirm GitHub Push</DialogTitle>
-            <DialogDescription className="text-[#908fa0]">
+            <DialogTitle className="text-foreground">Confirm GitHub Push</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
               Create a repository on your GitHub account from the generated codebase.
             </DialogDescription>
           </DialogHeader>
-          <div className="flex items-start gap-3 rounded-lg bg-[#171f33] p-3">
+          <div className="flex items-start gap-3 rounded-lg bg-muted p-3">
             <Shield className="mt-0.5 h-5 w-5 text-emerald-400" />
-            <p className="text-sm text-[#dae2fd]">
+            <p className="text-sm text-foreground">
               Create public repository{" "}
-              <strong className="font-mono text-white">{activeProject.repo}</strong> on your
+              <strong className="font-mono text-foreground">{activeProject.repo}</strong> on your
               GitHub account? Files were scanned for secrets before push.
             </p>
           </div>
@@ -398,7 +398,7 @@ export default function CodegenPage() {
               render={
                 <Button
                   variant="outline"
-                  className="border-[#2d3449] bg-transparent text-white hover:bg-[#171f33]"
+                  className="border-border bg-transparent text-foreground hover:bg-muted"
                 >
                   Cancel
                 </Button>
@@ -407,7 +407,7 @@ export default function CodegenPage() {
             <Button
               onClick={handlePush}
               disabled={pushing}
-              className="bg-indigo-500 text-white hover:bg-indigo-400"
+              className="bg-indigo-500 text-foreground hover:bg-indigo-400"
             >
               {pushing ? (
                 <>

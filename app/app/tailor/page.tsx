@@ -31,7 +31,7 @@ const mockCompanies: Company[] = [
 const categories = ["All", "E-commerce", "FinTech", "Food Tech"];
 
 function selectClass() {
-  return "flex h-10 w-full rounded-lg border border-[#2d3449] bg-[#0b1326] px-3 text-sm text-[#dae2fd] outline-none transition-colors focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40";
+  return "flex h-10 w-full rounded-lg border border-border bg-muted px-3 text-sm text-foreground outline-none transition-colors focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40";
 }
 
 export default function TailorPage() {
@@ -87,8 +87,8 @@ export default function TailorPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">AI Resume Tailoring Engine</h1>
-        <p className="text-[#908fa0]">Tailor your resume for 500 companies with AI</p>
+        <h1 className="text-2xl font-bold text-foreground">AI Resume Tailoring Engine</h1>
+        <p className="text-muted-foreground">Tailor your resume for 500 companies with AI</p>
       </div>
 
       {step === "setup" && (
@@ -96,19 +96,19 @@ export default function TailorPage() {
           <div className="space-y-4 lg:col-span-2">
             <Card>
               <CardHeader>
-                <CardTitle className="text-base text-white">Setup</CardTitle>
+                <CardTitle className="text-base text-foreground">Setup</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
-                    <label className="mb-1.5 block text-sm font-medium text-[#dae2fd]">Master Resume</label>
+                    <label className="mb-1.5 block text-sm font-medium text-foreground">Master Resume</label>
                     <select className={selectClass()}>
                       <option>My Master Resume</option>
                       <option>Resume 2 (SDE-1)</option>
                     </select>
                   </div>
                   <div>
-                    <label className="mb-1.5 block text-sm font-medium text-[#dae2fd]">Target Role</label>
+                    <label className="mb-1.5 block text-sm font-medium text-foreground">Target Role</label>
                     <select className={selectClass()}>
                       <option value="sde1">SDE-1</option>
                       <option value="backend">Backend Developer</option>
@@ -117,16 +117,16 @@ export default function TailorPage() {
                     </select>
                   </div>
                 </div>
-                <div className="flex items-center justify-between rounded-lg bg-[#131b2e] p-4 ring-1 ring-white/10">
+                <div className="flex items-center justify-between rounded-lg bg-card p-4 ring-1 ring-white/10">
                   <div>
-                    <p className="text-sm font-medium text-white">Company Selection</p>
-                    <p className="text-xs text-[#908fa0]">{selectedCompanies.length} companies selected</p>
+                    <p className="text-sm font-medium text-foreground">Company Selection</p>
+                    <p className="text-xs text-muted-foreground">{selectedCompanies.length} companies selected</p>
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm" className="border-[#2d3449] bg-transparent text-[#dae2fd] hover:bg-[#171f33]" onClick={toggleAll}>
+                    <Button variant="outline" size="sm" className="border-border bg-transparent text-foreground hover:bg-muted" onClick={toggleAll}>
                       {selectAll ? "Deselect All" : "Select All"}
                     </Button>
-                    <Button variant="outline" size="sm" className="border-[#2d3449] bg-transparent text-[#dae2fd] hover:bg-[#171f33]" onClick={() => setShowUpgrade(true)}>
+                    <Button variant="outline" size="sm" className="border-border bg-transparent text-foreground hover:bg-muted" onClick={() => setShowUpgrade(true)}>
                       Browse 500
                     </Button>
                   </div>
@@ -137,15 +137,15 @@ export default function TailorPage() {
             <Card>
               <CardHeader>
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <CardTitle className="text-base text-white">Companies</CardTitle>
+                  <CardTitle className="text-base text-foreground">Companies</CardTitle>
                   <div className="flex gap-2">
                     <div className="relative">
-                      <Search className="absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-[#908fa0]" />
+                      <Search className="absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-muted-foreground" />
                       <input
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         placeholder="Search..."
-                        className="rounded-lg border border-[#2d3449] bg-[#0b1326] py-1.5 pr-3 pl-8 text-sm text-[#dae2fd] outline-none placeholder:text-[#908fa0] focus:border-indigo-500"
+                        className="rounded-lg border border-border bg-muted py-1.5 pr-3 pl-8 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-indigo-500"
                       />
                     </div>
                     <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-32 text-sm">
@@ -161,13 +161,13 @@ export default function TailorPage() {
                   {filteredCompanies.map((company) => (
                     <label
                       key={company.name}
-                      className="flex cursor-pointer items-center gap-3 rounded-lg border border-[#2d3449] p-3 transition-colors hover:border-indigo-500/50 hover:bg-[#131b2e]"
+                      className="flex cursor-pointer items-center gap-3 rounded-lg border border-border p-3 transition-colors hover:border-indigo-500/50 hover:bg-card"
                     >
                       <Checkbox checked={selectedCompanies.includes(company.name)} onCheckedChange={() => toggleCompany(company.name)} />
                       <CompanyLogo name={company.name} size="md" />
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-[#dae2fd]">{company.name}</p>
-                        <p className="text-xs text-[#908fa0]">{company.category}</p>
+                        <p className="text-sm font-medium text-foreground">{company.name}</p>
+                        <p className="text-xs text-muted-foreground">{company.category}</p>
                       </div>
                       <Badge className="bg-indigo-500/20 text-indigo-300 ring-1 ring-inset ring-indigo-500/40">{company.ats}%</Badge>
                     </label>
@@ -179,21 +179,21 @@ export default function TailorPage() {
 
           <Card className="h-fit">
             <CardHeader>
-              <CardTitle className="text-base text-white">Start Tailoring</CardTitle>
+              <CardTitle className="text-base text-foreground">Start Tailoring</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-2 rounded-lg bg-indigo-500/10 p-3 ring-1 ring-inset ring-indigo-500/30">
                 <Zap className="size-4 shrink-0 text-indigo-400" />
                 <p className="text-xs text-indigo-200">AI will fetch each company&apos;s JD, profile the company, and tailor your resume with up to 3 iterations for max ATS score.</p>
               </div>
-              <div className="flex items-center gap-2 rounded-lg bg-[#131b2e] p-3 ring-1 ring-white/10">
-                <Lock className="size-4 shrink-0 text-[#908fa0]" />
-                <p className="text-xs text-[#908fa0]">Paid feature - requires Pro plan</p>
+              <div className="flex items-center gap-2 rounded-lg bg-card p-3 ring-1 ring-white/10">
+                <Lock className="size-4 shrink-0 text-muted-foreground" />
+                <p className="text-xs text-muted-foreground">Paid feature - requires Pro plan</p>
               </div>
               <Button onClick={startTailoring} disabled={selectedCompanies.length === 0} className="w-full">
                 <Zap className="mr-2 size-4" /> Start AI Tailoring ({selectedCompanies.length})
               </Button>
-              <p className="text-center text-xs text-[#908fa0]">Estimated time: ~{Math.ceil(selectedCompanies.length * 2)} minutes</p>
+              <p className="text-center text-xs text-muted-foreground">Estimated time: ~{Math.ceil(selectedCompanies.length * 2)} minutes</p>
             </CardContent>
           </Card>
         </div>
@@ -204,24 +204,24 @@ export default function TailorPage() {
           <CardContent className="space-y-6 p-8 text-center">
             <Loader2 className="mx-auto size-12 animate-spin text-indigo-400" />
             <div>
-              <h3 className="mb-1 text-lg font-semibold text-white">AI is tailoring your resume...</h3>
-              <p className="text-[#908fa0]">Processing: {currentCompany}</p>
+              <h3 className="mb-1 text-lg font-semibold text-foreground">AI is tailoring your resume...</h3>
+              <p className="text-muted-foreground">Processing: {currentCompany}</p>
             </div>
             <div className="mx-auto max-w-md">
               <div className="mb-2 flex items-center justify-between text-sm">
-                <span className="text-[#908fa0]">
+                <span className="text-muted-foreground">
                   Company {Math.min(Math.round((progress / 100) * selectedCompanies.length || 0) + 1, selectedCompanies.length)} of {selectedCompanies.length}
                 </span>
-                <span className="font-medium text-white">{progress}%</span>
+                <span className="font-medium text-foreground">{progress}%</span>
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-muted" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}>
                 <div className="h-full rounded-full bg-indigo-500 transition-all duration-300" style={{ width: `${progress}%` }} />
               </div>
-              <p className="mt-3 text-sm text-[#908fa0]">
+              <p className="mt-3 text-sm text-muted-foreground">
                 Average ATS score so far: <span className="font-semibold text-emerald-400">{avgAts}%</span>
               </p>
             </div>
-            <Button variant="outline" size="sm" className="border-[#2d3449] bg-transparent text-[#dae2fd] hover:bg-[#171f33]">
+            <Button variant="outline" size="sm" className="border-border bg-transparent text-foreground hover:bg-muted">
               Cancel
             </Button>
           </CardContent>
@@ -234,20 +234,20 @@ export default function TailorPage() {
             <div className="grid grid-cols-3 gap-4">
               <Card size="sm">
                 <CardContent>
-                  <p className="text-xs text-[#908fa0]">Total Companies</p>
-                  <p className="text-2xl font-bold text-white">{mockCompanies.length}</p>
+                  <p className="text-xs text-muted-foreground">Total Companies</p>
+                  <p className="text-2xl font-bold text-foreground">{mockCompanies.length}</p>
                 </CardContent>
               </Card>
               <Card size="sm">
                 <CardContent>
-                  <p className="text-xs text-[#908fa0]">Avg ATS Score</p>
+                  <p className="text-xs text-muted-foreground">Avg ATS Score</p>
                   <p className="text-2xl font-bold text-emerald-400">{avgScore}%</p>
                 </CardContent>
               </Card>
               <Card size="sm">
                 <CardContent>
-                  <p className="text-xs text-[#908fa0]">Ready</p>
-                  <p className="text-2xl font-bold text-white">{readyCount}</p>
+                  <p className="text-xs text-muted-foreground">Ready</p>
+                  <p className="text-2xl font-bold text-foreground">{readyCount}</p>
                 </CardContent>
               </Card>
             </div>
@@ -261,34 +261,34 @@ export default function TailorPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-[#2d3449]">
+                    <tr className="border-b border-border">
                       <th className="py-2 pr-2 text-left">
-                        <span className="text-xs font-medium uppercase tracking-wide text-[#908fa0]">Company</span>
+                        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Company</span>
                       </th>
                       <th className="py-2 pr-2 text-left">
-                        <span className="text-xs font-medium uppercase tracking-wide text-[#908fa0]">Role</span>
+                        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Role</span>
                       </th>
                       <th className="py-2 pr-2 text-left">
-                        <span className="text-xs font-medium uppercase tracking-wide text-[#908fa0]">ATS Score</span>
+                        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">ATS Score</span>
                       </th>
                       <th className="py-2 pr-2 text-left">
-                        <span className="text-xs font-medium uppercase tracking-wide text-[#908fa0]">Status</span>
+                        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Status</span>
                       </th>
                       <th className="py-2 text-right">
-                        <span className="text-xs font-medium uppercase tracking-wide text-[#908fa0]">Actions</span>
+                        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Actions</span>
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     {mockCompanies.map((company) => (
-                      <tr key={company.name} className="border-b border-[#1c2440] last:border-0">
+                      <tr key={company.name} className="border-b border-border last:border-0">
                         <td className="py-2.5 pr-2">
                           <div className="flex items-center gap-2">
                             <CompanyLogo name={company.name} size="sm" />
-                            <span className="font-medium text-[#dae2fd]">{company.name}</span>
+                            <span className="font-medium text-foreground">{company.name}</span>
                           </div>
                         </td>
-                        <td className="py-2.5 pr-2 text-[#dae2fd]">SDE-1</td>
+                        <td className="py-2.5 pr-2 text-foreground">SDE-1</td>
                         <td className="py-2.5 pr-2">
                           {company.ats >= 80 ? (
                             <Badge className="bg-emerald-500/15 text-emerald-400 ring-1 ring-inset ring-emerald-500/30">{company.ats}%</Badge>
@@ -301,10 +301,10 @@ export default function TailorPage() {
                         </td>
                         <td className="py-2.5">
                           <div className="flex justify-end gap-1">
-                            <button className="rounded p-1.5 text-[#908fa0] transition-colors hover:bg-[#171f33] hover:text-white" title="Download">
+                            <button className="rounded p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground" title="Download">
                               <Download className="size-4" />
                             </button>
-                            <button className="rounded p-1.5 text-[#908fa0] transition-colors hover:bg-[#171f33] hover:text-white" title="Preview">
+                            <button className="rounded p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground" title="Preview">
                               <Eye className="size-4" />
                             </button>
                             {company.status === "gap" && (
@@ -325,17 +325,17 @@ export default function TailorPage() {
       )}
 
       <Dialog open={showUpgrade} onOpenChange={setShowUpgrade}>
-        <DialogContent className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd] sm:max-w-sm">
+        <DialogContent className="border-border bg-muted text-foreground sm:max-w-sm">
           <DialogHeader className="items-center text-center">
             <Lock className="mx-auto size-10 text-indigo-400" />
-            <DialogTitle className="text-white">Multi-Company Tailoring</DialogTitle>
-            <DialogDescription className="text-[#908fa0]">
+            <DialogTitle className="text-foreground">Multi-Company Tailoring</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
               AI-tailored resumes for up to 500 companies per batch. Get 85-95%+ ATS scores for every company.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-2 text-left">
             {["500 companies per batch", "3 AI iterations per company", "Company profiling + JD analysis", "Batch download (ZIP)"].map((f) => (
-              <div key={f} className="flex items-center gap-2 text-sm text-[#dae2fd]">
+              <div key={f} className="flex items-center gap-2 text-sm text-foreground">
                 <Check className="size-4 text-emerald-400" /> {f}
               </div>
             ))}

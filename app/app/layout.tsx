@@ -18,8 +18,8 @@ export default function AppSectionLayout({ children }: { children: React.ReactNo
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#0b1326]">
-        <div className="flex flex-col items-center gap-3 text-[#908fa0]">
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-3 text-muted-foreground">
           <Spinner size="lg" />
           <p className="text-sm">Loading your workspace…</p>
         </div>

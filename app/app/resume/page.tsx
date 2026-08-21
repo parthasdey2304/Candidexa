@@ -102,16 +102,16 @@ const DEFAULT_CONTACT: ContactInfo = {
 const TEMPLATES = ["Professional", "Modern", "Minimal", "Creative", "Executive", "Technical"];
 
 const inputClass =
-  "border-[#2d3449] bg-[#0b1326] text-[#dae2fd] placeholder:text-[#464554] focus-visible:ring-[#6366f1]";
+  "border-border bg-muted text-foreground placeholder:text-[#464554] focus-visible:ring-[#6366f1]";
 
 const outlineBtnClass =
-  "border-[#2d3449] bg-[#0b1326] text-[#dae2fd] hover:bg-[#171f33]";
+  "border-border bg-muted text-foreground hover:bg-muted";
 
 const proBadgeClass =
   "bg-[#6366f1]/15 text-[#818cf8] ring-1 ring-inset ring-[#6366f1]/30";
 
 const freeBadgeClass =
-  "bg-[#171f33] text-[#908fa0] ring-1 ring-inset ring-[#2d3449]";
+  "bg-muted text-muted-foreground ring-1 ring-inset ring-[#2d3449]";
 
 const sectionFieldSets: Record<Exclude<SectionType, "certification">, { key: string; placeholder: string }[]> = {
   experience: [
@@ -310,8 +310,8 @@ export default function ResumePage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Resume Builder</h1>
-          <p className="mt-1 text-[#908fa0]">
+          <h1 className="text-2xl font-bold text-foreground">Resume Builder</h1>
+          <p className="mt-1 text-muted-foreground">
             Build ATS-optimized resumes with AI assistance
           </p>
         </div>
@@ -368,28 +368,28 @@ export default function ResumePage() {
         value={activeTab}
         onValueChange={(value) => setActiveTab(typeof value === "string" ? value : "upload")}
       >
-        <TabsList variant="line" className="w-full border-b border-[#2d3449]">
+        <TabsList variant="line" className="w-full border-b border-border">
           <TabsTrigger
             value="upload"
-            className="text-[#908fa0] data-active:text-white after:bg-[#6366f1]"
+            className="text-muted-foreground data-active:text-foreground after:bg-[#6366f1]"
           >
             Upload / Input
           </TabsTrigger>
           <TabsTrigger
             value="ats"
-            className="text-[#908fa0] data-active:text-white after:bg-[#6366f1]"
+            className="text-muted-foreground data-active:text-foreground after:bg-[#6366f1]"
           >
             ATS Score
           </TabsTrigger>
           <TabsTrigger
             value="preview"
-            className="text-[#908fa0] data-active:text-white after:bg-[#6366f1]"
+            className="text-muted-foreground data-active:text-foreground after:bg-[#6366f1]"
           >
             Preview
           </TabsTrigger>
           <TabsTrigger
             value="templates"
-            className="text-[#908fa0] data-active:text-white after:bg-[#6366f1]"
+            className="text-muted-foreground data-active:text-foreground after:bg-[#6366f1]"
           >
             Templates
           </TabsTrigger>
@@ -397,10 +397,10 @@ export default function ResumePage() {
 
         <TabsContent value="upload" className="mt-6">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <Card className="border-[#2d3449] bg-[#131b2e]">
+            <Card className="border-border bg-card">
               <CardHeader>
-                <CardTitle className="text-white">Upload Resume</CardTitle>
-                <CardDescription className="text-[#908fa0]">
+                <CardTitle className="text-foreground">Upload Resume</CardTitle>
+                <CardDescription className="text-muted-foreground">
                   Drag and drop your PDF, DOCX, or TXT file
                 </CardDescription>
               </CardHeader>
@@ -424,10 +424,10 @@ export default function ResumePage() {
               </CardContent>
             </Card>
 
-            <Card className="border-[#2d3449] bg-[#131b2e]">
+            <Card className="border-border bg-card">
               <CardHeader>
-                <CardTitle className="text-white">Or Fill Manually</CardTitle>
-                <CardDescription className="text-[#908fa0]">
+                <CardTitle className="text-foreground">Or Fill Manually</CardTitle>
+                <CardDescription className="text-muted-foreground">
                   Enter your details below
                 </CardDescription>
               </CardHeader>
@@ -521,7 +521,7 @@ export default function ResumePage() {
           {resume.sections.length > 0 ? (
             <div className="mt-6 space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <h3 className="text-lg font-semibold text-white">Resume Sections</h3>
+                <h3 className="text-lg font-semibold text-foreground">Resume Sections</h3>
                 <div className="flex flex-wrap gap-2">
                   <Button
                     variant="outline"
@@ -550,9 +550,9 @@ export default function ResumePage() {
                 </div>
               </div>
               {resume.sections.map((section) => (
-                <Card key={section.id} className="border-[#2d3449] bg-[#131b2e]">
+                <Card key={section.id} className="border-border bg-card">
                   <CardHeader>
-                    <CardTitle className="text-base text-white">{section.title}</CardTitle>
+                    <CardTitle className="text-base text-foreground">{section.title}</CardTitle>
                     <CardAction>
                       <Button
                         variant="ghost"
@@ -593,7 +593,7 @@ export default function ResumePage() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="mt-2 text-[#818cf8] hover:bg-[#171f33] hover:text-[#a5b4fc]"
+                      className="mt-2 text-[#818cf8] hover:bg-muted hover:text-[#a5b4fc]"
                       onClick={() => addEntry(section.id)}
                     >
                       <Plus className="size-4" /> Add Entry
@@ -605,9 +605,9 @@ export default function ResumePage() {
           ) : null}
 
           {resume.id ? (
-            <Card className="mt-6 border-[#2d3449] bg-[#131b2e]">
+            <Card className="mt-6 border-border bg-card">
               <CardHeader>
-                <CardTitle className="text-base text-white">Skills</CardTitle>
+                <CardTitle className="text-base text-foreground">Skills</CardTitle>
               </CardHeader>
               <CardContent>
                 <TagInput
@@ -622,9 +622,9 @@ export default function ResumePage() {
 
         <TabsContent value="ats" className="mt-6">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <Card className="border-[#2d3449] bg-[#131b2e]">
+            <Card className="border-border bg-card">
               <CardHeader>
-                <CardTitle className="text-white">Paste Job Description</CardTitle>
+                <CardTitle className="text-foreground">Paste Job Description</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <Textarea
@@ -653,19 +653,19 @@ export default function ResumePage() {
             </Card>
 
             {analyzing ? (
-              <Card className="border-[#2d3449] bg-[#131b2e]">
+              <Card className="border-border bg-card">
                 <CardContent className="flex min-h-64 flex-col items-center justify-center">
                   <Spinner size="lg" />
-                  <p className="mt-4 text-sm text-[#908fa0]">
+                  <p className="mt-4 text-sm text-muted-foreground">
                     Scoring your resume against the job description…
                   </p>
                 </CardContent>
               </Card>
             ) : analysisResult ? (
-              <Card className="border-[#2d3449] bg-[#131b2e]">
+              <Card className="border-border bg-card">
                 <CardContent className="flex flex-col items-center">
                   <ScoreGauge value={analysisResult.score} />
-                  <p className="mt-4 text-lg font-semibold text-white">
+                  <p className="mt-4 text-lg font-semibold text-foreground">
                     Match Score: {analysisResult.score}%
                   </p>
                   {analysisResult.gaps.length > 0 ? (
@@ -702,8 +702,8 @@ export default function ResumePage() {
                           )}
                         </Button>
                       ) : (
-                        <div className="mt-4 w-full rounded-lg border border-[#2d3449] bg-[#0b1326] px-3 py-2 text-center">
-                          <p className="text-xs text-[#908fa0]">
+                        <div className="mt-4 w-full rounded-lg border border-border bg-muted px-3 py-2 text-center">
+                          <p className="text-xs text-muted-foreground">
                             Auto-Filling gaps is a Pro feature.{" "}
                             <Link
                               href="/pricing"
@@ -724,7 +724,7 @@ export default function ResumePage() {
               </Card>
             ) : (
               <EmptyState
-                className="border-[#2d3449] bg-[#131b2e]"
+                className="border-border bg-card"
                 icon={
                   <Target className="size-5 text-[#818cf8]" />
                 }
@@ -736,56 +736,56 @@ export default function ResumePage() {
         </TabsContent>
 
         <TabsContent value="preview" className="mt-6">
-          <Card className="border-[#2d3449] bg-[#131b2e]">
+          <Card className="border-border bg-card">
             <CardContent>
               {!resume.id ? (
-                <div className="mb-6 flex items-center gap-2 rounded-lg border border-[#2d3449] bg-[#0b1326] px-3 py-2 text-xs text-[#908fa0]">
+                <div className="mb-6 flex items-center gap-2 rounded-lg border border-border bg-muted px-3 py-2 text-xs text-muted-foreground">
                   <FileText className="size-3.5 shrink-0 text-[#818cf8]" />
                   Previewing defaults — upload a resume or fill the manual form to preview your
                   data.
                 </div>
               ) : null}
-              <div className="mx-auto max-w-2xl rounded-lg border border-[#2d3449] bg-[#131b2e] p-8 shadow-lg">
-                <h1 className="mb-1 text-2xl font-bold text-white">
+              <div className="mx-auto max-w-2xl rounded-lg border border-border bg-card p-8 shadow-lg">
+                <h1 className="mb-1 text-2xl font-bold text-foreground">
                   {resume.title || user?.name || "Your Name"}
                 </h1>
-                <p className="mb-4 text-sm text-[#908fa0]">{contactLine}</p>
+                <p className="mb-4 text-sm text-muted-foreground">{contactLine}</p>
                 {resume.summary ? (
                   <div className="mb-4">
-                    <h2 className="mb-3 border-b border-[#1c2440] pb-1 text-sm font-bold uppercase text-[#908fa0]">
+                    <h2 className="mb-3 border-b border-border pb-1 text-sm font-bold uppercase text-muted-foreground">
                       Summary
                     </h2>
-                    <p className="text-sm text-[#dae2fd]">{resume.summary}</p>
+                    <p className="text-sm text-foreground">{resume.summary}</p>
                   </div>
                 ) : null}
                 {resume.skills.length > 0 ? (
                   <div className="mb-4">
-                    <h2 className="mb-3 border-b border-[#1c2440] pb-1 text-sm font-bold uppercase text-[#908fa0]">
+                    <h2 className="mb-3 border-b border-border pb-1 text-sm font-bold uppercase text-muted-foreground">
                       Skills
                     </h2>
-                    <p className="text-sm text-[#dae2fd]">{resume.skills.join(" | ")}</p>
+                    <p className="text-sm text-foreground">{resume.skills.join(" | ")}</p>
                   </div>
                 ) : null}
                 {resume.sections.map((section) => (
                   <div key={section.id} className="mb-4">
-                    <h2 className="mb-3 border-b border-[#1c2440] pb-1 text-sm font-bold uppercase text-[#908fa0]">
+                    <h2 className="mb-3 border-b border-border pb-1 text-sm font-bold uppercase text-muted-foreground">
                       {section.title}
                     </h2>
                     {section.items.map((item, index) => (
                       <div key={index} className="mb-3">
                         <div className="flex items-center justify-between gap-4">
-                          <span className="text-sm font-semibold text-white">
+                          <span className="text-sm font-semibold text-foreground">
                             {item.title || item.degree || "Untitled"}
                           </span>
-                          <span className="text-xs text-[#908fa0]">
+                          <span className="text-xs text-muted-foreground">
                             {[item.startDate, item.endDate].filter(Boolean).join(" - ")}
                           </span>
                         </div>
-                        <p className="text-sm text-[#dae2fd]">
+                        <p className="text-sm text-foreground">
                           {item.company || item.institution || item.tech || "—"}
                         </p>
                         {item.description ? (
-                          <p className="mt-1 text-sm text-[#908fa0]">- {item.description}</p>
+                          <p className="mt-1 text-sm text-muted-foreground">- {item.description}</p>
                         ) : null}
                       </div>
                     ))}
@@ -807,26 +807,26 @@ export default function ResumePage() {
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") setSelectedTemplate(template);
                 }}
-                className={`cursor-pointer border-[#2d3449] bg-[#131b2e] transition-all ${
+                className={`cursor-pointer border-border bg-card transition-all ${
                   selectedTemplate === template
                     ? "border-[#6366f1] ring-2 ring-[#6366f1]/40"
                     : "hover:border-[#6366f1]/60"
                 }`}
               >
                 <CardContent>
-                  <div className="flex aspect-[3/4] items-center justify-center rounded-lg border border-[#1c2440] bg-[#0b1326]">
-                    <FileText className="h-8 w-8 text-[#908fa0]" />
+                  <div className="flex aspect-[3/4] items-center justify-center rounded-lg border border-border bg-muted">
+                    <FileText className="h-8 w-8 text-muted-foreground" />
                   </div>
-                  <p className="mt-3 text-sm font-medium text-[#dae2fd]">{template}</p>
+                  <p className="mt-3 text-sm font-medium text-foreground">{template}</p>
                   <Badge className={`mt-2 ${proBadgeClass}`}>ATS-Safe</Badge>
                 </CardContent>
               </Card>
             ))}
           </div>
           {selectedTemplate ? (
-            <p className="mt-4 text-sm text-[#908fa0]">
+            <p className="mt-4 text-sm text-muted-foreground">
               Selected:{" "}
-              <span className="font-medium text-[#dae2fd]">{selectedTemplate}</span> — this
+              <span className="font-medium text-foreground">{selectedTemplate}</span> — this
               layout will be applied to the next export.
             </p>
           ) : null}

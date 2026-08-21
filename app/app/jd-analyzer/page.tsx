@@ -107,15 +107,15 @@ export default function JDAnalyzerPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">JD Analyzer</h1>
-        <p className="mt-1 text-sm text-[#908fa0]">Paste a job description to get an instant AI match score</p>
+        <h1 className="text-2xl font-bold text-foreground">JD Analyzer</h1>
+        <p className="mt-1 text-sm text-muted-foreground">Paste a job description to get an instant AI match score</p>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
-          <Card className="border-[#2d3449] bg-[#131b2e]">
+          <Card className="border-border bg-card">
             <CardHeader>
-              <CardTitle className="text-base text-white">Job Description</CardTitle>
+              <CardTitle className="text-base text-foreground">Job Description</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
@@ -123,7 +123,7 @@ export default function JDAnalyzerPage() {
                 placeholder="Paste the job description here..."
                 value={jdText}
                 onChange={(e) => setJdText(e.target.value)}
-                className="border-[#2d3449] bg-[#0b1326] font-mono text-sm text-[#dae2fd] placeholder:text-[#908fa0]"
+                className="border-border bg-muted font-mono text-sm text-foreground placeholder:text-muted-foreground"
               />
               <div className="flex flex-col gap-3 sm:flex-row">
                 <div className="flex flex-1 flex-col gap-2 sm:flex-row">
@@ -131,13 +131,13 @@ export default function JDAnalyzerPage() {
                     placeholder="Or paste a URL..."
                     value={jdUrl}
                     onChange={(e) => setJdUrl(e.target.value)}
-                    className="flex-1 border-[#2d3449] bg-[#0b1326] text-[#dae2fd] placeholder:text-[#908fa0]"
+                    className="flex-1 border-border bg-muted text-foreground placeholder:text-muted-foreground"
                   />
                   <Button
                     variant="outline"
                     onClick={handleScrape}
                     disabled={scraping || !jdUrl.trim()}
-                    className="border-[#2d3449] bg-transparent text-[#dae2fd] hover:bg-[#171f33]"
+                    className="border-border bg-transparent text-foreground hover:bg-muted"
                   >
                     {scraping ? (
                       <Sparkles className="mr-2 h-4 w-4 animate-spin" />
@@ -150,7 +150,7 @@ export default function JDAnalyzerPage() {
                 <Button
                   onClick={handleAnalyze}
                   disabled={analyzing || !jdText.trim()}
-                  className="bg-[#6366f1] text-white hover:bg-[#4f46e5]"
+                  className="bg-primary text-foreground hover:bg-primary/90"
                 >
                   {analyzing ? (
                     <>
@@ -167,15 +167,15 @@ export default function JDAnalyzerPage() {
           </Card>
 
           {result && (
-            <Card className="border-[#2d3449] bg-[#131b2e]">
+            <Card className="border-border bg-card">
               <CardHeader>
-                <CardTitle className="text-base text-white">Keyword Analysis</CardTitle>
+                <CardTitle className="text-base text-foreground">Keyword Analysis</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="overflow-hidden rounded-xl border border-[#2d3449] bg-[#0b1326]">
+                <div className="overflow-hidden rounded-xl border border-border bg-muted">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-[#2d3449] text-xs uppercase tracking-wide text-[#908fa0]">
+                      <tr className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
                         <th className="px-4 py-3 text-left font-medium">Keyword</th>
                         <th className="px-4 py-3 text-left font-medium">Category</th>
                         <th className="px-4 py-3 text-left font-medium">Weight</th>
@@ -189,13 +189,13 @@ export default function JDAnalyzerPage() {
                         const isFixed = fixed.includes(k.keyword);
                         return (
                           <tr key={k.keyword}>
-                            <td className="px-4 py-3 font-medium text-[#dae2fd]">{k.keyword}</td>
+                            <td className="px-4 py-3 font-medium text-foreground">{k.keyword}</td>
                             <td className="px-4 py-3">
                               <Badge className={`ring-1 ring-inset ${categoryColors[k.category]}`}>
                                 {k.category}
                               </Badge>
                             </td>
-                            <td className="px-4 py-3 text-[#908fa0]">{k.weight} pts</td>
+                            <td className="px-4 py-3 text-muted-foreground">{k.weight} pts</td>
                             <td className="px-4 py-3">
                               {isMatched ? (
                                 <Check className="h-4 w-4 text-emerald-400" />
@@ -214,7 +214,7 @@ export default function JDAnalyzerPage() {
                                     variant="outline"
                                     size="sm"
                                     onClick={() => fixKeyword(k.keyword)}
-                                    className="border-[#2d3449] bg-transparent text-[#dae2fd] hover:bg-[#171f33]"
+                                    className="border-border bg-transparent text-foreground hover:bg-muted"
                                   >
                                     <Zap className="mr-1 h-3 w-3" /> Fix
                                   </Button>
@@ -232,9 +232,9 @@ export default function JDAnalyzerPage() {
         </div>
 
         <div className="space-y-4">
-          <Card className="border-[#2d3449] bg-[#131b2e]">
+          <Card className="border-border bg-card">
             <CardHeader>
-              <CardTitle className="text-base text-white">Match Score</CardTitle>
+              <CardTitle className="text-base text-foreground">Match Score</CardTitle>
             </CardHeader>
             <CardContent>
               {result ? (
@@ -247,16 +247,16 @@ export default function JDAnalyzerPage() {
                   />
                   <div className="mt-4 w-full space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-[#908fa0]">Current Score</span>
-                      <span className="font-medium text-[#dae2fd]">{result.score}%</span>
+                      <span className="text-muted-foreground">Current Score</span>
+                      <span className="font-medium text-foreground">{result.score}%</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-[#908fa0]">After Fixes</span>
+                      <span className="text-muted-foreground">After Fixes</span>
                       <span className="font-medium text-emerald-400">{projectedScore}%</span>
                     </div>
                   </div>
                   <Button
-                    className="mt-4 w-full bg-[#6366f1] text-white hover:bg-[#4f46e5]"
+                    className="mt-4 w-full bg-primary text-foreground hover:bg-primary/90"
                     onClick={applyAllFixes}
                     disabled={result.keywords.every((k) => k.inResume || fixed.includes(k.keyword))}
                   >
@@ -265,7 +265,7 @@ export default function JDAnalyzerPage() {
                   {notice && <p className="mt-3 text-sm text-emerald-400">{notice}</p>}
                 </div>
               ) : (
-                <div className="flex flex-col items-center py-10 text-center text-[#908fa0]">
+                <div className="flex flex-col items-center py-10 text-center text-muted-foreground">
                   <Target className="h-12 w-12 opacity-50" />
                   <p className="mt-3 text-sm">Paste a JD to analyze</p>
                 </div>
@@ -273,15 +273,15 @@ export default function JDAnalyzerPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-[#2d3449] bg-[#131b2e]">
+          <Card className="border-border bg-card">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base text-white">
+              <CardTitle className="flex items-center gap-2 text-base text-foreground">
                 <History className="h-4 w-4 text-indigo-300" /> Analysis History
               </CardTitle>
             </CardHeader>
             <CardContent>
               {history.length === 0 ? (
-                <div className="py-4 text-center text-sm text-[#908fa0]">
+                <div className="py-4 text-center text-sm text-muted-foreground">
                   <History className="mx-auto mb-2 h-6 w-6 opacity-50" />
                   <p>No analyses yet</p>
                   <p className="mt-1 text-xs">
@@ -293,10 +293,10 @@ export default function JDAnalyzerPage() {
                   {history.map((h, i) => (
                     <li
                       key={`${h.at}-${i}`}
-                      className="flex items-center justify-between rounded-lg border border-[#2d3449] bg-[#0b1326] px-3 py-2 text-sm"
+                      className="flex items-center justify-between rounded-lg border border-border bg-muted px-3 py-2 text-sm"
                     >
-                      <span className="font-medium text-[#dae2fd]">{h.score}% match</span>
-                      <span className="text-xs text-[#908fa0]">{h.at}</span>
+                      <span className="font-medium text-foreground">{h.score}% match</span>
+                      <span className="text-xs text-muted-foreground">{h.at}</span>
                     </li>
                   ))}
                 </ul>

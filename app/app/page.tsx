@@ -71,7 +71,7 @@ export default function AppDashboardPage() {
           <CardContent className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-3">
               <Sparkles className="size-5 shrink-0 text-indigo-400" />
-              <p className="text-sm font-medium text-[#dae2fd]">Unlock batch tailoring, code generation, video demos, and more.</p>
+              <p className="text-sm font-medium text-card-foreground">Unlock batch tailoring, code generation, video demos, and more.</p>
             </div>
             <Link href="/app/settings?tab=billing" className="shrink-0">
               <Button size="sm">
@@ -83,17 +83,17 @@ export default function AppDashboardPage() {
       )}
 
       <div>
-        <h2 className="mb-3 text-lg font-semibold text-white">Quick Actions</h2>
+        <h2 className="mb-3 text-lg font-semibold text-card-foreground">Quick Actions</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {quickActions.map((action) => (
             <Link key={action.title} href={action.href} className="h-full">
-              <Card className="h-full cursor-pointer border-[#2d3449] bg-[#131b2e] transition-all hover:border-indigo-500/60 hover:shadow-[0_8px_30px_-8px_rgba(99,102,241,0.4)]">
+              <Card className="h-full cursor-pointer border-border bg-card transition-all hover:border-indigo-500/60 hover:shadow-[0_8px_30px_-8px_rgba(99,102,241,0.4)]">
                 <CardContent className="flex flex-col items-start gap-3">
                   <div className="inline-flex rounded-xl bg-indigo-500/15 p-3 text-indigo-300 ring-1 ring-inset ring-indigo-500/30">
                     <action.icon className="size-5" />
                   </div>
-                  <h3 className="font-semibold text-white">{action.title}</h3>
-                  <p className="text-sm text-[#908fa0]">{action.description}</p>
+                  <h3 className="font-semibold text-card-foreground">{action.title}</h3>
+                  <p className="text-sm text-muted-foreground">{action.description}</p>
                 </CardContent>
               </Card>
             </Link>
@@ -108,18 +108,18 @@ export default function AppDashboardPage() {
       ) : (
         <>
           <div>
-            <h2 className="mb-3 text-lg font-semibold text-white">AI Engines</h2>
+            <h2 className="mb-3 text-lg font-semibold text-card-foreground">AI Engines</h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {aiEngines.map((engine) => (
                 <Link key={engine.title} href={engine.href} className="h-full">
-                  <Card className="h-full cursor-pointer border-[#2d3449] bg-[#131b2e] transition-all hover:border-indigo-500/60">
+                  <Card className="h-full cursor-pointer border-border bg-card transition-all hover:border-indigo-500/60">
                     <CardContent className="flex items-center gap-3">
                       <div className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/15 text-violet-300 ring-1 ring-inset ring-violet-500/30">
                         <engine.icon className="size-5" />
                       </div>
                       <div className="min-w-0">
-                        <h3 className="truncate font-medium text-white">{engine.title}</h3>
-                        <p className="truncate text-xs text-[#908fa0]">{engine.description}</p>
+                        <h3 className="truncate font-medium text-card-foreground">{engine.title}</h3>
+                        <p className="truncate text-xs text-muted-foreground">{engine.description}</p>
                       </div>
                     </CardContent>
                   </Card>
@@ -129,7 +129,7 @@ export default function AppDashboardPage() {
           </div>
 
           <div>
-            <h2 className="mb-3 text-lg font-semibold text-white">Overview</h2>
+            <h2 className="mb-3 text-lg font-semibold text-card-foreground">Overview</h2>
             <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
               {[
                 { label: "Resumes Created", value: "0", icon: FileText },
@@ -137,13 +137,13 @@ export default function AppDashboardPage() {
                 { label: "Interviews Scheduled", value: "0", icon: Brain },
                 { label: "Avg ATS Score", value: "--", icon: Target },
               ].map((stat) => (
-                <Card key={stat.label} className="border-[#2d3449] bg-[#131b2e]">
+                <Card key={stat.label} className="border-border bg-card">
                   <CardContent>
                     <div className="mb-2 flex items-center justify-between">
-                      <span className="text-sm text-[#908fa0]">{stat.label}</span>
+                      <span className="text-sm text-muted-foreground">{stat.label}</span>
                       <stat.icon className="size-4 text-indigo-400" />
                     </div>
-                    <div className="text-2xl font-bold text-white">{stat.value}</div>
+                    <div className="text-2xl font-bold text-card-foreground">{stat.value}</div>
                   </CardContent>
                 </Card>
               ))}
@@ -151,10 +151,10 @@ export default function AppDashboardPage() {
           </div>
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <Card className="border-[#2d3449] bg-[#131b2e]">
+            <Card className="border-border bg-card">
               <CardHeader>
-                <CardTitle className="text-white">AI Usage This Month</CardTitle>
-                <CardDescription className="text-[#908fa0]">Credits across all engines</CardDescription>
+                <CardTitle className="text-card-foreground">AI Usage This Month</CardTitle>
+                <CardDescription className="text-muted-foreground">Credits across all engines</CardDescription>
               </CardHeader>
               <CardContent>
                 {isPro ? (
@@ -162,17 +162,17 @@ export default function AppDashboardPage() {
                 ) : (
                   <UsageGauge used={2} limit={10} />
                 )}
-                <div className="mt-4 flex items-center gap-2 rounded-lg bg-[#0b1326] p-3 text-xs text-[#908fa0] ring-1 ring-inset ring-white/10">
+                <div className="mt-4 flex items-center gap-2 rounded-lg bg-muted p-3 text-xs text-muted-foreground ring-1 ring-inset ring-white/10">
                   <ChartNoAxesCombined className="size-4 shrink-0 text-indigo-400" />
                   Projects deployed and videos generated count toward your monthly quota.
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="border-[#2d3449] bg-[#131b2e]">
+            <Card className="border-border bg-card">
               <CardHeader>
-                <CardTitle className="text-white">Recent Activity</CardTitle>
-                <CardDescription className="text-[#908fa0]">Your latest pipeline actions</CardDescription>
+                <CardTitle className="text-card-foreground">Recent Activity</CardTitle>
+                <CardDescription className="text-muted-foreground">Your latest pipeline actions</CardDescription>
               </CardHeader>
               <CardContent>
                 <EmptyState

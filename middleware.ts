@@ -1,18 +1,42 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse, type NextRequest } from "next/server";
+import { createServerClient } from "@supabase/ssr";
 
-export function middleware(request: NextRequest) {
-  const userAgent = request.headers.get('user-agent') || '';
-  const lowercaseUA = userAgent.toLowerCase();
-  
-  // Block common command line tools to prevent simple scraping/hacking attempts
-  if (lowercaseUA.includes('curl') || lowercaseUA.includes('wget')) {
-    return new NextResponse('Forbidden: Access via command line tools is not allowed.', { status: 403 });
+export async function middleware(request: NextRequest) {
+  // Block curl/wget scraping (keep existing)
+  const ua = request.headers.get("user-agent")?.toLowerCase() ?? "";
+  if (ua.includes("curl") || ua.includes("wget")) {
+    return new NextResponse("Forbidden: Access via command line tools is not allowed.", { status: 403 });
   }
 
-  return NextResponse.next();
+  // Supabase session refresh - must run on every request to keep cookies in sync
+  let supabaseResponse = NextResponse.next({ request });
+
+  // Skip if env not configured (avoid crash during build/dev without supabase)
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    return supabaseResponse;
+  }
+
+  const supabase = createServerClient(supabaseUrl, supabaseKey, {
+    cookies: {
+      getAll() {
+        return request.cookies.getAll();
+      },
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+        supabaseResponse = NextResponse.next({ request });
+        cookiesToSet.forEach(({ name, value, options }) => supabaseResponse.cookies.set(name, value, options));
+      },
+    },
+  });
+
+  await supabase.auth.getUser();
+
+  return supabaseResponse;
 }
 
 export const config = {
-  matcher: '/:path*',
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
 };

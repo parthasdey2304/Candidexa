@@ -126,7 +126,7 @@ func main() {
 ];
 
 const outlineBtnClass =
-  "border-[#2d3449] bg-[#0b1326] text-[#dae2fd] hover:bg-[#171f33]";
+  "border-border bg-muted text-foreground hover:bg-muted";
 
 const gapBadgeClass =
   "bg-[#6366f1]/15 text-[#818cf8] ring-1 ring-inset ring-[#6366f1]/30";
@@ -135,7 +135,7 @@ const proBadgeClass =
   "bg-[#6366f1]/15 text-[#818cf8] ring-1 ring-inset ring-[#6366f1]/30";
 
 const freeBadgeClass =
-  "bg-[#171f33] text-[#908fa0] ring-1 ring-inset ring-[#2d3449]";
+  "bg-muted text-muted-foreground ring-1 ring-inset ring-[#2d3449]";
 
 export default function ProjectsPage() {
   const { plan } = useAuth();
@@ -205,8 +205,8 @@ export default function ProjectsPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">AI Project Generator</h1>
-          <p className="mt-1 text-[#908fa0]">
+          <h1 className="text-2xl font-bold text-foreground">AI Project Generator</h1>
+          <p className="mt-1 text-muted-foreground">
             Generate projects to fill skill gaps in your resume
           </p>
         </div>
@@ -217,7 +217,7 @@ export default function ProjectsPage() {
 
       {!projects.length ? (
         <EmptyState
-          className="border-[#2d3449] bg-[#131b2e]"
+          className="border-border bg-card"
           icon={<Code2 className="size-6 text-[#818cf8]" />}
           title="Generate Project Ideas"
           description="AI analyzes your resume and generates project ideas to fill skill gaps."
@@ -242,14 +242,14 @@ export default function ProjectsPage() {
       ) : (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {projects.map((project, index) => (
-            <Card key={project.title} className="border-[#2d3449] bg-[#131b2e]">
+            <Card key={project.title} className="border-border bg-card">
               <CardHeader>
-                <CardTitle className="text-lg text-white">{project.title}</CardTitle>
-                <p className="text-sm text-[#908fa0]">{project.description}</p>
+                <CardTitle className="text-lg text-foreground">{project.title}</CardTitle>
+                <p className="text-sm text-muted-foreground">{project.description}</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#908fa0]">
+                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     Gap Filled
                   </h4>
                   <div className="flex flex-wrap gap-1.5">
@@ -261,16 +261,16 @@ export default function ProjectsPage() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#908fa0]">
+                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     Tech Stack
                   </h4>
                   <TechStackBadges stack={project.techStack} />
                 </div>
                 <div>
-                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#908fa0]">
+                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     Features
                   </h4>
-                  <ul className="space-y-1 text-sm text-[#dae2fd]">
+                  <ul className="space-y-1 text-sm text-foreground">
                     {project.features.map((feature) => (
                       <li key={feature} className="flex gap-2">
                         <span className="text-[#818cf8]">-</span>
@@ -280,7 +280,7 @@ export default function ProjectsPage() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#908fa0]">
+                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     Resume Bullet (STAR)
                   </h4>
                   <div className="mt-1 space-y-2">
@@ -289,13 +289,13 @@ export default function ProjectsPage() {
                       return (
                         <div
                           key={key}
-                          className="flex items-start gap-2 rounded-lg border border-[#2d3449] bg-[#0b1326] p-2"
+                          className="flex items-start gap-2 rounded-lg border border-border bg-muted p-2"
                         >
-                          <p className="flex-1 text-sm text-[#dae2fd]">{bullet}</p>
+                          <p className="flex-1 text-sm text-foreground">{bullet}</p>
                           <button
                             type="button"
                             onClick={() => void copyBullet(bullet, key)}
-                            className="shrink-0 rounded-md p-1 text-[#908fa0] transition-colors hover:bg-[#171f33] hover:text-white"
+                            className="shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                             aria-label="Copy resume bullet"
                           >
                             {copied === key ? (
@@ -310,7 +310,7 @@ export default function ProjectsPage() {
                   </div>
                 </div>
                 {pushNote === index ? (
-                  <p className="text-xs text-[#908fa0]">
+                  <p className="text-xs text-muted-foreground">
                     Push to GitHub is a Pro feature.{" "}
                     <Link
                       href="/pricing"
@@ -322,7 +322,7 @@ export default function ProjectsPage() {
                   </p>
                 ) : null}
               </CardContent>
-              <CardFooter className="flex gap-2 border-[#2d3449] bg-[#131b2e]">
+              <CardFooter className="flex gap-2 border-border bg-card">
                 <Button
                   variant="outline"
                   size="sm"
@@ -346,10 +346,10 @@ export default function ProjectsPage() {
 
       {codeDialog !== null ? (
         <Dialog open onOpenChange={(open) => (open ? undefined : setCodeDialog(null))}>
-          <DialogContent className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd] sm:max-w-xl">
+          <DialogContent className="border-border bg-muted text-foreground sm:max-w-xl">
             <DialogHeader>
-              <DialogTitle className="text-white">Project scaffold</DialogTitle>
-              <DialogDescription className="text-[#908fa0]">
+              <DialogTitle className="text-foreground">Project scaffold</DialogTitle>
+              <DialogDescription className="text-muted-foreground">
                 Ready-to-run starter code for {projects[codeDialog]?.title}
               </DialogDescription>
             </DialogHeader>
@@ -358,7 +358,7 @@ export default function ProjectsPage() {
               language={projects[codeDialog]?.language ?? "text"}
               title={projects[codeDialog]?.file ?? "scaffold"}
             />
-            <DialogFooter className="border-[#2d3449] bg-[#131b2e]">
+            <DialogFooter className="border-border bg-card">
               <Button
                 variant="outline"
                 className={outlineBtnClass}
@@ -382,23 +382,23 @@ export default function ProjectsPage() {
             }
           }}
         >
-          <DialogContent className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd] sm:max-w-xl">
+          <DialogContent className="border-border bg-muted text-foreground sm:max-w-xl">
             <DialogHeader>
-              <DialogTitle className="text-white">
+              <DialogTitle className="text-foreground">
                 {pushing
                   ? "Pushing to GitHub…"
                   : pushDone
                     ? "Repository pushed"
                     : "Push to GitHub"}
               </DialogTitle>
-              <DialogDescription className="text-[#908fa0]">
+              <DialogDescription className="text-muted-foreground">
                 {projects[pushDialog]?.title}
               </DialogDescription>
             </DialogHeader>
             {pushing ? (
-              <div className="flex items-center gap-3 rounded-lg border border-[#2d3449] bg-[#060e20] px-4 py-6">
+              <div className="flex items-center gap-3 rounded-lg border border-border bg-[#060e20] px-4 py-6">
                 <Spinner size="sm" />
-                <span className="text-sm text-[#908fa0]">
+                <span className="text-sm text-muted-foreground">
                   Creating remote repository and pushing commits…
                 </span>
               </div>
@@ -408,7 +408,7 @@ export default function ProjectsPage() {
                 className="max-h-96 overflow-auto"
               />
             )}
-            <DialogFooter className="border-[#2d3449] bg-[#131b2e]">
+            <DialogFooter className="border-border bg-card">
               <Button
                 variant="outline"
                 className={outlineBtnClass}

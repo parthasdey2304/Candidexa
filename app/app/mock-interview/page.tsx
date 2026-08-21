@@ -90,17 +90,17 @@ export default function MockInterviewPage() {
       <div className="mx-auto max-w-2xl space-y-6">
         <div className="mb-8 text-center">
           <Brain className="mx-auto mb-4 size-12 text-indigo-400" />
-          <h1 className="text-2xl font-bold text-white">AI Mock Interview</h1>
-          <p className="text-[#908fa0]">Practice with AI-powered questions and get instant feedback</p>
+          <h1 className="text-2xl font-bold text-foreground">AI Mock Interview</h1>
+          <p className="text-muted-foreground">Practice with AI-powered questions and get instant feedback</p>
         </div>
         <Card>
           <CardContent className="space-y-4">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-[#dae2fd]">Interview Type</label>
+              <label className="mb-1.5 block text-sm font-medium text-foreground">Interview Type</label>
               <select
                 value={type}
                 onChange={(e) => setType(e.target.value as InterviewType)}
-                className="flex h-10 w-full rounded-lg border border-[#2d3449] bg-[#0b1326] px-3 text-sm text-[#dae2fd] outline-none transition-colors focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40"
+                className="flex h-10 w-full rounded-lg border border-border bg-muted px-3 text-sm text-foreground outline-none transition-colors focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/40"
               >
                 {typeOptions.map((o) => (
                   <option key={o.value} value={o.value}>
@@ -110,7 +110,7 @@ export default function MockInterviewPage() {
               </select>
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-[#dae2fd]">Mode</label>
+              <label className="mb-1.5 block text-sm font-medium text-foreground">Mode</label>
               <div className="grid grid-cols-2 gap-2">
                 {(["text", "voice"] as InterviewMode[]).map((m) => (
                   <button
@@ -120,7 +120,7 @@ export default function MockInterviewPage() {
                     className={`flex items-center justify-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
                       mode === m
                         ? "border-indigo-500 bg-indigo-500/20 text-indigo-300"
-                        : "border-[#2d3449] bg-[#0b1326] text-[#908fa0] hover:border-indigo-500/50"
+                        : "border-border bg-muted text-muted-foreground hover:border-indigo-500/50"
                     }`}
                   >
                     {m === "voice" ? <Mic className="size-4" /> : <MessageSquare className="size-4" />}
@@ -145,19 +145,19 @@ export default function MockInterviewPage() {
     <div className="mx-auto max-w-4xl space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-white">Mock Interview</h1>
-          <p className="text-sm text-[#908fa0]">
+          <h1 className="text-lg font-semibold text-foreground">Mock Interview</h1>
+          <p className="text-sm text-muted-foreground">
             {type === "technical" ? "Role-Specific Technical" : type === "project" ? "Project Deep-Dive" : type === "behavioral" ? "Behavioral" : "Full Mock"}{" "}
             · Question {currentQ + 1} of {mockQuestions.length}
           </p>
         </div>
-        <Button variant="outline" size="sm" className="border-[#2d3449] bg-transparent text-[#dae2fd] hover:bg-[#171f33]" onClick={handleEnd}>
+        <Button variant="outline" size="sm" className="border-border bg-transparent text-foreground hover:bg-muted" onClick={handleEnd}>
           <Square className="mr-2 size-4" /> End Interview
         </Button>
       </div>
 
       <div className="flex items-center gap-3">
-        <span className="text-xs font-medium uppercase tracking-wide text-[#908fa0]">
+        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
           Progress {currentQ + 1}/{mockQuestions.length}
         </span>
         <Progress value={((currentQ + 1) / mockQuestions.length) * 100} className="flex-1" />
@@ -166,12 +166,12 @@ export default function MockInterviewPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="border-[#2d3449] text-[#908fa0]">
+            <Badge variant="outline" className="border-border text-muted-foreground">
               {question.category}
             </Badge>
             <Badge className={difficultyVariant(question.difficulty)}>{question.difficulty}</Badge>
           </div>
-          <CardTitle className="mt-2 text-lg text-white">{question.question}</CardTitle>
+          <CardTitle className="mt-2 text-lg text-foreground">{question.question}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {mode === "voice" ? (
@@ -183,9 +183,9 @@ export default function MockInterviewPage() {
                 }`}
                 aria-label={listening ? "Stop recording" : "Start speaking"}
               >
-                {listening ? <MicOff className="size-8 text-white" /> : <Mic className="size-8 text-white" />}
+                {listening ? <MicOff className="size-8 text-foreground" /> : <Mic className="size-8 text-foreground" />}
               </button>
-              <p className="mt-4 text-sm text-[#908fa0]">{listening ? "Listening... Click to stop" : "Click to start speaking"}</p>
+              <p className="mt-4 text-sm text-muted-foreground">{listening ? "Listening... Click to stop" : "Click to start speaking"}</p>
             </div>
           ) : (
             <Textarea rows={6} placeholder="Type your answer here..." value={answer} onChange={(e) => setAnswer(e.target.value)} disabled={evaluating} />
@@ -205,9 +205,9 @@ export default function MockInterviewPage() {
                 ) : (
                   <MessageSquare className="size-5 text-amber-400" />
                 )}
-                <span className="font-semibold text-white">Score: {evaluation.score}/10</span>
+                <span className="font-semibold text-foreground">Score: {evaluation.score}/10</span>
               </div>
-              <p className="text-sm text-[#dae2fd]">{evaluation.feedback}</p>
+              <p className="text-sm text-foreground">{evaluation.feedback}</p>
             </div>
           )}
 
@@ -236,14 +236,14 @@ export default function MockInterviewPage() {
       {answers.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-base text-white">Your Answers So Far</CardTitle>
+            <CardTitle className="text-base text-foreground">Your Answers So Far</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {answers.map((a, i) => (
-              <div key={i} className="flex items-center gap-3 rounded-lg bg-[#131b2e] p-3 ring-1 ring-white/10">
-                <span className="text-sm font-medium text-white">Q{i + 1}</span>
+              <div key={i} className="flex items-center gap-3 rounded-lg bg-card p-3 ring-1 ring-white/10">
+                <span className="text-sm font-medium text-foreground">Q{i + 1}</span>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm text-[#dae2fd]">{a.q}</p>
+                  <p className="truncate text-sm text-foreground">{a.q}</p>
                 </div>
                 {a.score >= 8 ? (
                   <Badge className="bg-emerald-500/15 text-emerald-400 ring-1 ring-inset ring-emerald-500/30">{a.score}/10</Badge>
@@ -257,19 +257,19 @@ export default function MockInterviewPage() {
       )}
 
       <Dialog open={reportOpen} onOpenChange={setReportOpen}>
-        <DialogContent className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd] sm:max-w-md">
+        <DialogContent className="border-border bg-muted text-foreground sm:max-w-md">
           <DialogHeader className="items-center text-center">
             <ScoreGauge value={avgScore * 10} size={140} label="Avg Score" />
-            <DialogTitle className="text-white">Interview Complete</DialogTitle>
-            <DialogDescription className="text-[#908fa0]">
+            <DialogTitle className="text-foreground">Interview Complete</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
               You answered {answers.length} of {mockQuestions.length} questions.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-2">
             {answers.map((a, i) => (
-              <div key={i} className="flex items-center justify-between rounded-lg bg-[#131b2e] px-3 py-2 ring-1 ring-white/10">
-                <span className="truncate pr-2 text-sm text-[#dae2fd]">Q{i + 1}</span>
-                <span className="text-sm font-semibold text-white">{a.score}/10</span>
+              <div key={i} className="flex items-center justify-between rounded-lg bg-card px-3 py-2 ring-1 ring-white/10">
+                <span className="truncate pr-2 text-sm text-foreground">Q{i + 1}</span>
+                <span className="text-sm font-semibold text-foreground">{a.score}/10</span>
               </div>
             ))}
           </div>

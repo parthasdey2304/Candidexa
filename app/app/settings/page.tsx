@@ -1,7 +1,9 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useTheme } from "next-themes";
+import { designStyles, getStoredDesignStyle, setStoredDesignStyle, applyAccent, getStoredAccent, type DesignStyleId } from "@/lib/design-styles";
 import Link from "next/link";
 import {
   Bell,
@@ -161,6 +163,9 @@ function SettingsContent() {
   const [accent, setAccent] = useState(accentOptions[0]);
   const [reduceMotion, setReduceMotion] = useState(false);
   const [compactDensity, setCompactDensity] = useState(false);
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [designStyle, setDesignStyle] = useState<DesignStyleId>("modern");
+  const [styleNotice, setStyleNotice] = useState("");
   const [apiKeys, setApiKeys] = useState<ApiKey[]>(mockApiKeys);
   const [showCreateKey, setShowCreateKey] = useState(false);
   const [newKeyName, setNewKeyName] = useState("");
@@ -173,6 +178,30 @@ function SettingsContent() {
     const url = new URL(window.location.href);
     url.searchParams.set("tab", value);
     window.history.replaceState(null, "", url.toString());
+  };
+
+  useEffect(() => {
+    const storedStyle = getStoredDesignStyle();
+    setDesignStyle(storedStyle);
+    const storedAccent = getStoredAccent();
+    if (storedAccent) {
+      const found = accentOptions.find((a) => a.value === storedAccent);
+      if (found) setAccent(found);
+      else setAccent({ name: "Custom", value: storedAccent });
+    }
+  }, []);
+
+  const handleStyleChange = (id: DesignStyleId) => {
+    setDesignStyle(id);
+    setStoredDesignStyle(id);
+    const name = designStyles.find((s) => s.id === id)?.name ?? id;
+    setStyleNotice(`Applied ${name} — entire workspace updated`);
+    window.setTimeout(() => setStyleNotice(""), 3000);
+  };
+
+  const handleAccentChange = (opt: typeof accentOptions[number]) => {
+    setAccent(opt);
+    applyAccent(opt.value);
   };
 
   const handleSaveProfile = () => {
@@ -262,8 +291,8 @@ function SettingsContent() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">Settings</h1>
-          <p className="text-[#908fa0]">Manage your account, security, and billing</p>
+          <h1 className="text-2xl font-bold text-foreground">Settings</h1>
+          <p className="text-muted-foreground">Manage your account, security, and billing</p>
         </div>
         <div className="flex items-center gap-2">
           <PlanBadge plan={plan?.tier} />
@@ -274,41 +303,41 @@ function SettingsContent() {
         </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={handleTabChange}>
-        <TabsList variant="line" className="w-full flex-wrap justify-start border-b border-[#2d3449]">
-          <TabsTrigger value="profile">
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full min-w-0">
+        <TabsList variant="line" className="w-full max-w-full justify-start border-b border-border overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden flex-nowrap h-auto min-h-10 py-1 gap-0">
+          <TabsTrigger value="profile" className="shrink-0 flex-none whitespace-nowrap">
             <User className="mr-2 h-4 w-4" /> Profile
           </TabsTrigger>
-          <TabsTrigger value="security">
+          <TabsTrigger value="security" className="shrink-0 flex-none whitespace-nowrap">
             <Shield className="mr-2 h-4 w-4" /> Security
           </TabsTrigger>
-          <TabsTrigger value="billing">
+          <TabsTrigger value="billing" className="shrink-0 flex-none whitespace-nowrap">
             <CreditCard className="mr-2 h-4 w-4" /> Plan & Billing
           </TabsTrigger>
-          <TabsTrigger value="usage">
+          <TabsTrigger value="usage" className="shrink-0 flex-none whitespace-nowrap">
             <Zap className="mr-2 h-4 w-4" /> AI Usage
           </TabsTrigger>
-          <TabsTrigger value="github">
+          <TabsTrigger value="github" className="shrink-0 flex-none whitespace-nowrap">
             <GithubMark className="mr-2 h-4 w-4" /> GitHub
           </TabsTrigger>
-          <TabsTrigger value="notifications">
+          <TabsTrigger value="notifications" className="shrink-0 flex-none whitespace-nowrap">
             <Bell className="mr-2 h-4 w-4" /> Notifications
           </TabsTrigger>
-          <TabsTrigger value="apikeys">
+          <TabsTrigger value="apikeys" className="shrink-0 flex-none whitespace-nowrap">
             <KeyRound className="mr-2 h-4 w-4" /> API Keys
           </TabsTrigger>
-          <TabsTrigger value="appearance">
+          <TabsTrigger value="appearance" className="shrink-0 flex-none whitespace-nowrap">
             <Palette className="mr-2 h-4 w-4" /> Appearance
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile">
-          <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+          <Card className="bg-card border-border shadow-none">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="text-base text-white">Profile Information</CardTitle>
+                <CardTitle className="text-base text-foreground">Profile Information</CardTitle>
                 <CardAction>
-                  <Button variant="ghost" size="sm" onClick={handleSignOut} className="text-[#908fa0] hover:bg-[#171f33] hover:text-white">
+                  <Button variant="ghost" size="sm" onClick={handleSignOut} className="text-muted-foreground hover:bg-muted hover:text-foreground">
                     <LogOut className="h-4 w-4" /> Sign out
                   </Button>
                 </CardAction>
@@ -321,43 +350,43 @@ function SettingsContent() {
                 </div>
               )}
               <div className="flex items-center gap-4">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-blue-500 text-xl font-bold text-white">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-blue-500 text-xl font-bold text-foreground">
                   {user?.name?.[0]?.toUpperCase() || "U"}
                 </div>
                 <div>
-                  <Button variant="outline" size="sm" className="bg-[#0b1326]">
+                  <Button variant="outline" size="sm" className="bg-muted">
                     Upload Photo
                   </Button>
-                  <p className="mt-1 text-xs text-[#908fa0]">JPG or PNG, max 2MB</p>
+                  <p className="mt-1 text-xs text-muted-foreground">JPG or PNG, max 2MB</p>
                 </div>
               </div>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                  <Label className="mb-1 block text-sm font-medium text-[#dae2fd]">Name</Label>
-                  <Input defaultValue={user?.name ?? ""} className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd]" />
+                  <Label className="mb-1 block text-sm font-medium text-foreground">Name</Label>
+                  <Input defaultValue={user?.name ?? ""} className="border-border bg-muted text-foreground" />
                 </div>
                 <div>
-                  <Label className="mb-1 block text-sm font-medium text-[#dae2fd]">Email</Label>
-                  <Input defaultValue={user?.email ?? ""} type="email" className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd]" />
+                  <Label className="mb-1 block text-sm font-medium text-foreground">Email</Label>
+                  <Input defaultValue={user?.email ?? ""} type="email" className="border-border bg-muted text-foreground" />
                 </div>
                 <div>
-                  <Label className="mb-1 block text-sm font-medium text-[#dae2fd]">Phone</Label>
-                  <Input placeholder="+91 98765 43210" className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd]" />
+                  <Label className="mb-1 block text-sm font-medium text-foreground">Phone</Label>
+                  <Input placeholder="+91 98765 43210" className="border-border bg-muted text-foreground" />
                 </div>
                 <div>
-                  <Label className="mb-1 block text-sm font-medium text-[#dae2fd]">Location</Label>
-                  <Input placeholder="Bangalore, India" className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd]" />
+                  <Label className="mb-1 block text-sm font-medium text-foreground">Location</Label>
+                  <Input placeholder="Bangalore, India" className="border-border bg-muted text-foreground" />
                 </div>
                 <div>
-                  <Label className="mb-1 block text-sm font-medium text-[#dae2fd]">LinkedIn</Label>
-                  <Input placeholder="linkedin.com/in/username" className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd]" />
+                  <Label className="mb-1 block text-sm font-medium text-foreground">LinkedIn</Label>
+                  <Input placeholder="linkedin.com/in/username" className="border-border bg-muted text-foreground" />
                 </div>
                 <div>
-                  <Label className="mb-1 block text-sm font-medium text-[#dae2fd]">GitHub</Label>
-                  <Input placeholder="github.com/username" className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd]" />
+                  <Label className="mb-1 block text-sm font-medium text-foreground">GitHub</Label>
+                  <Input placeholder="github.com/username" className="border-border bg-muted text-foreground" />
                 </div>
               </div>
-              <Button onClick={handleSaveProfile} className="bg-indigo-500 text-white hover:bg-indigo-400">
+              <Button onClick={handleSaveProfile} className="bg-indigo-500 text-foreground hover:bg-indigo-400">
                 Save Changes
               </Button>
             </CardContent>
@@ -366,9 +395,9 @@ function SettingsContent() {
 
         <TabsContent value="security">
           <div className="space-y-4">
-            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+            <Card className="bg-card border-border shadow-none">
               <CardHeader>
-                <CardTitle className="text-base text-white">Password</CardTitle>
+                <CardTitle className="text-base text-foreground">Password</CardTitle>
               </CardHeader>
               <CardContent>
                 {!showPasswordForm ? (
@@ -378,17 +407,17 @@ function SettingsContent() {
                 ) : (
                   <div className="space-y-4">
                     <div>
-                      <Label className="mb-1 block text-sm font-medium text-[#dae2fd]">Current Password</Label>
-                      <Input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd]" />
+                      <Label className="mb-1 block text-sm font-medium text-foreground">Current Password</Label>
+                      <Input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} className="border-border bg-muted text-foreground" />
                     </div>
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <div>
-                        <Label className="mb-1 block text-sm font-medium text-[#dae2fd]">New Password</Label>
-                        <Input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd]" />
+                        <Label className="mb-1 block text-sm font-medium text-foreground">New Password</Label>
+                        <Input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="border-border bg-muted text-foreground" />
                       </div>
                       <div>
-                        <Label className="mb-1 block text-sm font-medium text-[#dae2fd]">Confirm</Label>
-                        <Input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd]" />
+                        <Label className="mb-1 block text-sm font-medium text-foreground">Confirm</Label>
+                        <Input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="border-border bg-muted text-foreground" />
                       </div>
                     </div>
                     {passwordMsg && (
@@ -403,7 +432,7 @@ function SettingsContent() {
                       </p>
                     )}
                     <div className="flex gap-2">
-                      <Button size="sm" className="bg-indigo-500 text-white hover:bg-indigo-400" onClick={handleUpdatePassword}>
+                      <Button size="sm" className="bg-indigo-500 text-foreground hover:bg-indigo-400" onClick={handleUpdatePassword}>
                         Update Password
                       </Button>
                       <Button variant="outline" size="sm" onClick={() => setShowPasswordForm(false)}>
@@ -415,10 +444,10 @@ function SettingsContent() {
               </CardContent>
             </Card>
 
-            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+            <Card className="bg-card border-border shadow-none">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-base text-white">Two-Factor Authentication (2FA)</CardTitle>
+                  <CardTitle className="text-base text-foreground">Two-Factor Authentication (2FA)</CardTitle>
                   <Badge
                     variant="outline"
                     className={
@@ -432,7 +461,7 @@ function SettingsContent() {
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="mb-3 text-sm text-[#908fa0]">
+                <p className="mb-3 text-sm text-muted-foreground">
                   Add an extra layer of security with Google Authenticator or Authy.
                 </p>
                 {twoFactorEnabled ? (
@@ -442,7 +471,7 @@ function SettingsContent() {
                 ) : (
                   <Button
                     size="sm"
-                    className="bg-indigo-500 text-white hover:bg-indigo-400"
+                    className="bg-indigo-500 text-foreground hover:bg-indigo-400"
                     onClick={() => {
                       setShow2faModal(true);
                       setQrShown(false);
@@ -455,21 +484,21 @@ function SettingsContent() {
               </CardContent>
             </Card>
 
-            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+            <Card className="bg-card border-border shadow-none">
               <CardHeader>
-                <CardTitle className="text-base text-white">Active Sessions</CardTitle>
+                <CardTitle className="text-base text-foreground">Active Sessions</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="mb-4 space-y-2">
                   {sessions.map((s, i) => (
-                    <div key={`${s.device}-${i}`} className="flex items-center gap-3 rounded-lg p-3 hover:bg-[#171f33]">
+                    <div key={`${s.device}-${i}`} className="flex items-center gap-3 rounded-lg p-3 hover:bg-muted">
                       {s.device.includes("iPhone") ? (
-                        <Smartphone className="h-4 w-4 text-[#908fa0]" />
+                        <Smartphone className="h-4 w-4 text-muted-foreground" />
                       ) : (
-                        <Monitor className="h-4 w-4 text-[#908fa0]" />
+                        <Monitor className="h-4 w-4 text-muted-foreground" />
                       )}
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-white">
+                        <p className="text-sm font-medium text-foreground">
                           {s.device}{" "}
                           {s.current && (
                             <Badge variant="default" className="bg-emerald-500/15 text-emerald-400 ring-1 ring-inset ring-emerald-500/30">
@@ -477,7 +506,7 @@ function SettingsContent() {
                             </Badge>
                           )}
                         </p>
-                        <p className="text-xs text-[#908fa0]">
+                        <p className="text-xs text-muted-foreground">
                           {s.ip} · Last active {s.lastActive}
                         </p>
                       </div>
@@ -499,15 +528,15 @@ function SettingsContent() {
 
         <TabsContent value="billing">
           <div className="space-y-4">
-            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+            <Card className="bg-card border-border shadow-none">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-base text-white">Current Plan</CardTitle>
+                  <CardTitle className="text-base text-foreground">Current Plan</CardTitle>
                   <PlanBadge plan={plan?.tier} />
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="mb-4 text-sm text-[#908fa0]">
+                <p className="mb-4 text-sm text-muted-foreground">
                   {isPro
                     ? "You have full access to all AI features."
                     : "Upgrade for unlimited AI resumes, tailoring, and video demos."}
@@ -516,7 +545,7 @@ function SettingsContent() {
                   <Button
                     onClick={handleUpgrade}
                     disabled={upgrading}
-                    className="bg-indigo-500 text-white hover:bg-indigo-400"
+                    className="bg-indigo-500 text-foreground hover:bg-indigo-400"
                   >
                     {upgrading ? (
                       <>
@@ -527,13 +556,13 @@ function SettingsContent() {
                     )}
                   </Button>
                 )}
-                {upgradeNote && <p className="mt-3 text-xs text-[#908fa0]">{upgradeNote}</p>}
+                {upgradeNote && <p className="mt-3 text-xs text-muted-foreground">{upgradeNote}</p>}
                 {isPro && (
                   <Button variant="destructive" size="sm">
                     Cancel Subscription
                   </Button>
                 )}
-                <div className="mt-4 flex items-center gap-2 text-xs text-[#908fa0]">
+                <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
                   <span>Need to manage payment methods or invoices?</span>
                   <Link href="/pricing" className="text-indigo-400 hover:underline">
                     View pricing
@@ -542,31 +571,31 @@ function SettingsContent() {
               </CardContent>
             </Card>
 
-            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+            <Card className="bg-card border-border shadow-none">
               <CardHeader>
-                <CardTitle className="text-base text-white">Plan Comparison</CardTitle>
+                <CardTitle className="text-base text-foreground">Plan Comparison</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-[#1c2440]">
-                        <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-[#908fa0]">
+                      <tr className="border-b border-border">
+                        <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
                           Feature
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wide text-[#908fa0]">
+                        <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wide text-muted-foreground">
                           Free
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wide text-[#908fa0]">
+                        <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wide text-muted-foreground">
                           Pro
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       {comparisonRows.map(([f, free, pro]) => (
-                        <tr key={f} className="border-b border-[#1c2440] last:border-0">
-                          <td className="px-4 py-3 font-medium text-[#dae2fd]">{f}</td>
-                          <td className="px-4 py-3 text-center text-[#908fa0]">{free}</td>
+                        <tr key={f} className="border-b border-border last:border-0">
+                          <td className="px-4 py-3 font-medium text-foreground">{f}</td>
+                          <td className="px-4 py-3 text-center text-muted-foreground">{free}</td>
                           <td className="px-4 py-3 text-center font-medium text-indigo-400">{pro}</td>
                         </tr>
                       ))}
@@ -576,24 +605,24 @@ function SettingsContent() {
               </CardContent>
             </Card>
 
-            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+            <Card className="bg-card border-border shadow-none">
               <CardHeader>
-                <CardTitle className="text-base text-white">Billing History</CardTitle>
+                <CardTitle className="text-base text-foreground">Billing History</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   {payments.map((p, i) => (
-                    <div key={`${p.date}-${i}`} className="flex items-center justify-between rounded-lg p-3 hover:bg-[#171f33]">
+                    <div key={`${p.date}-${i}`} className="flex items-center justify-between rounded-lg p-3 hover:bg-muted">
                       <div>
-                        <p className="text-sm font-medium text-white">{p.plan}</p>
-                        <p className="text-xs text-[#908fa0]">{p.date}</p>
+                        <p className="text-sm font-medium text-foreground">{p.plan}</p>
+                        <p className="text-xs text-muted-foreground">{p.date}</p>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className="text-sm font-medium text-[#dae2fd]">{p.amount}</span>
+                        <span className="text-sm font-medium text-foreground">{p.amount}</span>
                         <Badge variant="default" className="bg-emerald-500/15 text-emerald-400 ring-1 ring-inset ring-emerald-500/30">
                           {p.status}
                         </Badge>
-                        <Button variant="outline" size="icon-sm" className="bg-[#0b1326]">
+                        <Button variant="outline" size="icon-sm" className="bg-muted">
                           <Download className="h-3 w-3" />
                         </Button>
                       </div>
@@ -606,22 +635,22 @@ function SettingsContent() {
         </TabsContent>
 
         <TabsContent value="usage">
-          <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+          <Card className="bg-card border-border shadow-none">
             <CardHeader>
-              <CardTitle className="text-base text-white">AI Usage Dashboard</CardTitle>
+              <CardTitle className="text-base text-foreground">AI Usage Dashboard</CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
               {usageBars.map((bar) => (
                 <div key={bar.label}>
                   <div className="mb-1 flex justify-between text-sm">
-                    <span className="text-[#908fa0]">{bar.label}</span>
-                    <span className="text-[#dae2fd]">{bar.display}</span>
+                    <span className="text-muted-foreground">{bar.label}</span>
+                    <span className="text-foreground">{bar.display}</span>
                   </div>
-                  <Progress value={(bar.value / Math.max(bar.max, 1)) * 100} className="[&_[data-slot=progress-track]]:bg-[#171f33]" />
+                  <Progress value={(bar.value / Math.max(bar.max, 1)) * 100} className="[&_[data-slot=progress-track]]:bg-muted" />
                 </div>
               ))}
               {!isPro && (
-                <p className="text-xs text-[#908fa0]">
+                <p className="text-xs text-muted-foreground">
                   Running low?{" "}
                   <Link href="/app/settings?tab=billing" className="text-indigo-400 hover:underline">
                     Upgrade to Pro
@@ -634,34 +663,34 @@ function SettingsContent() {
         </TabsContent>
 
         <TabsContent value="github">
-          <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+          <Card className="bg-card border-border shadow-none">
             <CardHeader>
-              <CardTitle className="text-base text-white">GitHub Integration</CardTitle>
+              <CardTitle className="text-base text-foreground">GitHub Integration</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="mb-4 flex items-center justify-between rounded-lg bg-[#0b1326] p-4">
+              <div className="mb-4 flex items-center justify-between rounded-lg bg-muted p-4">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#060e20]">
-                    <GithubMark className="h-5 w-5 text-white" />
+                    <GithubMark className="h-5 w-5 text-foreground" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white">
+                    <p className="text-sm font-medium text-foreground">
                       {githubConnected ? "Connected to @username" : "Not connected"}
                     </p>
-                    <p className="text-xs text-[#908fa0]">
+                    <p className="text-xs text-muted-foreground">
                       Connect to auto-push generated projects
                     </p>
                   </div>
                 </div>
                 <Button
                   size="sm"
-                  className="bg-indigo-500 text-white hover:bg-indigo-400"
+                  className="bg-indigo-500 text-foreground hover:bg-indigo-400"
                   onClick={() => setGithubConnected((c) => !c)}
                 >
                   {githubConnected ? "Disconnect" : "Connect GitHub"}
                 </Button>
               </div>
-              <p className="text-xs text-[#908fa0]">
+              <p className="text-xs text-muted-foreground">
                 We only request scoped access (repo creation + push). Your token is encrypted at rest.
               </p>
             </CardContent>
@@ -669,9 +698,9 @@ function SettingsContent() {
         </TabsContent>
 
         <TabsContent value="notifications">
-          <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+          <Card className="bg-card border-border shadow-none">
             <CardHeader>
-              <CardTitle className="text-base text-white">Notification Preferences</CardTitle>
+              <CardTitle className="text-base text-foreground">Notification Preferences</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {[
@@ -679,10 +708,10 @@ function SettingsContent() {
                 { id: "push", label: "Push notifications", desc: "Real-time alerts in your browser", val: pushNotif, set: setPushNotif },
                 { id: "security", label: "Security alerts", desc: "Login from new device, rate limit hits, 2FA events", val: securityNotif, set: setSecurityNotif },
               ].map((item) => (
-                <div key={item.id} className="flex items-center justify-between rounded-lg border border-[#2d3449] p-4">
+                <div key={item.id} className="flex items-center justify-between rounded-lg border border-border p-4">
                   <div>
-                    <p className="text-sm font-medium text-white">{item.label}</p>
-                    <p className="text-xs text-[#908fa0]">{item.desc}</p>
+                    <p className="text-sm font-medium text-foreground">{item.label}</p>
+                    <p className="text-xs text-muted-foreground">{item.desc}</p>
                   </div>
                   <Switch
                     checked={item.val}
@@ -696,48 +725,48 @@ function SettingsContent() {
         </TabsContent>
 
         <TabsContent value="apikeys">
-          <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+          <Card className="bg-card border-border shadow-none">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="text-base text-white">API Keys</CardTitle>
-                <Button size="sm" className="bg-indigo-500 text-white hover:bg-indigo-400" onClick={() => setShowCreateKey(true)}>
+                <CardTitle className="text-base text-foreground">API Keys</CardTitle>
+                <Button size="sm" className="bg-indigo-500 text-foreground hover:bg-indigo-400" onClick={() => setShowCreateKey(true)}>
                   Create Key
                 </Button>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="mb-4 text-sm text-[#908fa0]">
+              <p className="mb-4 text-sm text-muted-foreground">
                 Keys are used to authenticate requests to the Candidexa API. Treat them like passwords.
               </p>
               {!generatedKey && apiKeys.length === 0 ? (
-                <p className="text-sm text-[#dae2fd]">No API keys yet. Create one to get started.</p>
+                <p className="text-sm text-foreground">No API keys yet. Create one to get started.</p>
               ) : (
                 <div className="space-y-2">
                   {generatedKey && (
                     <div className="mb-3 flex items-center gap-2 rounded-lg border border-indigo-500/30 bg-indigo-500/10 p-3">
                       <div className="min-w-0 flex-1">
                         <p className="text-xs font-medium text-indigo-300">New key created — copy it now</p>
-                        <code className="break-all font-mono text-sm text-[#dae2fd]">{generatedKey}</code>
+                        <code className="break-all font-mono text-sm text-foreground">{generatedKey}</code>
                       </div>
-                      <Button variant="outline" size="sm" onClick={() => copyApiKey(generatedKey)} className="shrink-0 bg-[#0b1326]">
+                      <Button variant="outline" size="sm" onClick={() => copyApiKey(generatedKey)} className="shrink-0 bg-muted">
                         {copiedKey === generatedKey ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5" />}
                         {copiedKey === generatedKey ? "Copied" : "Copy"}
                       </Button>
-                      <Button variant="ghost" size="icon-sm" onClick={() => setGeneratedKey("")} className="shrink-0 text-[#908fa0] hover:text-white" aria-label="Dismiss">
+                      <Button variant="ghost" size="icon-sm" onClick={() => setGeneratedKey("")} className="shrink-0 text-muted-foreground hover:text-foreground" aria-label="Dismiss">
                         <X className="h-4 w-4" />
                       </Button>
                     </div>
                   )}
                   {apiKeys.map((k) => (
-                    <div key={k.id} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[#2d3449] p-3">
+                    <div key={k.id} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border p-3">
                       <div className="flex min-w-0 items-center gap-3">
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#171f33]">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted">
                           <KeyRound className="h-4 w-4 text-indigo-400" />
                         </div>
                         <div className="min-w-0">
-                          <p className="text-sm font-medium text-white">{k.name}</p>
-                          <p className="truncate font-mono text-xs text-[#908fa0]">{k.prefix}...</p>
-                          <p className="text-xs text-[#908fa0]">
+                          <p className="text-sm font-medium text-foreground">{k.name}</p>
+                          <p className="truncate font-mono text-xs text-muted-foreground">{k.prefix}...</p>
+                          <p className="text-xs text-muted-foreground">
                             Created {k.createdAt} · Last used {k.lastUsed}
                           </p>
                         </div>
@@ -748,7 +777,7 @@ function SettingsContent() {
                           className={
                             k.status === "active"
                               ? "bg-emerald-500/15 text-emerald-400 ring-1 ring-inset ring-emerald-500/30"
-                              : "bg-[#171f33] text-[#908fa0]"
+                              : "bg-muted text-muted-foreground"
                           }
                         >
                           {k.status}
@@ -771,68 +800,212 @@ function SettingsContent() {
         </TabsContent>
 
         <TabsContent value="appearance">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+          <div className="space-y-6">
+            {styleNotice && (
+              <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm font-medium text-emerald-600 dark:text-emerald-400">
+                {styleNotice}
+              </div>
+            )}
+
+            {/* Theme Mode + Accent */}
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <Card className="shadow-sm">
+                <CardHeader>
+                  <CardTitle className="text-base">Theme Mode</CardTitle>
+                  <p className="text-sm text-muted-foreground">Choose light, dark, or follow system — affects entire /app workspace.</p>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { id: "light", label: "Light", icon: "☀️" },
+                      { id: "dark", label: "Dark", icon: "🌙" },
+                      { id: "system", label: "System", icon: "💻" },
+                    ].map((m) => (
+                      <button
+                        key={m.id}
+                        onClick={() => setTheme(m.id)}
+                        className={`flex flex-col items-center gap-1.5 rounded-xl border-2 px-3 py-4 text-sm font-medium transition-all ${
+                          theme === m.id
+                            ? "border-primary bg-primary/10 text-foreground"
+                            : "border-border bg-card hover:border-primary/40 text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        <span className="text-lg leading-none">{m.icon}</span>
+                        <span>{m.label}</span>
+                        {theme === m.id && <Check className="h-3.5 w-3.5 text-primary" />}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="mt-3 text-xs text-muted-foreground">Current: <span className="font-medium text-foreground">{resolvedTheme ?? theme}</span> • Try switching and watch the header/sidebar update instantly.</p>
+                </CardContent>
+              </Card>
+
+              <Card className="shadow-sm">
+                <CardHeader>
+                  <CardTitle className="text-base">Accent Color</CardTitle>
+                  <p className="text-sm text-muted-foreground">Applied globally via --primary. Updates buttons, links, and active states.</p>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2.5">
+                    {accentOptions.map((opt) => (
+                      <button
+                        key={opt.name}
+                        onClick={() => handleAccentChange(opt)}
+                        className={`flex items-center gap-2 rounded-full border-2 px-3 py-2 text-sm font-medium transition-all ${
+                          accent.value === opt.value
+                            ? "border-primary bg-primary/10 text-foreground"
+                            : "border-border bg-card hover:border-primary/40 text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        <span className="h-5 w-5 rounded-full border border-border" style={{ background: opt.value }} />
+                        {opt.name}
+                        {accent.value === opt.value && <Check className="h-3.5 w-3.5 text-primary" />}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="mt-3 text-xs text-muted-foreground">Also works with any Design Style below.</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Design Style Picker - from first image */}
+            <Card className="shadow-sm overflow-hidden">
               <CardHeader>
-                <CardTitle className="text-base text-white">Accent Color</CardTitle>
+                <CardTitle className="text-base">Design Style</CardTitle>
+                <p className="text-sm text-muted-foreground">Pick a style for the entire /app workspace. The whole UI updates instantly — sidebar, cards, buttons, and radius.</p>
               </CardHeader>
-              <CardContent>
-                <p className="mb-4 text-sm text-[#908fa0]">
-                  Choose the accent used across your workspace. Theme stays fixed to Obsidian dark.
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  {accentOptions.map((opt) => (
-                    <button
-                      key={opt.name}
-                      onClick={() => setAccent(opt)}
-                      className={`flex items-center gap-2 rounded-lg border-2 px-3 py-2 transition-all ${
-                        accent.name === opt.name
-                          ? "border-indigo-500 bg-indigo-500/10"
-                          : "border-[#2d3449] hover:border-[#3a4160]"
-                      }`}
-                    >
-                      <span className="h-5 w-5 rounded-full" style={{ background: opt.value }} />
-                      <span className="text-sm font-medium text-white">{opt.name}</span>
-                      {accent.name === opt.name && <Check className="h-4 w-4 text-indigo-400" />}
-                    </button>
-                  ))}
+              <CardContent className="space-y-8">
+                <div>
+                  <div className="mb-3 flex items-center gap-3">
+                    <h4 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Recommended</h4>
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">{designStyles.filter((s) => s.group === "recommended").length}</span>
+                    <div className="h-px flex-1 bg-border" />
+                  </div>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                    {designStyles
+                      .filter((s) => s.group === "recommended")
+                      .map((style) => {
+                        const isActive = designStyle === style.id;
+                        return (
+                          <button
+                            key={style.id}
+                            onClick={() => handleStyleChange(style.id)}
+                            className={`group text-left rounded-xl border-2 bg-card p-3 text-card-foreground transition-all hover:shadow-md text-sm ${isActive ? "border-primary shadow-md shadow-primary/10" : "border-border hover:border-primary/30"}`}
+                          >
+                            <div className="overflow-hidden rounded-lg border border-border bg-background">
+                              <div className="flex items-center justify-between px-3 py-2 border-b border-border/60">
+                                <span className="text-[10px] font-medium tracking-wide text-muted-foreground">Aa Design system</span>
+                                <span className="flex gap-1">
+                                  {style.dots.map((c, i) => (
+                                    <span key={i} className="h-2.5 w-2.5 rounded-sm border border-border" style={{ background: c }} />
+                                  ))}
+                                </span>
+                              </div>
+                              <div className="grid grid-cols-5 gap-2 p-3">
+                                <div className="col-span-3">
+                                  <p className="text-xs font-semibold leading-none">Heading</p>
+                                  <p className="mt-1 text-[10px] leading-tight text-muted-foreground">Clear, reusable interface elements.</p>
+                                  <div className="mt-2.5 flex gap-1.5">
+                                    <span className="rounded px-2 py-1 text-[10px] font-medium" style={{ background: style.preview.primary, color: style.preview.primaryText, border: style.preview.border ? `1px solid ${style.preview.border}` : undefined }}>Primary</span>
+                                    <span className="rounded border border-border bg-card px-2 py-1 text-[10px]">Button</span>
+                                  </div>
+                                </div>
+                                <div className="col-span-2 rounded-md border p-2 flex flex-col justify-center" style={{ background: style.preview.totalBg, borderColor: style.preview.border ?? "transparent" }}>
+                                  <span className="text-[10px] text-muted-foreground">Total</span>
+                                  <span className="text-sm font-bold leading-none">$24.8k</span>
+                                  <span className="mt-1.5 h-1.5 w-full rounded-full bg-background/80"><span className="block h-1.5 rounded-full" style={{ width: "68%", background: style.preview.totalAccent }} /></span>
+                                </div>
+                              </div>
+                              {isActive ? <div className="h-1 bg-primary" /> : <div className="h-1 bg-transparent group-hover:bg-primary/40" />}
+                            </div>
+                            <p className="mt-2.5 font-semibold leading-none">{style.name}</p>
+                            <p className="mt-1 text-xs text-muted-foreground">{style.description}</p>
+                            {isActive && <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary"><Check className="h-3 w-3" /> Active</span>}
+                          </button>
+                        );
+                      })}
+                  </div>
                 </div>
+
+                <div>
+                  <div className="mb-3 flex items-center gap-3">
+                    <h4 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">More styles</h4>
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">{designStyles.filter((s) => s.group === "more").length}</span>
+                    <div className="h-px flex-1 bg-border" />
+                  </div>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    {designStyles
+                      .filter((s) => s.group === "more")
+                      .map((style) => {
+                        const isActive = designStyle === style.id;
+                        return (
+                          <button
+                            key={style.id}
+                            onClick={() => handleStyleChange(style.id)}
+                            className={`group text-left rounded-xl border-2 bg-card p-3 text-card-foreground transition-all hover:shadow-md text-sm ${isActive ? "border-primary shadow-md shadow-primary/10" : "border-border hover:border-primary/30"}`}
+                          >
+                            <div className="overflow-hidden rounded-lg border border-border bg-background">
+                              <div className="flex items-center justify-between px-2.5 py-2 border-b border-border/60">
+                                <span className="text-[10px] font-medium tracking-wide text-muted-foreground">Aa Design system</span>
+                                <span className="flex gap-1">
+                                  {style.dots.map((c, i) => (
+                                    <span key={i} className="h-2 w-2 rounded-sm border border-border" style={{ background: c }} />
+                                  ))}
+                                </span>
+                              </div>
+                              <div className="grid grid-cols-5 gap-2 p-2.5">
+                                <div className="col-span-3">
+                                  <p className="text-[11px] font-semibold leading-none">Heading</p>
+                                  <p className="mt-1 text-[9px] leading-tight text-muted-foreground">Clear, reusable...</p>
+                                  <div className="mt-2 flex gap-1">
+                                    <span className="rounded px-1.5 py-1 text-[9px] font-medium" style={{ background: style.preview.primary, color: style.preview.primaryText }}>Primary</span>
+                                    <span className="rounded border border-border bg-card px-1.5 py-1 text-[9px]">Button</span>
+                                  </div>
+                                </div>
+                                <div className="col-span-2 rounded-md border p-1.5 flex flex-col justify-center" style={{ background: style.preview.totalBg }}>
+                                  <span className="text-[9px] text-muted-foreground">Total</span>
+                                  <span className="text-xs font-bold">$24.8k</span>
+                                  <span className="mt-1 h-1 w-full rounded-full bg-background/80"><span className="block h-1 rounded-full" style={{ width: "62%", background: style.preview.totalAccent }} /></span>
+                                </div>
+                              </div>
+                              {isActive ? <div className="h-1 bg-primary" /> : <div className="h-1 bg-transparent group-hover:bg-primary/30" />}
+                            </div>
+                            <p className="mt-2 font-semibold text-sm leading-none">{style.name}</p>
+                            <p className="mt-1 text-xs text-muted-foreground line-clamp-1">{style.description}</p>
+                          </button>
+                        );
+                      })}
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground">All styles update <span className="font-medium text-foreground">every route under /app</span> — Dashboard, JD Analyzer, Tailor, etc. Light/dark still works on top of each style.</p>
               </CardContent>
             </Card>
 
-            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+            <Card className="shadow-sm">
               <CardHeader>
-                <CardTitle className="text-base text-white">Preferences</CardTitle>
+                <CardTitle className="text-base">Preferences</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between rounded-lg border border-[#2d3449] p-4">
+              <CardContent className="space-y-3">
+                <div className="flex items-center justify-between rounded-xl border border-border p-4">
                   <div>
-                    <p className="text-sm font-medium text-white">Reduce motion</p>
-                    <p className="text-xs text-[#908fa0]">Minimize animations across the app</p>
+                    <p className="text-sm font-medium">Reduce motion</p>
+                    <p className="text-xs text-muted-foreground">Minimize animations across the app</p>
                   </div>
-                  <Switch
-                    checked={reduceMotion}
-                    onCheckedChange={setReduceMotion}
-                    className="data-checked:bg-[#6366f1]"
-                  />
+                  <Switch checked={reduceMotion} onCheckedChange={setReduceMotion} />
                 </div>
-                <div className="flex items-center justify-between rounded-lg border border-[#2d3449] p-4">
+                <div className="flex items-center justify-between rounded-xl border border-border p-4">
                   <div>
-                    <p className="text-sm font-medium text-white">Compact density</p>
-                    <p className="text-xs text-[#908fa0]">Fit more content on screen</p>
+                    <p className="text-sm font-medium">Compact density</p>
+                    <p className="text-xs text-muted-foreground">Fit more content on screen</p>
                   </div>
-                  <Switch
-                    checked={compactDensity}
-                    onCheckedChange={setCompactDensity}
-                    className="data-checked:bg-[#6366f1]"
-                  />
+                  <Switch checked={compactDensity} onCheckedChange={setCompactDensity} />
                 </div>
-                <div className="flex items-center justify-between rounded-lg border border-[#2d3449] p-4">
+                <div className="flex items-center justify-between rounded-xl border border-border p-4">
                   <div>
-                    <p className="text-sm font-medium text-white">Export my data</p>
-                    <p className="text-xs text-[#908fa0]">Download everything we store about you</p>
+                    <p className="text-sm font-medium">Export my data</p>
+                    <p className="text-xs text-muted-foreground">Download everything we store about you</p>
                   </div>
-                  <Button variant="outline" size="sm" className="bg-[#0b1326]">
+                  <Button variant="outline" size="sm">
                     <Download className="mr-2 h-3 w-3" /> Export
                   </Button>
                 </div>
@@ -843,21 +1016,21 @@ function SettingsContent() {
       </Tabs>
 
       <Dialog open={show2faModal} onOpenChange={setShow2faModal}>
-        <DialogContent className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd]">
+        <DialogContent className="border-border bg-muted text-foreground">
           <DialogHeader>
-            <DialogTitle className="text-white">Enable Two-Factor Authentication</DialogTitle>
-            <DialogDescription className="text-[#908fa0]">
+            <DialogTitle className="text-foreground">Enable Two-Factor Authentication</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
               Scan the QR code with your authenticator app to link this account.
             </DialogDescription>
           </DialogHeader>
           {!qrShown ? (
             <div className="py-6 text-center">
               <Shield className="mx-auto mb-3 h-10 w-10 text-indigo-400" />
-              <p className="text-sm text-[#908fa0]">Generating QR code...</p>
+              <p className="text-sm text-muted-foreground">Generating QR code...</p>
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="mx-auto flex h-48 w-48 items-center justify-center rounded-lg bg-[#171f33]">
+              <div className="mx-auto flex h-48 w-48 items-center justify-center rounded-lg bg-muted">
                 <div className="grid grid-cols-7 gap-0.5">
                   {Array.from({ length: 49 }).map((_, i) => (
                     <div
@@ -869,18 +1042,18 @@ function SettingsContent() {
                   ))}
                 </div>
               </div>
-              <p className="text-center text-xs text-[#908fa0]">
+              <p className="text-center text-xs text-muted-foreground">
                 Scan with Google Authenticator or Authy
               </p>
-              <div className="rounded-lg bg-[#171f33] p-3 text-center">
-                <p className="mb-1 text-xs text-[#908fa0]">Backup codes (save these):</p>
-                <code className="text-xs text-[#dae2fd]">ABCD-EFGH-IJKL-MNOP</code>
+              <div className="rounded-lg bg-muted p-3 text-center">
+                <p className="mb-1 text-xs text-muted-foreground">Backup codes (save these):</p>
+                <code className="text-xs text-foreground">ABCD-EFGH-IJKL-MNOP</code>
               </div>
               <div className="flex gap-2">
-                <Button variant="outline" className="flex-1 bg-[#0b1326]">
+                <Button variant="outline" className="flex-1 bg-muted">
                   <Download className="mr-2 h-4 w-4" /> Download Codes
                 </Button>
-                <Button className="flex-1 bg-indigo-500 text-white hover:bg-indigo-400" onClick={enable2fa}>
+                <Button className="flex-1 bg-indigo-500 text-foreground hover:bg-indigo-400" onClick={enable2fa}>
                   Verify & Enable
                 </Button>
               </div>
@@ -890,20 +1063,20 @@ function SettingsContent() {
       </Dialog>
 
       <Dialog open={showCreateKey} onOpenChange={setShowCreateKey}>
-        <DialogContent className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd]">
+        <DialogContent className="border-border bg-muted text-foreground">
           <DialogHeader>
-            <DialogTitle className="text-white">Create API Key</DialogTitle>
-            <DialogDescription className="text-[#908fa0]">
+            <DialogTitle className="text-foreground">Create API Key</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
               Give your key a name so you can recognize it later.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3">
-            <Label className="text-sm font-medium text-[#dae2fd]">Key name</Label>
+            <Label className="text-sm font-medium text-foreground">Key name</Label>
             <Input
               value={newKeyName}
               onChange={(e) => setNewKeyName(e.target.value)}
               placeholder="e.g. Production, CI pipeline"
-              className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd]"
+              className="border-border bg-muted text-foreground"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
@@ -915,13 +1088,13 @@ function SettingsContent() {
           <DialogFooter>
             <DialogClose
               render={
-                <Button variant="outline" className="border-[#2d3449] bg-transparent text-white hover:bg-[#171f33]">
+                <Button variant="outline" className="border-border bg-transparent text-foreground hover:bg-muted">
                   Cancel
                 </Button>
               }
             />
             <Button
-              className="bg-indigo-500 text-white hover:bg-indigo-400"
+              className="bg-indigo-500 text-foreground hover:bg-indigo-400"
               onClick={createKey}
               disabled={!newKeyName.trim()}
             >
@@ -942,20 +1115,20 @@ function SettingsContent() {
       />
 
       <Dialog open={showLogoutModal} onOpenChange={setShowLogoutModal}>
-        <DialogContent className="border-[#2d3449] bg-[#0b1326] text-[#dae2fd]">
+        <DialogContent className="border-border bg-muted text-foreground">
           <DialogHeader>
-            <DialogTitle className="text-white">Logout All Devices</DialogTitle>
-            <DialogDescription className="text-[#908fa0]">
+            <DialogTitle className="text-foreground">Logout All Devices</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
               This will log you out of all devices and end your session everywhere.
             </DialogDescription>
           </DialogHeader>
-          <p className="text-sm text-[#dae2fd]">
+          <p className="text-sm text-foreground">
             After logging out you will need to sign in again on each device.
           </p>
           <DialogFooter>
             <DialogClose
               render={
-                <Button variant="outline" className="border-[#2d3449] bg-transparent text-white hover:bg-[#171f33]">
+                <Button variant="outline" className="border-border bg-transparent text-foreground hover:bg-muted">
                   Cancel
                 </Button>
               }

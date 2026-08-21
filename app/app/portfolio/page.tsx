@@ -82,12 +82,12 @@ export default function PortfolioPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Portfolio Generator</h1>
-        <p className="text-[#908fa0]">Generate a responsive portfolio with AI video demos</p>
+        <h1 className="text-2xl font-bold text-foreground">Portfolio Generator</h1>
+        <p className="text-muted-foreground">Generate a responsive portfolio with AI video demos</p>
       </div>
 
       <Tabs defaultValue="template">
-        <TabsList variant="line" className="w-full justify-start border-b border-[#2d3449]">
+        <TabsList variant="line" className="w-full justify-start border-b border-border">
           <TabsTrigger value="template">
             <LayoutTemplate className="mr-2 h-4 w-4" /> Template
           </TabsTrigger>
@@ -103,9 +103,9 @@ export default function PortfolioPage() {
         </TabsList>
 
         <TabsContent value="template">
-          <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+          <Card className="bg-card border-border shadow-none">
             <CardHeader>
-              <CardTitle className="text-base text-white">Choose Template</CardTitle>
+              <CardTitle className="text-base text-foreground">Choose Template</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -116,13 +116,13 @@ export default function PortfolioPage() {
                     className={`rounded-lg border-2 p-3 text-center transition-all ${
                       selectedTemplate === t
                         ? "border-indigo-500 bg-indigo-500/10"
-                        : "border-[#2d3449] hover:border-[#3a4160]"
+                        : "border-border hover:border-[#3a4160]"
                     }`}
                   >
-                    <div className="mb-2 flex aspect-[3/4] items-center justify-center rounded-lg bg-[#0b1326]">
-                      <Globe className="h-8 w-8 text-[#908fa0]" />
+                    <div className="mb-2 flex aspect-[3/4] items-center justify-center rounded-lg bg-muted">
+                      <Globe className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <p className="text-sm font-medium text-white">{t}</p>
+                    <p className="text-sm font-medium text-foreground">{t}</p>
                   </button>
                 ))}
               </div>
@@ -132,9 +132,9 @@ export default function PortfolioPage() {
 
         <TabsContent value="customize">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+            <Card className="bg-card border-border shadow-none">
               <CardHeader>
-                <CardTitle className="text-base text-white">Color Palette</CardTitle>
+                <CardTitle className="text-base text-foreground">Color Palette</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-3">
@@ -145,7 +145,7 @@ export default function PortfolioPage() {
                       className={`rounded-lg border-2 p-3 transition-all ${
                         selectedPalette.name === p.name
                           ? "border-indigo-500"
-                          : "border-[#2d3449] hover:border-[#3a4160]"
+                          : "border-border hover:border-[#3a4160]"
                       }`}
                     >
                       <div className="mb-2 flex gap-1">
@@ -153,26 +153,26 @@ export default function PortfolioPage() {
                           <div key={i} className="h-6 flex-1 rounded" style={{ background: c }} />
                         ))}
                       </div>
-                      <p className="text-sm font-medium text-white">{p.name}</p>
+                      <p className="text-sm font-medium text-foreground">{p.name}</p>
                     </button>
                   ))}
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+            <Card className="bg-card border-border shadow-none">
               <CardHeader>
-                <CardTitle className="text-base text-white">Sections</CardTitle>
+                <CardTitle className="text-base text-foreground">Sections</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   {sections.map((s) => (
                     <label
                       key={s}
-                      className="flex cursor-pointer items-center gap-3 rounded-lg p-2 hover:bg-[#171f33]"
+                      className="flex cursor-pointer items-center gap-3 rounded-lg p-2 hover:bg-muted"
                     >
                       <Checkbox checked={enabledSections.includes(s)} onCheckedChange={() => toggleSection(s)} />
-                      <span className="text-sm font-medium text-[#dae2fd]">{s}</span>
+                      <span className="text-sm font-medium text-foreground">{s}</span>
                     </label>
                   ))}
                 </div>
@@ -182,7 +182,7 @@ export default function PortfolioPage() {
         </TabsContent>
 
         <TabsContent value="preview">
-          <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+          <Card className="bg-card border-border shadow-none">
             <CardContent>
               <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex gap-2">
@@ -223,12 +223,12 @@ export default function PortfolioPage() {
                     <Smartphone className="h-4 w-4" />
                   </Button>
                 </div>
-                <Badge variant="secondary" className="bg-[#171f33] text-[#dae2fd]">
+                <Badge variant="secondary" className="bg-muted text-foreground">
                   Template: {selectedTemplate} · Palette: {selectedPalette.name}
                 </Badge>
               </div>
               <div
-                className={`mx-auto rounded-lg border border-[#2d3449] bg-[#0b1326] p-6 transition-all ${
+                className={`mx-auto rounded-lg border border-border bg-muted p-6 transition-all ${
                   device === "desktop"
                     ? "max-w-4xl"
                     : device === "tablet"
@@ -238,28 +238,28 @@ export default function PortfolioPage() {
               >
                 <div className="mb-6 text-center">
                   <div className="mx-auto mb-3 h-16 w-16 rounded-full bg-gradient-to-br from-indigo-500 to-blue-500" />
-                  <h3 className="text-xl font-bold text-white">
+                  <h3 className="text-xl font-bold text-foreground">
                     {user?.name ?? "Your Name"}
                   </h3>
-                  <p className="text-sm text-[#908fa0]">Full Stack Developer</p>
-                  <p className="mt-2 text-xs text-[#908fa0]">
+                  <p className="text-sm text-muted-foreground">Full Stack Developer</p>
+                  <p className="mt-2 text-xs text-muted-foreground">
                     AI-written tagline appears here
                   </p>
                 </div>
                 {enabledSections.includes("Projects") && (
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     {[1, 2].map((i) => (
-                      <div key={i} className="rounded-lg border border-[#2d3449] p-3">
+                      <div key={i} className="rounded-lg border border-border p-3">
                         <div className="mb-2 flex aspect-video items-center justify-center rounded bg-[#060e20]">
                           <Sparkles className="h-6 w-6 text-indigo-400" />
-                          <span className="ml-2 text-xs text-[#908fa0]">
+                          <span className="ml-2 text-xs text-muted-foreground">
                             Video autoplays on hover
                           </span>
                         </div>
-                        <p className="text-sm font-medium text-white">Project {i}</p>
+                        <p className="text-sm font-medium text-foreground">Project {i}</p>
                         <div className="mt-1 flex gap-1">
                           {["React", "Python"].map((t) => (
-                            <Badge key={t} variant="secondary" className="bg-[#171f33] text-[#dae2fd]">
+                            <Badge key={t} variant="secondary" className="bg-muted text-foreground">
                               {t}
                             </Badge>
                           ))}
@@ -275,21 +275,21 @@ export default function PortfolioPage() {
 
         <TabsContent value="publish">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+            <Card className="bg-card border-border shadow-none">
               <CardHeader>
-                <CardTitle className="text-base text-white">Publish Portfolio</CardTitle>
+                <CardTitle className="text-base text-foreground">Publish Portfolio</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="rounded-lg bg-[#0b1326] p-4">
-                  <p className="text-sm text-[#dae2fd]">
-                    <span className="font-medium text-white">Subdomain:</span>{" "}
+                <div className="rounded-lg bg-muted p-4">
+                  <p className="text-sm text-foreground">
+                    <span className="font-medium text-foreground">Subdomain:</span>{" "}
                     <code className="text-indigo-300">{slug}.candidexa.app</code>
                   </p>
                 </div>
                 <Button
                   onClick={handlePublish}
                   disabled={publishing}
-                  className="w-full bg-indigo-500 text-white hover:bg-indigo-400"
+                  className="w-full bg-indigo-500 text-foreground hover:bg-indigo-400"
                 >
                   {publishing ? (
                     <>
@@ -315,7 +315,7 @@ export default function PortfolioPage() {
                     </a>
                     <button
                       onClick={copyUrl}
-                      className="ml-auto shrink-0 rounded p-1 text-[#908fa0] hover:bg-[#171f33]"
+                      className="ml-auto shrink-0 rounded p-1 text-muted-foreground hover:bg-muted"
                       aria-label="Copy URL"
                     >
                       {copied ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
@@ -325,21 +325,21 @@ export default function PortfolioPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-[#131b2e] border-[#2d3449] shadow-none">
+            <Card className="bg-card border-border shadow-none">
               <CardHeader>
-                <CardTitle className="text-base text-white">Export & Deploy</CardTitle>
+                <CardTitle className="text-base text-foreground">Export & Deploy</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button variant="outline" className="w-full bg-[#0b1326]">
+                <Button variant="outline" className="w-full bg-muted">
                   <Download className="mr-2 h-4 w-4" /> Download Code (ZIP)
                 </Button>
-                <Button variant="outline" className="w-full bg-[#0b1326]">
+                <Button variant="outline" className="w-full bg-muted">
                   <Rocket className="mr-2 h-4 w-4" /> Deploy to Vercel
                 </Button>
-                <Button variant="outline" className="w-full bg-[#0b1326]">
+                <Button variant="outline" className="w-full bg-muted">
                   <Rocket className="mr-2 h-4 w-4" /> Deploy to Netlify
                 </Button>
-                <div className="rounded-lg bg-[#0b1326] p-3 text-sm text-[#908fa0]">
+                <div className="rounded-lg bg-muted p-3 text-sm text-muted-foreground">
                   Custom domain support available on Pro plan.{" "}
                   <Link
                     href="/pricing"

@@ -200,6 +200,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     let mounted = true;
 
     const bootstrap = async () => {
+      // Skip auth check on public routes when no auth indicator - prevents 500/CORS spam when Railway is sleeping
+      const isPublicRoute = PUBLIC_AUTH_ROUTES.has(pathname);
+      const hasAuthIndicator =
+        typeof document !== "undefined" &&
+        (document.cookie.includes("token") ||
+          document.cookie.includes("session") ||
+          localStorage.getItem("token") ||
+          localStorage.getItem("access_token") ||
+          sessionStorage.getItem("token"));
+
+      if (isPublicRoute && !hasAuthIndicator) {
+        if (mounted) setIsLoading(false);
+        return;
+      }
+
       try {
         const response = await apiClient.get("/auth/me", {
           retryOnAuthFailure: false,
@@ -227,13 +242,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     };
 
-    // Only bootstrap if we are not on a public route that doesn't need auth, with a small delay to avoid spamming when backend is down
     void bootstrap();
 
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     const handleExpired = () => {
